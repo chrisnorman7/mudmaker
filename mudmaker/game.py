@@ -17,31 +17,18 @@ NoneType = type(None)
 static = File('html')
 
 
-class GameResource(Resource):
+class FunctionResource(Resource):
     """A resource that stores a reference to the game it's attached to."""
 
     isLeaf = True
 
-    def __init__(self, game, *args, **kwargs):
-        self.game = game
+    def __init__(self, func, *args, **kwargs):
+        """self.func will be called with render_GET."""
+        self.func = func
         super().__init__(*args, **kwargs)
 
-
-class WebSocketPage(GameResource):
-    """This resource is used so that the JavaScript portion of the site doesn't
-    have to guess the websocket port."""
-
     def render_GET(self, request):
-        """Calls game.on_websocket_page with the given request."""
-        return self.game.on_websocket_page(request)
-
-
-class IndexPage(GameResource):
-    """Returns the index page for a given game."""
-
-    def render_GET(self, request):
-        """Calls game.on_index_page with the given request."""
-        return self.game.on_index_page(request)
+        return self.func(request)
 
 
 @attrs
@@ -57,9 +44,10 @@ class Game:
     site_port = attrib(default=Factory(NoneType))
     web_root = attrib(default=Factory(Resource))
     connections = attrib(default=Factory(list), init=False)
-    zones = attrib(default=Factory(list), init=False)
-    rooms = attrib(default=Factory(list), init=False)
-    objects = attrib(default=Factory(list), init=False)
+    zones = attrib(default=Factory(dict), init=False)
+    rooms = attrib(default=Factory(dict), init=False)
+    objects = attrib(default=Factory(dict), init=False)
+    commands = attrib(default=Factory(dict), init=False)
 
     def on_websocket_page(self, request):
         """Return the websocket port number."""
@@ -73,9 +61,11 @@ class Game:
         """Start listening for network connections. Usually called from
         Game.run."""
         self.logger.info('Adding web socket page.')
-        self.web_root.putChild(b'wsport', WebSocketPage(self))
+        self.web_root.putChild(
+            b'wsport', FunctionResource(self.on_websocket_page)
+        )
         self.logger.info('Adding index page.')
-        self.web_root.putChild(b'', IndexPage(self))
+        self.web_root.putChild(b'', FunctionResource(self.on_index_page))
         self.logger.info('Adding static page.')
         self.web_root.putChild(b'static', static)
         if self.websocket_factory is None:
@@ -93,6 +83,10 @@ class Game:
         site = Site(self.web_root)
         self.site_port = reactor.listenTCP(
             self.http_port, site, interface=self.interface
+        )
+        self.logger.info(
+            'Listening for HTTP connections on %s:%d.',
+            self.site_port.interface, self.site_port.port
         )
 
     def run(self):
