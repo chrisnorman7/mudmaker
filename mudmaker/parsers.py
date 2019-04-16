@@ -2,31 +2,9 @@
 
 from datetime import datetime
 
-from commandlet import Parser
+from commandlet import Parser, command
 
 login_parser = Parser()
-
-
-@login_parser.command('host', 'host', 'hostname')
-def do_hostname(con, host):
-    """Get your host name and port."""
-    con.message('You are connected from %s.' % host)
-
-
-@login_parser.command('help', 'help', 'commands', r'\?')
-def do_help(con, parser):
-    """Get a list of possible commands."""
-    con.message('Commands available to you:')
-    commands = {}
-    for cmd in sorted(parser.commands, key=lambda cmd: cmd.name):
-        if cmd.name not in commands:
-            commands[cmd.name] = [cmd.func.func.__doc__]
-        commands[cmd.name].append(cmd.usage)
-    for name, values in commands.items():
-        con.message('%s:' % name)
-        formats = [x.replace('\\', '') for x in values[1:]]
-        con.message(', '.join(formats) + '.')
-        con.message(values[0])
 
 
 @login_parser.command('login', 'login <username> <password>')
@@ -41,20 +19,42 @@ def do_create(con, username, password):
     con.message('Creating %s:%s.' % (username, password))
 
 
-@login_parser.command('uptime', 'uptime', '@uptime')
+main_parser = Parser()
+
+
+@command([login_parser, main_parser], 'host', '@host', '@hostname')
+def do_hostname(con, host):
+    """Get your host name and port."""
+    con.message('You are connected from %s.' % host)
+
+
+@command([login_parser, main_parser], 'help', 'help', '@commands', r'\?')
+def do_help(con, parser):
+    """Get a list of possible commands."""
+    con.message('Commands available to you:')
+    commands = {}
+    for cmd in sorted(parser.commands, key=lambda cmd: cmd.name):
+        if cmd.name not in commands:
+            commands[cmd.name] = [
+                cmd.func.func.__doc__ or 'No description available.'
+            ]
+        commands[cmd.name].append(cmd.usage)
+    for name, values in commands.items():
+        con.message('%s:' % name)
+        formats = [x.replace('\\', '') for x in values[1:]]
+        con.message(', '.join(formats) + '.')
+        con.message(values[0])
+
+
+@command([login_parser, main_parser], 'uptime', 'uptime', '@uptime')
 def do_uptime(game, con):
+    """Show server uptime."""
     now = datetime.utcnow()
     con.message('Uptime: %s.' % (now - game.started))
     con.message('Server started: %s.' % now.ctime())
 
 
-main_parser = Parser()
-
-
+@command([login_parser, main_parser], 'quit', 'quit', '@quit')
 def do_quit(con):
     """Quit the game."""
     con.disconnect('Goodbye.')
-
-
-for parser in (login_parser, main_parser):
-    parser.command('quit', 'quit', '@quit')(do_quit)
