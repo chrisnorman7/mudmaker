@@ -2,3 +2,4 @@ attrs
 twisted
 emote-utils
 autobahn
+commandlet

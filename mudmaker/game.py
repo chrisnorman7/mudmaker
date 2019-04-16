@@ -37,17 +37,22 @@ class Game:
 
     interface = attrib(default=Factory(lambda: '127.0.0.1'))
     http_port = attrib(default=Factory(lambda: 4000))
-    logger = attrib(default=Factory(lambda: getLogger(__name__)))
+    logger = attrib(default=Factory(lambda: getLogger(__name__)), repr=False)
     websocket_class = attrib(default=Factory(lambda: WebSocketServerProtocol))
-    websocket_factory = attrib(default=Factory(NoneType))
-    websocket_port = attrib(default=Factory(NoneType))
-    site_port = attrib(default=Factory(NoneType))
-    web_root = attrib(default=Factory(Resource))
-    connections = attrib(default=Factory(list), init=False)
-    zones = attrib(default=Factory(dict), init=False)
-    rooms = attrib(default=Factory(dict), init=False)
-    objects = attrib(default=Factory(dict), init=False)
-    commands = attrib(default=Factory(dict), init=False)
+    websocket_factory = attrib(default=Factory(NoneType), repr=False)
+    websocket_port = attrib(default=Factory(NoneType), repr=False)
+    site_port = attrib(default=Factory(NoneType), repr=False)
+    web_root = attrib(default=Factory(Resource), repr=False)
+    connections = attrib(default=Factory(list), init=False, repr=False)
+    zones = attrib(default=Factory(dict), init=False, repr=False)
+    rooms = attrib(default=Factory(dict), init=False, repr=False)
+    objects = attrib(default=Factory(dict), init=False, repr=False)
+    commands = attrib(default=Factory(dict), init=False, repr=False)
+    max_id = attrib(default=Factory(int), init=False, repr=False)
+
+    def new_id(self):
+        self.max_id += 1
+        return self.max_id
 
     def on_websocket_page(self, request):
         """Return the websocket port number."""
