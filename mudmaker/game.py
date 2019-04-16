@@ -4,14 +4,14 @@ from json import dumps
 from logging import getLogger
 
 from attr import attrs, attrib, Factory, make_class
-from autobahn.twisted.websocket import (
-    listenWS, WebSocketServerFactory, WebSocketServerProtocol
-)
+from autobahn.twisted.websocket import listenWS, WebSocketServerFactory
 from twisted.internet import reactor
 from twisted.web.resource import Resource
 from twisted.web.server import Site
 from twisted.web.static import File
 from twisted.web.util import redirectTo
+
+from .websockets import WebSocketConnection
 
 NoneType = type(None)
 static = File('html')
@@ -38,7 +38,7 @@ class Game:
     interface = attrib(default=Factory(lambda: '127.0.0.1'))
     http_port = attrib(default=Factory(lambda: 4000))
     logger = attrib(default=Factory(lambda: getLogger(__name__)), repr=False)
-    websocket_class = attrib(default=Factory(lambda: WebSocketServerProtocol))
+    websocket_class = attrib(default=Factory(lambda: WebSocketConnection))
     websocket_factory = attrib(default=Factory(NoneType), repr=False)
     websocket_port = attrib(default=Factory(NoneType), repr=False)
     site_port = attrib(default=Factory(NoneType), repr=False)
@@ -50,6 +50,7 @@ class Game:
     commands = attrib(default=Factory(dict), init=False, repr=False)
     max_id = attrib(default=Factory(int), init=False, repr=False)
     bases = attrib(default=Factory(dict))
+    welcome_msg = attrib(default=Factory(lambda: '*** Connected ***'))
 
     def new_id(self):
         self.max_id += 1
@@ -79,6 +80,7 @@ class Game:
                 f'ws://{self.interface}:{self.http_port + 1}'
             )
             self.websocket_factory.protocol = self.websocket_class
+        self.websocket_factory.game = self
         self.websocket_port = listenWS(
             self.websocket_factory, interface=self.interface
         )

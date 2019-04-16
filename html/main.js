@@ -1,7 +1,7 @@
 const output = document.getElementById("output")
 let soc = null
 
-const input = document.getElementById("input")
+const input = document.getElementById("command")
 
 function writeMessage(text) {
     for (let line of text.split("\n")) {
