@@ -1,5 +1,6 @@
 """Provides the Game class."""
 
+from datetime import datetime
 from json import dumps
 from logging import getLogger
 
@@ -50,7 +51,12 @@ class Game:
     commands = attrib(default=Factory(dict), init=False, repr=False)
     max_id = attrib(default=Factory(int), init=False, repr=False)
     bases = attrib(default=Factory(dict))
-    welcome_msg = attrib(default=Factory(lambda: '*** Connected ***'))
+    welcome_msg = attrib(
+        default=Factory(
+            lambda: 'You can modify this message by setting game.welcome_msg.'
+        )
+    )
+    started = attrib(default=Factory(datetime.utcnow))
 
     def new_id(self):
         self.max_id += 1

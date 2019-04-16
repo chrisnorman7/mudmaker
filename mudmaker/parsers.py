@@ -1,5 +1,7 @@
 """Provides the two main command parsers: login_parser, and main_parser."""
 
+from datetime import datetime
+
 from commandlet import Parser
 
 login_parser = Parser()
@@ -37,6 +39,13 @@ def do_login(con, username, password):
 def do_create(con, username, password):
     """Create a new character."""
     con.message('Creating %s:%s.' % (username, password))
+
+
+@login_parser.command('uptime', 'uptime', '@uptime')
+def do_uptime(game, con):
+    now = datetime.utcnow()
+    con.message('Uptime: %s.' % (now - game.started))
+    con.message('Server started: %s.' % now.ctime())
 
 
 main_parser = Parser()
