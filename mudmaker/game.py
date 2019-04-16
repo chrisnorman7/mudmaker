@@ -49,6 +49,7 @@ class Game:
     objects = attrib(default=Factory(dict), init=False, repr=False)
     commands = attrib(default=Factory(dict), init=False, repr=False)
     max_id = attrib(default=Factory(int), init=False, repr=False)
+    bases = attrib(default=Factory(dict))
 
     def new_id(self):
         self.max_id += 1
@@ -98,3 +99,12 @@ class Game:
         """Start this game listening, and start the reactor."""
         self.start_listening()
         reactor.run()
+
+    def register_base(self, name):
+        """Decorate a class to have it registered as a possible base."""
+
+        def inner(cls):
+            self.bases[name] = cls
+            return cls
+
+        return inner
