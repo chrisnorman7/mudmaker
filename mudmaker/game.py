@@ -3,7 +3,7 @@
 from json import dumps
 from logging import getLogger
 
-from attr import attrs, attrib, Factory
+from attr import attrs, attrib, Factory, make_class
 from autobahn.twisted.websocket import (
     listenWS, WebSocketServerFactory, WebSocketServerProtocol
 )
@@ -108,3 +108,10 @@ class Game:
             return cls
 
         return inner
+
+    def make_object(self, class_name, bases, **attributes):
+        """Make an object - which could be anything - and add it to this game.
+        class_name is the name used for the newly-created class, and attributes
+        will be passed to the new class's __init__ method."""
+        cls = make_class(class_name, [], bases=bases)
+        return cls(**attributes)

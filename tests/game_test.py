@@ -1,4 +1,4 @@
-from mudmaker import Game
+from mudmaker import Game, Zone
 
 from attr import attrs, attrib, Factory
 
@@ -27,3 +27,11 @@ def test_register_base(game):
         number = attrib(default=Factory(lambda: value))
 
     assert game.bases[name] is PretendBase
+
+
+def test_make_object(game):
+    name = 'Test Zone'
+    z = game.make_object(Zone.__name__, (Zone,), name=name, game=game)
+    assert Zone in type(z).__bases__
+    assert z.name == name
+    assert z.game is game
