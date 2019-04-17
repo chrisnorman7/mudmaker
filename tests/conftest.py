@@ -2,7 +2,7 @@ from pytest import fixture
 
 from autobahn.twisted import WebSocketServerFactory
 
-from mudmaker import Exit, Game, Room, Zone, WebSocketConnection
+from mudmaker import Exit, Game, Room, Zone, WebSocketConnection, Object
 
 
 @fixture(name='exit')
@@ -79,3 +79,8 @@ def connection(game):
     con.factory = game.websocket_factory
     con.onOpen()
     return con
+
+
+@fixture(name='obj')
+def get_object(game):
+    return game.make_object('Object', (Object,), name='Test Object')
