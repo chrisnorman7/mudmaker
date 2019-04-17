@@ -11,9 +11,9 @@ def get_game():
 
 @fixture(name='room')
 def get_room(game):
-    return Room(game, name='Test Room')
+    return game.make_object('Room', (Room,), name='Test Room')
 
 
 @fixture(name='zone')
 def get_zone(game):
-    return Zone(game, name='Test Zone')
+    return game.make_object('Zone', (Zone,), name='Test Zone')

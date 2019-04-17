@@ -21,3 +21,8 @@ class Room(BaseObject):
     @property
     def exits(self):
         return [x for x in self.game.exits if x.location is self]
+
+    @classmethod
+    def on_init(cls, instance):
+        """Add this room to self.game.rooms."""
+        instance.game.rooms[instance.id] = instance
