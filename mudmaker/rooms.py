@@ -20,7 +20,13 @@ class Room(BaseObject):
 
     @property
     def exits(self):
-        return [x for x in self.game.exits if x.location is self]
+        """Get a list of exits."""
+        return [x for x in self.game.exits.values() if x.location is self]
+
+    @property
+    def entrances(self):
+        """Get a list of entrances."""
+        return [x for x in self.game.exits.values() if x.destination is self]
 
     @classmethod
     def on_init(cls, instance):

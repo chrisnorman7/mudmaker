@@ -13,6 +13,11 @@ class Exit(BaseObject, LocationMixin):
 
     @property
     def other_side(self):
-        exits = [x for x in self.game.exits if x.location is self.destination
-                 and x.destination is self.location]
+        exits = [x for x in self.game.exits.values() if x.location is
+                 self.destination and x.destination is self.location]
         return exits[0]
+
+    @classmethod
+    def on_init(cls, instance):
+        """Add this exit to self.game.exits."""
+        instance.game.exits[instance.id] = instance
