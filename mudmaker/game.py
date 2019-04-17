@@ -125,6 +125,5 @@ class Game:
         cls = type(class_name, bases, dict(__init__=BaseObject.__init__))
         obj = cls(self, **attributes)
         for base in bases:
-            print(base)
             base.on_init(obj)
         return obj
