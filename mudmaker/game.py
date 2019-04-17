@@ -58,6 +58,7 @@ class Game:
         )
     )
     started = attrib(default=Factory(datetime.utcnow))
+    _objects = attrib(default=Factory(dict), init=False, repr=False)
 
     def new_id(self):
         self.max_id += 1
@@ -126,4 +127,5 @@ class Game:
         obj = cls(self, **attributes)
         for base in bases:
             base.on_init(obj)
+        self._objects[obj.id] = obj
         return obj

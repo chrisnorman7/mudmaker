@@ -1,11 +1,12 @@
 from mudmaker import Exit, Room
 
 
-def test_init(exit):
+def test_init(game, exit):
     assert isinstance(exit, Exit)
     assert isinstance(exit.location, Room)
     assert isinstance(exit.destination, Room)
     assert exit.game.exits[exit.id] is exit
+    assert game._objects[exit.id] is exit
 
 
 def test_other_side(exit):

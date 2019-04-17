@@ -6,3 +6,4 @@ def test_init(game, zone):
     assert zone.game is game
     assert zone.rooms == []
     assert game.zones[zone.id] is zone
+    assert game._objects[zone.id] is zone
