@@ -1,8 +1,16 @@
 from pytest import fixture
 
+import os
+import os.path
+
 from autobahn.twisted import WebSocketServerFactory
 
 from mudmaker import Exit, Game, Room, Zone, WebSocketConnection, Object
+
+account_store_filename = 'accounts.json'
+
+if os.path.isfile(account_store_filename):
+    os.remove(account_store_filename)
 
 
 @fixture(name='exit')
@@ -84,3 +92,9 @@ def connection(game):
 @fixture(name='obj')
 def get_object(game):
     return game.make_object('Object', (Object,), name='Test Object')
+
+
+@fixture(name='accounts')
+def get_accounts(game):
+    """Get an AccountStore instance."""
+    return game.account_store

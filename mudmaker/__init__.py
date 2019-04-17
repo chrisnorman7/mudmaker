@@ -8,8 +8,9 @@ from .zones import Zone
 from .rooms import Room
 from .websockets import WebSocketConnection
 from .objects import Object
+from .account_store import Account, AccountStore
 
 __all__ = [
     'Attribute', 'text', 'Direction', 'Exit', 'Game', 'Zone', 'Room',
-    'WebSocketConnection', 'Object'
+    'WebSocketConnection', 'Object', 'Account', 'AccountStore'
 ]

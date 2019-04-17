@@ -101,3 +101,4 @@ AUTHORS
 ChangeLog
 md
 game.py
+*.json

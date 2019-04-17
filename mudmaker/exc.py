@@ -19,3 +19,31 @@ class CommandError(MudMakerError):
 
 class DontSaveCommand(CommandError):
     """Don't save this command to the connection."""
+
+
+class AccountError(MudMakerError):
+    """An error in the accounts system."""
+
+
+class DuplicateUsernameError(AccountError):
+    """There is already an account with that username."""
+
+
+class DuplicateObjectError(AccountError):
+    """There is already an account bound to that object."""
+
+
+class NoSuchObjectError(AccountError):
+    """There is no account associated with that object."""
+
+
+class AuthenticationError(MudMakerError):
+    """There was an error with authentication."""
+
+
+class InvalidUsernameError(AuthenticationError):
+    """An invalid username was entered."""
+
+
+class InvalidPasswordError(AuthenticationError):
+    """An invalid password was entered."""

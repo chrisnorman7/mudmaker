@@ -3,3 +3,4 @@ twisted
 emote-utils
 autobahn
 commandlet
+passlib

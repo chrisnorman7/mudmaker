@@ -1,5 +1,6 @@
 """Provides the Game class."""
 
+import os.path
 from datetime import datetime
 from json import dumps
 
@@ -11,6 +12,7 @@ from twisted.web.server import Site
 from twisted.web.static import File
 from twisted.web.util import redirectTo
 
+from .account_store import AccountStore
 from .base import BaseObject
 from .directions import Direction
 from .websockets import WebSocketConnection
@@ -65,6 +67,7 @@ class Game:
     started = attrib(default=Factory(datetime.utcnow))
     directions = attrib(default=Factory(dict), repr=False)
     _objects = attrib(default=Factory(dict), init=False, repr=False)
+    account_store = attrib(default=Factory(NoneType), repr=False)
 
     def __attrs_post_init__(self):
         """Mainly used to add directions."""
@@ -89,6 +92,10 @@ class Game:
                 'Added direction %s with coodinates (%d, %d, %d).', name, d.x,
                 d.y, d.z
             )
+        if self.account_store is None:
+            self.account_store = AccountStore(self)
+            if os.path.isfile(self.account_store.filename):
+                self.account_store.load()
 
     def new_id(self):
         self.max_id += 1
