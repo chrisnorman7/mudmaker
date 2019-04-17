@@ -2,7 +2,6 @@
 
 from datetime import datetime
 from json import dumps
-from logging import getLogger
 
 from attr import attrs, attrib, Factory
 from autobahn.twisted.websocket import listenWS, WebSocketServerFactory
@@ -40,7 +39,7 @@ class Game:
 
     interface = attrib(default=Factory(lambda: '127.0.0.1'))
     http_port = attrib(default=Factory(lambda: 4000))
-    logger = attrib(default=Factory(lambda: getLogger(__name__)), repr=False)
+    logger = attrib(default=Factory(NoneType), repr=False)
     websocket_class = attrib(default=Factory(lambda: WebSocketConnection))
     websocket_factory = attrib(default=Factory(NoneType), repr=False)
     websocket_port = attrib(default=Factory(NoneType), repr=False)
@@ -58,12 +57,21 @@ class Game:
             lambda: 'You can modify this message by setting game.welcome_msg.'
         )
     )
+    error_msg = attrib(
+        default=Factory(
+            lambda: 'While executing your command an error occurred.'
+        )
+    )
     started = attrib(default=Factory(datetime.utcnow))
     directions = attrib(default=Factory(dict), repr=False)
     _objects = attrib(default=Factory(dict), init=False, repr=False)
 
     def __attrs_post_init__(self):
         """Mainly used to add directions."""
+        if self.logger is None:
+            from logging import basicConfig, getLogger
+            basicConfig(level='INFO')
+            self.logger = getLogger(__name__)
         for name, aliases, coordinates in (
             ('north', ['n'], dict(y=1)),
             ('northeast', ['ne'], dict(x=1, y=1)),

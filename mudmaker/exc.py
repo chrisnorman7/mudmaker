@@ -11,3 +11,11 @@ class ObjectError(MudMakerError):
 
 class ExtraKwargsError(ObjectError):
     """Extra keyword arguments were passed to a class's __init__ method."""
+
+
+class CommandError(MudMakerError):
+    """There was a problem with a command."""
+
+
+class DontSaveCommand(CommandError):
+    """Don't save this command to the connection."""
