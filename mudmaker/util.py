@@ -75,3 +75,11 @@ def format_timedelta(td):
     if seconds:
         fmt.append('%.2f seconds' % seconds)
     return english_list(fmt)
+
+
+def get_login(con):
+    con.message('Username:')
+    username = yield
+    con.message('Password:')
+    password = yield
+    return username, password
