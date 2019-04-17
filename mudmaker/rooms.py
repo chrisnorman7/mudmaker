@@ -1,16 +1,13 @@
 """Provides the Room class."""
 
-from attr import attrs, attrib, Factory
-
+from .attributes import Attribute, object
 from .base import BaseObject
 
 
-@attrs
 class Room(BaseObject):
     """A room which contains objects."""
 
-    zone = attrib(default=Factory(type(None)))
-    exits = attrib(default=Factory(list))
+    zone = Attribute(None, 'The zone this room is part of', type=object)
 
     def broadcast(self, text):
         """Send a message text to everyone else in this room."""
@@ -20,3 +17,7 @@ class Room(BaseObject):
     @property
     def contents(self):
         return [o for o in self.game.objects.values() if o.location is self]
+
+    @property
+    def exits(self):
+        return [x for x in self.game.exits if x.location is self]

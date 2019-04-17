@@ -31,7 +31,8 @@ def test_register_base(game):
 
 def test_make_object(game):
     name = 'Test Zone'
-    z = game.make_object(Zone.__name__, (Zone,), name=name, game=game)
+    z = game.make_object(Zone.__name__, (Zone,), name=name)
     assert Zone in type(z).__bases__
     assert z.name == name
     assert z.game is game
+    assert z.id == game.max_id

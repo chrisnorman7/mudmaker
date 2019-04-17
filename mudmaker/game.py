@@ -12,6 +12,7 @@ from twisted.web.server import Site
 from twisted.web.static import File
 from twisted.web.util import redirectTo
 
+from .base import BaseObject
 from .websockets import WebSocketConnection
 
 NoneType = type(None)
@@ -48,7 +49,7 @@ class Game:
     zones = attrib(default=Factory(dict), init=False, repr=False)
     rooms = attrib(default=Factory(dict), init=False, repr=False)
     objects = attrib(default=Factory(dict), init=False, repr=False)
-    commands = attrib(default=Factory(dict), init=False, repr=False)
+    exits = attrib(default=Factory(dict), init=False, repr=False)
     max_id = attrib(default=Factory(int), init=False, repr=False)
     bases = attrib(default=Factory(dict))
     welcome_msg = attrib(
@@ -121,5 +122,5 @@ class Game:
         """Make an object - which could be anything - and add it to this game.
         class_name is the name used for the newly-created class, and attributes
         will be passed to the new class's __init__ method."""
-        cls = type(class_name, bases, {})
-        return cls(**attributes)
+        cls = type(class_name, bases, dict(__init__=BaseObject.__init__))
+        return cls(self, **attributes)

@@ -19,3 +19,7 @@ class Attribute:
 
 class text(str):
     """A string which supports new line characters."""
+
+
+class object:
+    """The type of the attribute's value is a game object."""

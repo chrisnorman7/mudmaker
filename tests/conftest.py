@@ -10,10 +10,10 @@ def get_game():
 
 
 @fixture(name='room')
-def get_room():
-    return Room('Test Room')
+def get_room(game):
+    return Room(game, name='Test Room')
 
 
 @fixture(name='zone')
-def get_zone():
-    return Zone('Test Zone')
+def get_zone(game):
+    return Zone(game, name='Test Zone')

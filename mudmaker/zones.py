@@ -1,11 +1,8 @@
 """Provides the Zone class."""
 
-from attr import attrs
-
 from .base import BaseObject
 
 
-@attrs
 class Zone(BaseObject):
     """A zone with a list of rooms."""
 
