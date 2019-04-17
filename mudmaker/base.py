@@ -4,7 +4,17 @@ from .attributes import Attribute, text
 from .exc import ExtraKwargsError
 
 
-class BaseObject:
+class EventBase:
+    """A class which provides the most common events for database objects. All
+    events should be decorated with @classmethod."""
+
+    @classmethod
+    def on_init(cls, instance):
+        """Override to do something when the object is initialised."""
+        pass
+
+
+class BaseObject(EventBase):
     """The base class from which all game objects must derive."""
 
     id = Attribute(None, 'The ID of this object', type=int, visible=False)

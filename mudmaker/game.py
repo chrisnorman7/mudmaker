@@ -123,4 +123,8 @@ class Game:
         class_name is the name used for the newly-created class, and attributes
         will be passed to the new class's __init__ method."""
         cls = type(class_name, bases, dict(__init__=BaseObject.__init__))
-        return cls(self, **attributes)
+        obj = cls(self, **attributes)
+        for base in bases:
+            print(base)
+            base.on_init(obj)
+        return obj
