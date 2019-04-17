@@ -13,6 +13,7 @@ from twisted.web.static import File
 from twisted.web.util import redirectTo
 
 from .base import BaseObject
+from .directions import Direction
 from .websockets import WebSocketConnection
 
 NoneType = type(None)
@@ -58,7 +59,28 @@ class Game:
         )
     )
     started = attrib(default=Factory(datetime.utcnow))
+    directions = attrib(default=Factory(dict), repr=False)
     _objects = attrib(default=Factory(dict), init=False, repr=False)
+
+    def __attrs_post_init__(self):
+        """Mainly used to add directions."""
+        for name, aliases, coordinates in (
+            ('north', ['n'], dict(y=1)),
+            ('northeast', ['ne'], dict(x=1, y=1)),
+            ('east', ['e'], dict(x=1)),
+            ('southeast', ['se'], dict(x=1, y=-1)),
+            ('south', ['s'], dict(y=-1)),
+            ('southwest', ['sw'], dict(y=-1, x=-1)),
+            ('west', ['w'], dict(x=-1)),
+            ('northwest', ['nw'], dict(x=-1, y=1)),
+            ('up', ['u'], dict(z=1)),
+            ('down', ['d'], dict(z=-1))
+        ):
+            d = self.add_direction(name, *aliases, **coordinates)
+            self.logger.info(
+                'Added direction %s with coodinates (%d, %d, %d).', name, d.x,
+                d.y, d.z
+            )
 
     def new_id(self):
         self.max_id += 1
@@ -129,3 +151,14 @@ class Game:
             base.on_init(obj)
         self._objects[obj.id] = obj
         return obj
+
+    def add_direction(self, name, *aliases, x=0, y=0, z=0):
+        """Add a new direction. You can add as many aliases as you like. These
+        will be used as commands to invoke exits. The x, y, and z coordinates
+        allow you to set sensible coordinates for rooms should you want to. The
+        name of the direction should be a full name like "northeast"."""
+        d = Direction(name, x, y, z)
+        self.directions[name] = d
+        for alias in aliases:
+            self.directions[alias] = d
+        return d
