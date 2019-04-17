@@ -4,7 +4,7 @@ from datetime import datetime
 from json import dumps
 from logging import getLogger
 
-from attr import attrs, attrib, Factory, make_class
+from attr import attrs, attrib, Factory
 from autobahn.twisted.websocket import listenWS, WebSocketServerFactory
 from twisted.internet import reactor
 from twisted.web.resource import Resource
@@ -121,5 +121,5 @@ class Game:
         """Make an object - which could be anything - and add it to this game.
         class_name is the name used for the newly-created class, and attributes
         will be passed to the new class's __init__ method."""
-        cls = make_class(class_name, [], bases=bases)
+        cls = type(class_name, bases, {})
         return cls(**attributes)
