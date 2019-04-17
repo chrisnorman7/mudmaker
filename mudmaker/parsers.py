@@ -4,18 +4,22 @@ from datetime import datetime
 
 from commandlet import Parser, command
 
+from .util import get_login
+
 login_parser = Parser()
 
 
-@login_parser.command('login', 'login <username> <password>')
-def do_login(con, username, password):
+@login_parser.command('login')
+def do_login(con):
     """Log in a character."""
+    username, password = yield from get_login(con)
     con.message('Logging in as %s:%s.' % (username, password))
 
 
-@login_parser.command('create', 'create <username> <password>')
-def do_create(con, username, password):
+@login_parser.command('create')
+def do_create(con):
     """Create a new character."""
+    username, password = yield from get_login(con)
     con.message('Creating %s:%s.' % (username, password))
 
 
