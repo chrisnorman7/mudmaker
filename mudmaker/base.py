@@ -39,3 +39,11 @@ class BaseObject(EventBase):
 
     def get_description(self):
         return self.description or 'You see nothing special.'
+
+
+class LocationMixin:
+    """Add location information."""
+
+    location = Attribute(
+        None, 'The location of this object', type=object, visible=False
+    )
