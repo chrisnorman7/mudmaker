@@ -1,5 +1,6 @@
 """Provides the Connection class and other websocket paraphernalia."""
 
+from inspect import isgenerator
 from json import dumps
 from logging import getLogger
 
@@ -58,7 +59,7 @@ class WebSocketConnection(WebSocketServerProtocol):
                         host=self.logger.name, game=self.game,
                         parser=self.parser, logger=self.logger
                     )
-                    if res is not None:
+                    if isgenerator(res):
                         try:
                             next(res)
                             self.command_result = res
