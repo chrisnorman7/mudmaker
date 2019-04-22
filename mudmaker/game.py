@@ -14,7 +14,10 @@ from twisted.web.util import redirectTo
 from .account_store import AccountStore
 from .base import BaseObject
 from .directions import Direction
+from .objects import Object
+from .rooms import Room
 from .websockets import WebSocketConnection
+from .zones import Zone
 
 NoneType = type(None)
 static = File('html')
@@ -51,8 +54,9 @@ class Game:
     rooms = attrib(default=Factory(dict), init=False, repr=False)
     objects = attrib(default=Factory(dict), init=False, repr=False)
     exits = attrib(default=Factory(dict), init=False, repr=False)
-    max_id = attrib(default=Factory(int), init=False, repr=False)
-    bases = attrib(default=Factory(dict))
+    max_id = attrib(default=Factory(int), init=False)
+    bases = attrib(default=Factory(dict), init=False, repr=False)
+    _bases = attrib(default=Factory(dict), repr=False, init=False)
     welcome_msg = attrib(
         default=Factory(
             lambda: 'You can modify this message by setting game.welcome_msg.'
@@ -74,6 +78,13 @@ class Game:
             from logging import basicConfig, getLogger
             basicConfig(level='INFO')
             self.logger = getLogger(__name__)
+        for name, cls in (
+            ('Base Object', Object),
+            ('Base Room', Room),
+            ('Base Zone', Zone)
+        ):
+            self.logger.info('Registering base %s.', name)
+            self.register_base(name)(cls)
         for name, aliases, coordinates in (
             ('north', ['n'], dict(y=1)),
             ('northeast', ['ne'], dict(x=1, y=1)),
@@ -149,6 +160,7 @@ class Game:
 
         def inner(cls):
             self.bases[name] = cls
+            self._bases[cls.__name__] = cls
             return cls
 
         return inner
