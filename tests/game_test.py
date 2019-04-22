@@ -53,7 +53,8 @@ def test_as_dict(game, obj):
     assert game.as_dict() == dict(objects=[obj.dump()])
 
 
-def test_dump(game, obj, yaml_filename):
+def test_dump(game, obj, room, yaml_filename):
+    obj.location = room
     game.filename = yaml_filename
     yaml = dump(game.as_dict())
     game.dump()
@@ -61,7 +62,7 @@ def test_dump(game, obj, yaml_filename):
         assert yaml == f.read()
 
 
-def test_from_dict(game, obj, zone, room):
+def test_from_dict(game, obj, room):
     obj.location = room
     with raises(RuntimeError):
         game.from_dict(game.as_dict())
@@ -70,7 +71,8 @@ def test_from_dict(game, obj, zone, room):
     assert g.as_dict() == game.as_dict()
 
 
-def test_load(game, obj, yaml_filename):
+def test_load(game, obj, room, yaml_filename):
+    obj.location = room
     game.filename = yaml_filename
     g = Game(filename=game.filename)
     d = game.as_dict()
