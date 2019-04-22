@@ -39,6 +39,13 @@ class FunctionResource(Resource):
 
 
 @attrs
+class ObjectValue:
+    """A dumped database object."""
+
+    id = attrib()
+
+
+@attrs
 class Game:
     """A game instance."""
 
@@ -193,6 +200,23 @@ class Game:
     def players(self):
         """Return a list of players."""
         return [x for x in self.objects.values() if x.account is not None]
+
+    def dump_value(self, value):
+        """Dump a singl object, paying particular attention to database
+        objects."""
+        cls = type(value)
+        if cls is list:
+            return [self.dump_value(element) for element in value]
+        elif cls is dict:
+            return {
+                self.dump_value(name): self.dump_value(data) for (
+                    name, data
+                ) in value.items()
+            }
+        elif issubclass(cls, BaseObject):
+            return ObjectValue(value.id)
+        else:
+            return value
 
     def as_dict(self):
         """Return a dictionary which can be dumped to save the state of this

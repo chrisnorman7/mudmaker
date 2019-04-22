@@ -3,6 +3,7 @@ from pytest import raises
 from yaml import dump
 
 from mudmaker import Game, Zone
+from mudmaker.game import ObjectValue
 
 
 def test_init(game):
@@ -76,3 +77,16 @@ def test_load(game, obj, yaml_filename):
     game.dump()
     g.load()
     assert g.as_dict() == d
+
+
+def test_dump_value(game, obj):
+    assert game.dump_value('test') == 'test'
+    assert game.dump_value(
+        dict(location=obj)
+    ) == dict(location=ObjectValue(obj.id))
+    assert game.dump_value(
+        [obj, obj]
+    ) == [ObjectValue(obj.id), ObjectValue(obj.id)]
+    assert game.dump_value(
+        dict(objects=[obj, obj])
+    ) == dict(objects=[ObjectValue(obj.id), ObjectValue(obj.id)])
