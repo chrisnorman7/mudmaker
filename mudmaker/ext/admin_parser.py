@@ -12,10 +12,7 @@ from ..util import yes_or_no, broadcast
 class Shell(InteractiveConsole):
     def __init__(self, player, *args, **kwargs):
         self.player = player
-        kwargs['locals'] = dict(
-            con=player.connection, player=player, here=player.location,
-            game=player.game
-        )
+        kwargs['locals'] = player.connection.get_context()
         for name, cls in player.game._bases.items():
             kwargs['locals'][name] = cls
         super().__init__(*args, **kwargs)
