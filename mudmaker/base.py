@@ -10,7 +10,13 @@ class EventBase:
 
     @classmethod
     def on_init(cls, instance):
-        """Override to do something when the object is initialised."""
+        """Called when the object is initialised."""
+        pass
+
+    @classmethod
+    def on_dump(cls, instance, dump):
+        """Called as part of this object's .dump method. The dump argument is
+        the dictionary of dumped data."""
         pass
 
 
@@ -64,6 +70,7 @@ class BaseObject(EventBase):
             # The attribute should be saved, and is different from the default.
             attributes[name] = value
         d['attributes'] = attributes
+        cls.on_dump(self, d)
         return d
 
 
