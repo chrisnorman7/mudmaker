@@ -1,7 +1,8 @@
-from mudmaker import Game, Zone
-
 from attr import attrs, attrib, Factory
+from pytest import raises
 from yaml import dump
+
+from mudmaker import Game, Zone
 
 
 def test_init(game):
@@ -57,3 +58,21 @@ def test_dump(game, obj):
     game.dump()
     with open(game.filename, 'r') as f:
         assert yaml == f.read()
+
+
+def test_from_dict(game, obj):
+    d = game.as_dict()
+    with raises(RuntimeError):
+        game.from_dict(d)
+    g = Game()
+    g.from_dict(d)
+    assert g.as_dict() == d
+
+
+def test_load(game, obj):
+    game.filename = 'test.yaml'
+    g = Game(filename=game.filename)
+    d = game.as_dict()
+    game.dump()
+    g.load()
+    assert g.as_dict() == d

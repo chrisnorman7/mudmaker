@@ -10,7 +10,7 @@ from twisted.web.resource import Resource
 from twisted.web.server import Site
 from twisted.web.static import File
 from twisted.web.util import redirectTo
-from yaml import dump
+from yaml import dump, FullLoader, load
 
 from .account_store import AccountStore
 from .base import BaseObject
@@ -197,9 +197,28 @@ class Game:
     def as_dict(self):
         """Return a dictionary which can be dumped to save the state of this
         game."""
-        return dict(objects=[o.dump() for o in self.objects.values()])
+        return dict(objects=[o.dump() for o in self._objects.values()])
 
     def dump(self):
         """Dump game state to disk."""
         with open(self.filename, 'w') as f:
             dump(self.as_dict(), stream=f)
+
+    def from_dict(self, data):
+        """Load the data loaded with self.load."""
+        if self._objects:
+            raise RuntimeError(
+                'Attempting to load objects into a non-empty game.'
+            )
+        for row in data.get('objects', []):
+            class_name = row['class_name']
+            bases = row['bases']
+            bases = tuple(self._bases[name] for name in bases)
+            attributes = row.get('attributes', {})
+            self.make_object(class_name, bases, **attributes)
+
+    def load(self):
+        """Load some yaml and run it through self.from_dict."""
+        with open(self.filename, 'r') as f:
+            data = load(f, Loader=FullLoader)
+        self.from_dict(data)
