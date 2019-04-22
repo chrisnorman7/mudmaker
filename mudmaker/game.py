@@ -1,6 +1,5 @@
 """Provides the Game class."""
 
-import os.path
 from datetime import datetime
 from json import dumps
 
@@ -94,8 +93,6 @@ class Game:
             )
         if self.account_store is None:
             self.account_store = AccountStore(self)
-            if os.path.isfile(self.account_store.filename):
-                self.account_store.load()
 
     def new_id(self):
         self.max_id += 1

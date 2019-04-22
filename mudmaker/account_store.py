@@ -1,5 +1,6 @@
 """Provides the AccountStore class."""
 
+import os.path
 from json import dump, load
 
 from attr import attrs, attrib, Factory
@@ -46,6 +47,13 @@ class AccountStore:
     objects = attrib(default=Factory(dict))
     filename = attrib(default=Factory(lambda: 'accounts.json'))
     last_dump = attrib(default=Factory(type(None)))
+    loaded = attrib(default=Factory(bool), init=False)
+
+    def maybe_load(self):
+        """If self.loaded is not True, load from self.filename."""
+        if self.loaded is not True and os.path.isfile(self.filename):
+            self.load()
+        self.loaded = True
 
     def encrypt_password(self, password):
         """Returns an encrypted version of the password for use by
@@ -68,6 +76,7 @@ class AccountStore:
 
         If there is already an account bound to obj, then DuplicateObjectError
         should be raised with obj as the only argument."""
+        self.maybe_load()
         password = self.encrypt_password(password)
         object_id = obj.id
         if username in self.accounts:
@@ -95,6 +104,7 @@ class AccountStore:
         with a matching account. If the username is invalid,
         InvalidUsernameError is raised. If the password is invalid,
         InvalidPasswordError will be raised."""
+        self.maybe_load()
         if username not in self.accounts:
             raise InvalidUsernameError()
         account = self.accounts[username]
@@ -104,6 +114,7 @@ class AccountStore:
 
     def account_for(self, obj):
         """Return the account object associated with an Object instance obj."""
+        self.maybe_load()
         try:
             return self.objects[obj.id]
         except KeyError:
@@ -112,6 +123,7 @@ class AccountStore:
     def as_list(self):
         """Returns a list of dictionaries representing all the registered
         accounts. Used by self.dump."""
+        self.maybe_load()
         return [
             dict(
                 username=a.username, password=a.password, object_id=a.object_id

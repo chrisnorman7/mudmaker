@@ -109,3 +109,10 @@ def test_load(obj, accounts, game):
         assert a.objects == accounts.objects
     finally:
         os.remove(a.filename)
+
+
+def test_loaded(accounts):
+    assert accounts.loaded is False
+    with raises(InvalidUsernameError):
+        accounts.authenticate('test', 'test')
+    assert accounts.loaded is True
