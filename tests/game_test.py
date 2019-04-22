@@ -44,3 +44,7 @@ def test_players(game, obj, accounts):
     assert game.players == [obj]
     accounts.remove_account(obj)
     assert game.players == []
+
+
+def test_as_dict(game, obj):
+    assert game.as_dict() == dict(objects=[obj.dump()])

@@ -191,3 +191,8 @@ class Game:
     def players(self):
         """Return a list of players."""
         return [x for x in self.objects.values() if x.account is not None]
+
+    def as_dict(self):
+        """Return a dictionary which can be dumped to save the state of this
+        game."""
+        return dict(objects=[o.dump() for o in self.objects.values()])
