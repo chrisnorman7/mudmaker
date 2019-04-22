@@ -11,6 +11,7 @@ class Object(BaseObject, LocationMixin):
     def on_init(cls, instance):
         """Add this object to self.game.objects."""
         instance.game.objects[instance.id] = instance
+        instance.connection = None
 
     @property
     def account(self):
@@ -19,3 +20,10 @@ class Object(BaseObject, LocationMixin):
             return self.game.account_store.account_for(self)
         except NoSuchObjectError:
             pass  # return None.
+
+    def message(self, text):
+        """Send some text to this object's connection."""
+        if self.connection is not None:
+            self.connection.message(text)
+            return True
+        return False

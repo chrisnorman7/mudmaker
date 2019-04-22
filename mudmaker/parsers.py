@@ -5,18 +5,60 @@ from datetime import datetime
 from commandlet import Parser, command
 
 from .exc import AuthenticationError
+from .objects import Object
 from .util import get_login
+
+
+def finish_login(con, player):
+    """Connection an Object instance player to the connection con."""
+    old = player.connection
+    player.connection = con
+    con.object = player
+    player.message('Welcome back, %s.' % player.name)
+    con.parser = main_parser
+    if old is not None:
+        old.message('*** You have logged in from somewhere else.')
+        old.object = None
+        old.disconnect('Goodbye.')
 
 
 login_parser = Parser()
 
 
-@login_parser.command('create', 'create', 'create <username> <password>')
-def do_create(con, username=None, password=None):
+@login_parser.command('create', 'new', 'create <username> <password>')
+def do_create(con, accounts, game, username=None, password=None):
     """Create a new character."""
-    if username is None:
+    if not username:
         username, password = yield from get_login(con)
-    con.message('Creating %s:%s.' % (username, password))
+    while True:
+        con.message('Enter a name for your new character (or quit to exit):')
+        name = yield
+        if name == 'quit':
+            return
+        elif not name:
+            con.message('Names must not be blank.')
+        elif list(
+            filter(
+                lambda obj: obj.name.lower().startswith(name),
+                game.objects.values()
+            )
+        ):
+            con.message(
+                'There is already a player with that name. Please choose '
+                'another.'
+            )
+        else:
+            break
+    if accounts.account_exists(username):
+        con.message(
+            'There is already an account with that username. Please pick '
+            'another.'
+        )
+        return
+    player = game.make_object('Object', (Object,), name=name)
+    accounts.add_account(username, password, player)
+    con.message('You have successfully created a new character.')
+    finish_login(con, player)
 
 
 main_parser = Parser()
@@ -60,14 +102,15 @@ def do_quit(con):
     con.disconnect('Goodbye.')
 
 
-@login_parser.command('login', '<username>')
-def do_login(game, con, username):
+@login_parser.command('login', 'connect <username> <password>', '<username>')
+def do_login(game, con, username, password=None):
     """Log in a character."""
-    con.message('Password:')
-    password = yield
+    if not password:
+        con.message('Password:')
+        password = yield
     try:
         player = game.account_store.authenticate(username, password)
-        con.message('Authenticated as %s.' % player)
+        finish_login(con, player)
     except AuthenticationError:
         con.logger.info('Attempted to login as %s.', username)
         con.message('Invalid username or password.')
