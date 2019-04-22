@@ -4,23 +4,18 @@ from datetime import datetime
 
 from commandlet import Parser, command
 
+from .exc import AuthenticationError
 from .util import get_login
 
 
 login_parser = Parser()
 
 
-@login_parser.command('login')
-def do_login(con):
-    """Log in a character."""
-    username, password = yield from get_login(con)
-    con.message('Logging in as %s:%s.' % (username, password))
-
-
-@login_parser.command('create')
-def do_create(con):
+@login_parser.command('create', 'create', 'create <username> <password>')
+def do_create(con, username=None, password=None):
     """Create a new character."""
-    username, password = yield from get_login(con)
+    if username is None:
+        username, password = yield from get_login(con)
     con.message('Creating %s:%s.' % (username, password))
 
 
@@ -51,7 +46,7 @@ def do_help(con, parser):
         con.message(values[0])
 
 
-@command([login_parser, main_parser], 'uptime', 'uptime', '@uptime')
+@command([login_parser, main_parser], 'uptime', '@uptime')
 def do_uptime(game, con):
     """Show server uptime."""
     now = datetime.utcnow()
@@ -63,6 +58,19 @@ def do_uptime(game, con):
 def do_quit(con):
     """Quit the game."""
     con.disconnect('Goodbye.')
+
+
+@login_parser.command('login', '<username>')
+def do_login(game, con, username):
+    """Log in a character."""
+    con.message('Password:')
+    password = yield
+    try:
+        player = game.account_store.authenticate(username, password)
+        con.message('Authenticated as %s.' % player)
+    except AuthenticationError:
+        con.logger.info('Attempted to login as %s.', username)
+        con.message('Invalid username or password.')
 
 
 @main_parser.command('look', 'look <thing>', 'l', 'l <thing>')
