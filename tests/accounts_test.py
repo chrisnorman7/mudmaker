@@ -126,3 +126,16 @@ def test_account_exists(obj, accounts):
     assert accounts.account_exists(username) is False
     accounts.add_account(username, 'test', obj)
     assert accounts.account_exists(username) is True
+
+
+def test_is_staff(obj, accounts):
+    a = accounts.add_account('username', 'password', obj)
+    assert a.is_staff is False
+    a.builder = True
+    assert a.is_staff is True
+    a.builder = False
+    assert a.is_staff is False
+    a.admin = True
+    assert a.is_staff is True
+    a.admin = False
+    assert a.is_staff is False

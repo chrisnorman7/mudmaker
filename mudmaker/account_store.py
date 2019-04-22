@@ -38,7 +38,7 @@ class Account:
 
     @property
     def is_staff(self):
-        return self.builder or self.is_admin
+        return self.builder or self.admin
 
 
 @attrs
