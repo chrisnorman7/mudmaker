@@ -44,8 +44,8 @@ class Account:
 @attrs
 class AccountStore:
     """A generic account store. If you're going to use another storage system,
-    you should implement the add_account, remove_account, account_exists, and
-    authenticate methods."""
+    you should implement the add_account, remove_account, account_exists,
+    number_of_accounts, and authenticate methods."""
 
     game = attrib(repr=False)
     account_class = attrib(default=Factory(lambda: Account))
@@ -167,3 +167,6 @@ class AccountStore:
         """Returns a boolean representing whether or not an account exists with
         the given username."""
         return username in self.accounts
+
+    def number_of_accounts(self):
+        return len(self.accounts)

@@ -139,3 +139,9 @@ def test_is_staff(obj, accounts):
     assert a.is_staff is True
     a.admin = False
     assert a.is_staff is False
+
+
+def test_number_of_accounts(accounts, obj):
+    assert accounts.number_of_accounts() == 0
+    accounts.add_account('username', 'password', obj)
+    assert accounts.number_of_accounts() == 1
