@@ -174,3 +174,8 @@ class Game:
         for alias in aliases:
             self.directions[alias] = d
         return d
+
+    @property
+    def players(self):
+        """Return a list of players."""
+        return [x for x in self.objects.values() if x.account is not None]

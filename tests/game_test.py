@@ -36,3 +36,11 @@ def test_make_object(game):
     assert z.name == name
     assert z.game is game
     assert z.id == game.max_id
+
+
+def test_players(game, obj, accounts):
+    assert game.players == []
+    accounts.add_account('username', 'password', obj)
+    assert game.players == [obj]
+    accounts.remove_account(obj)
+    assert game.players == []
