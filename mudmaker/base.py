@@ -40,6 +40,10 @@ class BaseObject(EventBase):
     def get_description(self):
         return self.description or 'You see nothing special.'
 
+    def __str__(self):
+        """Return a pretty string representing this object."""
+        return '%s (#%s)' % (self.name, self.id)
+
 
 class LocationMixin:
     """Add location information."""
