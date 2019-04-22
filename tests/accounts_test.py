@@ -81,7 +81,10 @@ def test_as_list(obj, accounts):
     assert accounts.as_list() == []
     a = accounts.add_account('test', 'test123', obj)
     assert accounts.as_list() == [
-        dict(username=a.username, password=a.password, object_id=obj.id)
+        dict(
+            username=a.username, password=a.password, object_id=obj.id,
+            admin=False, builder=False
+        )
     ]
 
 

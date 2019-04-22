@@ -3,7 +3,7 @@
 import os.path
 from json import dump, load
 
-from attr import attrs, attrib, Factory
+from attr import attrs, attrib, Factory, asdict
 from passlib.hash import sha256_crypt
 
 from .exc import (
@@ -24,6 +24,8 @@ class Account:
     password = attrib()
     object_id = attrib()
     game = attrib(repr=False)
+    admin = attrib(default=Factory(bool))
+    builder = attrib(default=Factory(bool))
 
     def verify(self, password):
         """Return a boolean representing whether the supplied password matches
@@ -33,6 +35,10 @@ class Account:
     @property
     def object(self):
         return self.game.objects[self.object_id]
+
+    @property
+    def is_staff(self):
+        return self.builder or self.is_admin
 
 
 @attrs
@@ -61,7 +67,7 @@ class AccountStore:
         passlib.hash.sha256_crypt with 10000 rounds."""
         return crypt.hash(password)
 
-    def add_account(self, username, password, obj):
+    def add_account(self, username, password, obj, *args, **kwargs):
         """Add a user to the accounts database.
 
         Once the account is created, the user will be able to log in with the
@@ -75,7 +81,10 @@ class AccountStore:
         argument.
 
         If there is already an account bound to obj, then DuplicateObjectError
-        should be raised with obj as the only argument."""
+        should be raised with obj as the only argument.
+
+        All extra arguments will passed to the constructor of
+        self.account_class."""
         self.maybe_load()
         password = self.encrypt_password(password)
         object_id = obj.id
@@ -83,12 +92,16 @@ class AccountStore:
             raise DuplicateUsernameError(username)
         elif object_id in self.objects:
             raise DuplicateObjectError(obj)
-        return self._add_account(username, password, object_id)
+        return self._add_account(
+            username, password, object_id, *args, **kwargs
+        )
 
-    def _add_account(self, username, password, object_id):
+    def _add_account(self, username, password, object_id, *args, **kwargs):
         """Backend for adding accounts. Accepts already-encrypted passwords for
         use by both self.add_account, and self.load."""
-        account = self.account_class(username, password, object_id, self.game)
+        account = self.account_class(
+            username, password, object_id, self.game, *args, **kwargs
+        )
         self.accounts[username] = account
         self.objects[object_id] = account
         return account
@@ -125,8 +138,8 @@ class AccountStore:
         accounts. Used by self.dump."""
         self.maybe_load()
         return [
-            dict(
-                username=a.username, password=a.password, object_id=a.object_id
+            asdict(
+                a, filter=lambda attrib, value: attrib.name != 'game'
             ) for a in self.accounts.values()
         ]
 
@@ -145,10 +158,10 @@ class AccountStore:
         with open(self.filename, 'r') as f:
             data = load(f)
         for row in data:
-            username = row['username']
-            password = row['password']
-            object_id = row['object_id']
-            self._add_account(username, password, object_id)
+            username = row.pop('username')
+            password = row.pop('password')
+            object_id = row.pop('object_id')
+            self._add_account(username, password, object_id, **row)
 
     def account_exists(self, username):
         """Returns a boolean representing whether or not an account exists with
