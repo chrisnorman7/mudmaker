@@ -44,6 +44,12 @@ class BaseObject(EventBase):
         """Return a pretty string representing this object."""
         return '%s (#%s)' % (self.name, self.id)
 
+    @property
+    def attributes(self):
+        """Return a list of Attribute instances for this object's class."""
+        cls = type(self)
+        return [x for x in dir(cls) if isinstance(getattr(cls, x), Attribute)]
+
 
 class LocationMixin:
     """Add location information."""

@@ -10,3 +10,7 @@ def test_account_for(obj, accounts):
     assert obj.account is None
     a = accounts.add_account('test', 'test', obj)
     assert obj.account is a
+
+
+def test_attributes(obj):
+    assert obj.attributes == ['description', 'id', 'location', 'name']
