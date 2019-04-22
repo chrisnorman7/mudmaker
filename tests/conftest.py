@@ -98,3 +98,11 @@ def get_object(game):
 def get_accounts(game):
     """Get an AccountStore instance."""
     return game.account_store
+
+
+@fixture(name='yaml_filename', scope='session', autouse=True)
+def get_filename():
+    # Will be executed before the first test
+    filename = 'test.yaml'
+    yield filename
+    os.remove(filename)

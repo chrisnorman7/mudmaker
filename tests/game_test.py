@@ -52,8 +52,8 @@ def test_as_dict(game, obj):
     assert game.as_dict() == dict(objects=[obj.dump()])
 
 
-def test_dump(game, obj):
-    game.filename = 'test.yaml'
+def test_dump(game, obj, yaml_filename):
+    game.filename = yaml_filename
     yaml = dump(game.as_dict())
     game.dump()
     with open(game.filename, 'r') as f:
@@ -69,8 +69,8 @@ def test_from_dict(game, obj):
     assert g.as_dict() == d
 
 
-def test_load(game, obj):
-    game.filename = 'test.yaml'
+def test_load(game, obj, yaml_filename):
+    game.filename = yaml_filename
     g = Game(filename=game.filename)
     d = game.as_dict()
     game.dump()
