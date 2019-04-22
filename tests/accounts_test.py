@@ -116,3 +116,10 @@ def test_loaded(accounts):
     with raises(InvalidUsernameError):
         accounts.authenticate('test', 'test')
     assert accounts.loaded is True
+
+
+def test_account_exists(obj, accounts):
+    username = 'test'
+    assert accounts.account_exists(username) is False
+    accounts.add_account(username, 'test', obj)
+    assert accounts.account_exists(username) is True
