@@ -57,7 +57,8 @@ class WebSocketConnection(WebSocketServerProtocol):
                         string, con=self, player=self.object,
                         hostname=self.host, port=self.port,
                         host=self.logger.name, game=self.game,
-                        parser=self.parser, logger=self.logger
+                        parser=self.parser, logger=self.logger,
+                        accounts=self.game.account_store
                     )
                     if isgenerator(res):
                         try:
