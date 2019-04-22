@@ -250,12 +250,20 @@ class Game:
             raise RuntimeError(
                 'Attempting to load objects into a non-empty game.'
             )
+        attributes = {}
         for row in data.get('objects', []):
             class_name = row['class_name']
             bases = row['bases']
             bases = tuple(self._bases[name] for name in bases)
-            attributes = row.get('attributes', {})
-            self.make_object(class_name, bases, **attributes)
+            a = row.get('attributes', {})
+            id = a.pop('id', None)
+            self.make_object(class_name, bases, id=id)
+            self.max_id = max(self.max_id, id)
+            attributes[id] = a
+        for id, a in attributes.items():
+            obj = self._objects[id]
+            for name, value in a.items():
+                setattr(obj, name, self.load_value(value))
 
     def load(self):
         """Load some yaml and run it through self.from_dict."""

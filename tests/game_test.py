@@ -61,13 +61,13 @@ def test_dump(game, obj, yaml_filename):
         assert yaml == f.read()
 
 
-def test_from_dict(game, obj):
-    d = game.as_dict()
+def test_from_dict(game, obj, zone, room):
+    obj.location = room
     with raises(RuntimeError):
-        game.from_dict(d)
+        game.from_dict(game.as_dict())
     g = Game()
-    g.from_dict(d)
-    assert g.as_dict() == d
+    g.from_dict(game.as_dict())
+    assert g.as_dict() == game.as_dict()
 
 
 def test_load(game, obj, yaml_filename):
