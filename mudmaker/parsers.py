@@ -14,8 +14,19 @@ def finish_login(con, player):
     old = player.connection
     player.connection = con
     con.object = player
+    con.logger.name = str(player)
+    con.logger.info('Authenticated.')
     player.message('Welcome back, %s.' % player.name)
-    con.parser = main_parser
+    account = player.account
+    if account.admin:
+        from .ext.admin_parser import admin_parser
+        parser = admin_parser
+    elif account.builder:
+        from .ext.builder_parser import builder_parser
+        parser = builder_parser
+    else:
+        parser = main_parser
+    con.parser = parser
     if old is not None:
         old.message('*** You have logged in from somewhere else.')
         old.object = None
@@ -56,7 +67,15 @@ def do_create(con, accounts, game, username=None, password=None):
         )
         return
     player = game.make_object('Object', (Object,), name=name)
-    accounts.add_account(username, password, player)
+    if not game.players:
+        kwargs = dict(builder=True, admin=True)
+        con.message(
+            'You are the first connected player. You have been made an '
+            'administrator.'
+        )
+    else:
+        kwargs = {}
+    accounts.add_account(username, password, player, **kwargs)
     con.message('You have successfully created a new character.')
     finish_login(con, player)
 
