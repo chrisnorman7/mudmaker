@@ -1,5 +1,7 @@
 """Provides the Game class."""
 
+import os.path
+
 from datetime import datetime
 from json import dumps
 
@@ -161,8 +163,18 @@ class Game:
 
     def run(self):
         """Start this game listening, and start the reactor."""
+        if os.path.isfile(self.filename):
+            self.logger.info('Loading database from %s.', self.filename)
+            self.load()
+        else:
+            self.logger.info('Starting with blank database.')
         self.start_listening()
         reactor.run()
+        self.logger.info('Dumping the database to %s.', self.filename)
+        self.logger.info(
+            'Dumping accounts to %s.', self.account_store.filename
+        )
+        self.account_store.dump()
 
     def register_base(self, name):
         """Decorate a class to have it registered as a possible base."""
