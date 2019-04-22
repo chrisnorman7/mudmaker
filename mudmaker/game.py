@@ -88,7 +88,7 @@ class Game:
         ):
             d = self.add_direction(name, *aliases, **coordinates)
             self.logger.info(
-                'Added direction %s with coodinates (%d, %d, %d).', name, d.x,
+                'Added direction %s with coordinates (%d, %d, %d).', name, d.x,
                 d.y, d.z
             )
         if self.account_store is None:
