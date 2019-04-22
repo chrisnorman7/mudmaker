@@ -66,12 +66,12 @@ def do_quit(con):
 
 
 @main_parser.command('look', 'look <thing>', 'l', 'l <thing>')
-def look(player, location, what=None):
+def look(player, location, thing=None):
     """Look around, or at something in this room."""
     if location is None:
         player.message('You cannot look here.')
-    elif what:
-        res = player.object_match(what)
+    elif thing:
+        res = player.object_match(thing)
         if res is not None:
             player.message(res.get_name())
             player.message(res.get_description())
