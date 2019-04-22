@@ -6,6 +6,7 @@ from commandlet import Parser, command
 
 from .util import get_login
 
+
 login_parser = Parser()
 
 
@@ -62,3 +63,17 @@ def do_uptime(game, con):
 def do_quit(con):
     """Quit the game."""
     con.disconnect('Goodbye.')
+
+
+@main_parser.command('look', 'look <thing>', 'l', 'l <thing>')
+def look(player, location, what=None):
+    """Look around, or at something in this room."""
+    if location is None:
+        player.message('You cannot look here.')
+    elif what:
+        res = player.object_match(what)
+        if res is not None:
+            player.message(res.get_name())
+            player.message(res.get_description())
+    else:
+        player.look_here()
