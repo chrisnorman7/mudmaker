@@ -237,7 +237,9 @@ class Game:
     def as_dict(self):
         """Return a dictionary which can be dumped to save the state of this
         game."""
-        return dict(objects=[o.dump() for o in self._objects.values()])
+        return self.dump_value(
+            dict(objects=[o.dump() for o in self._objects.values()])
+        )
 
     def dump(self):
         """Dump game state to disk."""
