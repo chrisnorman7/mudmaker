@@ -90,3 +90,16 @@ def test_dump_value(game, obj):
     assert game.dump_value(
         dict(objects=[obj, obj])
     ) == dict(objects=[ObjectValue(obj.id), ObjectValue(obj.id)])
+
+
+def test_load_value(game, obj):
+    assert game.load_value('test') == 'test'
+    assert game.load_value(
+        dict(location=ObjectValue(obj.id))
+    ) == dict(location=obj)
+    assert game.load_value(
+        [ObjectValue(obj.id), ObjectValue(obj.id)]
+    ) == [obj, obj]
+    assert game.load_value(
+        dict(objects=[ObjectValue(obj.id), ObjectValue(obj.id)])
+    ) == dict(objects=[obj, obj])

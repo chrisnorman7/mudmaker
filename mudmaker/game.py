@@ -218,6 +218,22 @@ class Game:
         else:
             return value
 
+    def load_value(self, data):
+        """Load a single value from data, paying particular attention to
+        database objects."""
+        if isinstance(data, list):
+            return [self.load_value(element) for element in data]
+        elif isinstance(data, dict):
+            return {
+                self.load_value(name): self.load_value(value) for (
+                    name, value
+                ) in data.items()
+            }
+        elif isinstance(data, ObjectValue):
+            return self._objects[data.id]
+        else:
+            return data
+
     def as_dict(self):
         """Return a dictionary which can be dumped to save the state of this
         game."""
