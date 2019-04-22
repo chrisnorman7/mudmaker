@@ -171,6 +171,7 @@ class Game:
         self.start_listening()
         reactor.run()
         self.logger.info('Dumping the database to %s.', self.filename)
+        self.dump()
         self.logger.info(
             'Dumping accounts to %s.', self.account_store.filename
         )
