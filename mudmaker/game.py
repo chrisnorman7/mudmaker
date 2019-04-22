@@ -172,10 +172,11 @@ class Game:
         reactor.run()
         self.logger.info('Dumping the database to %s.', self.filename)
         self.dump()
-        self.logger.info(
-            'Dumping accounts to %s.', self.account_store.filename
-        )
-        self.account_store.dump()
+        if self.account_store.number_of_accounts():
+            self.logger.info(
+                'Dumping accounts to %s.', self.account_store.filename
+            )
+            self.account_store.dump()
 
     def register_base(self, name):
         """Decorate a class to have it registered as a possible base."""
