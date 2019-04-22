@@ -50,6 +50,22 @@ class BaseObject(EventBase):
         cls = type(self)
         return [x for x in dir(cls) if isinstance(getattr(cls, x), Attribute)]
 
+    def dump(self):
+        """Return this object as a dictionary, for use with Game.dump."""
+        cls = type(self)
+        d = dict(class_name=cls.__name__)
+        d['bases'] = [b.__name__ for b in cls.__bases__]
+        attributes = {}
+        for name in self.attributes:
+            attribute = getattr(cls, name)
+            value = getattr(self, name)
+            if not attribute.save or value == attribute.value:
+                continue
+            # The attribute should be saved, and is different from the default.
+            attributes[name] = value
+        d['attributes'] = attributes
+        return d
+
 
 class LocationMixin:
     """Add location information."""
