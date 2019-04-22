@@ -10,6 +10,7 @@ from twisted.web.resource import Resource
 from twisted.web.server import Site
 from twisted.web.static import File
 from twisted.web.util import redirectTo
+from yaml import dump
 
 from .account_store import AccountStore
 from .base import BaseObject
@@ -71,6 +72,7 @@ class Game:
     directions = attrib(default=Factory(dict), repr=False)
     _objects = attrib(default=Factory(dict), init=False, repr=False)
     account_store = attrib(default=Factory(NoneType), repr=False)
+    filename = attrib(default=Factory(lambda: 'game.yaml'))
 
     def __attrs_post_init__(self):
         """Mainly used to add directions."""
@@ -196,3 +198,8 @@ class Game:
         """Return a dictionary which can be dumped to save the state of this
         game."""
         return dict(objects=[o.dump() for o in self.objects.values()])
+
+    def dump(self):
+        """Dump game state to disk."""
+        with open(self.filename, 'w') as f:
+            dump(self.as_dict(), stream=f)

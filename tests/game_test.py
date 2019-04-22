@@ -1,6 +1,7 @@
 from mudmaker import Game, Zone
 
 from attr import attrs, attrib, Factory
+from yaml import dump
 
 
 def test_init(game):
@@ -48,3 +49,11 @@ def test_players(game, obj, accounts):
 
 def test_as_dict(game, obj):
     assert game.as_dict() == dict(objects=[obj.dump()])
+
+
+def test_dump(game, obj):
+    game.filename = 'test.yaml'
+    yaml = dump(game.as_dict())
+    game.dump()
+    with open(game.filename, 'r') as f:
+        assert yaml == f.read()

@@ -4,3 +4,4 @@ emote-utils
 autobahn
 commandlet
 passlib
+pyyaml
