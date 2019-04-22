@@ -39,6 +39,24 @@ class WebSocketConnection(WebSocketServerProtocol):
         if not is_binary:
             self.handle_string(payload.decode())
 
+    def get_context(self):
+        """Get a context to be sent to self.parser."""
+        player = self.object
+        if player is None:
+            is_staff = False
+            account = None
+            location = None
+        else:
+            account = player.account
+            is_staff = account.is_staff
+            location = player.location
+        return dict(
+            con=self, player=player, hostname=self.host, port=self.port,
+            host=self.logger.name, game=self.game, parser=self.parser,
+            logger=self.logger, accounts=self.game.account_store,
+            is_staff=is_staff, account=account, location=location
+        )
+
     def handle_string(self, string):
         """Handle a string as a command."""
         try:
@@ -52,21 +70,9 @@ class WebSocketConnection(WebSocketServerProtocol):
                         raise e
             else:
                 save_command = True
-                player = self.object
-                if player is None:
-                    is_staff = False
-                    account = None
-                else:
-                    account = player.account
-                    is_staff = account.is_staff
+                ctx = self.get_context()
                 try:
-                    res = self.parser.handle_command(
-                        string, con=self, player=player, hostname=self.host,
-                        port=self.port, host=self.logger.name, game=self.game,
-                        parser=self.parser, logger=self.logger,
-                        accounts=self.game.account_store, is_staff=is_staff,
-                        account=account
-                    )
+                    res = self.parser.handle_command(string, **ctx)
                     if isgenerator(res):
                         try:
                             next(res)
