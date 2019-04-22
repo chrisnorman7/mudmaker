@@ -12,7 +12,7 @@ from ..util import yes_or_no, broadcast
 class Shell(InteractiveConsole):
     def __init__(self, player, *args, **kwargs):
         self.player = player
-        kwargs.update(
+        kwargs['locals'] = dict(
             con=player.connection, player=player, here=player.location
         )
         super().__init__(*args, **kwargs)
@@ -31,7 +31,7 @@ class Shell(InteractiveConsole):
 admin_parser = builder_parser.copy()
 
 
-@admin_parser.command('@shell')
+@admin_parser.command('shell', '@shell', '@python')
 def shell(player):
     """Evaluate some code."""
     s = Shell(player)
