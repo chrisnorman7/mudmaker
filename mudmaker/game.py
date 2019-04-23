@@ -171,6 +171,7 @@ class Game:
         else:
             self.logger.info('Starting with blank database.')
         self.start_listening()
+        self.task(300, now=False)(self.dump_task)
         reactor.run()
         self.logger.info('Dumping the database to %s.', self.filename)
         self.dump()
@@ -257,9 +258,11 @@ class Game:
             dict(objects=[o.dump() for o in self._objects.values()])
         )
 
-    def dump(self):
+    def dump(self, filename=None):
         """Dump game state to disk."""
-        with open(self.filename, 'w') as f:
+        if filename is None:
+            filename = self.filename
+        with open(filename, 'w') as f:
             dump(self.as_dict(), stream=f)
 
     def from_dict(self, data):
@@ -301,3 +304,10 @@ class Game:
             return t
 
         return inner
+
+    def dump_task(self):
+        """Dump this game on a task."""
+        filename = self.filename + '.dump'
+        self.logger.info('Dumping to %s.', filename)
+        self.dump(filename)
+        self.logger.info('Objects dumped: %d.', len(self._objects))

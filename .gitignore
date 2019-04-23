@@ -102,3 +102,4 @@ ChangeLog
 md
 game.py
 *.json
+*.dump
