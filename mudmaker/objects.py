@@ -27,3 +27,9 @@ class Object(BaseObject, LocationMixin):
             self.connection.message(text)
             return True
         return False
+
+    def look_here(self):
+        """Have this object look at its surroundings."""
+        here = self.location
+        self.message('[%s; %s]' % (here.zone.name, here.name))
+        self.message(here.get_description())

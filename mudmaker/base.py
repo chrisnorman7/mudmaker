@@ -73,6 +73,10 @@ class BaseObject(EventBase):
         cls.on_dump(self, d)
         return d
 
+    def get_full_name(self):
+        """Get the name (including ID) of this object."""
+        return '%s (#%s)' % (self.name, self.id)
+
 
 class LocationMixin:
     """Add location information."""
