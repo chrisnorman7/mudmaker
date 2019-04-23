@@ -2,6 +2,7 @@
 
 from functools import partial
 from inspect import signature
+from logging import getLogger
 
 from attr import attrs, attrib, Factory
 from twisted.internet.task import LoopingCall
@@ -20,9 +21,11 @@ class Task:
     id = attrib(default=Factory(NoneType), init=False)
     loop = attrib(default=Factory(NoneType), init=False, repr=False)
     deferred = attrib(default=Factory(NoneType), init=False, repr=False)
+    logger = attrib(default=Factory(NoneType), init=False, repr=False)
 
     def __attrs_post_init__(self):
         self.id = self.game.new_id()
+        self.logger = getLogger('%s (#%s)' % (self.func.__name__, self.id))
         args = []
         ctx = dict(game=self.game, task=self, id=self.id)
         for parameter in signature(self.func).parameters.values():
@@ -38,3 +41,7 @@ class Task:
         """Call self.loop.start with all arguments, and store the resulting
         Deferred in self.deferred."""
         self.deferred = self.loop.start(*args, **kwargs)
+        self.deferred.addErrback(self.on_error)
+
+    def on_error(self, e):
+        self.logger.error('An error occurred:\n' + e.getTraceback())
