@@ -9,8 +9,9 @@ from .rooms import Room
 from .websockets import WebSocketConnection
 from .objects import Object
 from .account_store import Account, AccountStore
+from .tasks import Task
 
 __all__ = [
     'Attribute', 'text', 'Direction', 'Exit', 'Game', 'Zone', 'Room',
-    'WebSocketConnection', 'Object', 'Account', 'AccountStore'
+    'WebSocketConnection', 'Object', 'Account', 'AccountStore', 'Task'
 ]

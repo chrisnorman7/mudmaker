@@ -19,6 +19,7 @@ from .base import BaseObject
 from .directions import Direction
 from .objects import Object
 from .rooms import Room
+from .tasks import Task
 from .websockets import WebSocketConnection
 from .zones import Zone
 
@@ -82,6 +83,7 @@ class Game:
     _objects = attrib(default=Factory(dict), init=False, repr=False)
     account_store = attrib(default=Factory(NoneType), repr=False)
     filename = attrib(default=Factory(lambda: 'game.yaml'))
+    tasks = attrib(default=Factory(dict))
 
     def __attrs_post_init__(self):
         """Mainly used to add directions."""
@@ -286,3 +288,16 @@ class Game:
         with open(self.filename, 'r') as f:
             data = load(f, Loader=FullLoader)
         self.from_dict(data)
+
+    def task(self, *args, **kwargs):
+        """Decorate a function to be made into a task, using
+        twisted.internet.task.LoopingCall. All arguments will be passed to the
+        LoopingCall instance's start method."""
+
+        def inner(func):
+            t = Task(self, func)
+            self.tasks[t.id] = t
+            t.start(*args, **kwargs)
+            return t
+
+        return inner

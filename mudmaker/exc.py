@@ -47,3 +47,11 @@ class InvalidUsernameError(AuthenticationError):
 
 class InvalidPasswordError(AuthenticationError):
     """An invalid password was entered."""
+
+
+class TaskError(MudMakerError):
+    """There was an error in the tasks framework."""
+
+
+class InvalidArgumentError(TaskError):
+    """That argument is not supported by the tasks framework."""
