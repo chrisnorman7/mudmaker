@@ -4,25 +4,25 @@ from argparse import ArgumentParser, ArgumentDefaultsHelpFormatter
 
 from mudmaker.game import Game
 
-game = Game()
+interface = Game.__attrs_attrs__[0].default.factory()
+port = Game.__attrs_attrs__[1].default.factory()
+
 
 parser = ArgumentParser(formatter_class=ArgumentDefaultsHelpFormatter)
 
 parser.add_argument(
-    '-i', '--interface', default=game.interface, help='The interface to bind '
-    'to'
+    '-i', '--interface', default=interface, help='The interface to bind to'
 )
 
 parser.add_argument(
-    '-p', '--http-port', type=int, default=game.http_port, help='The HTTP '
-    'port to listen on'
+    '-p', '--http-port', type=int, default=port, help='The HTTP port to '
+    'listen on'
 )
 
 
 def main():
     args = parser.parse_args()
-    for name in ('interface', 'http_port'):
-        setattr(game, name, getattr(args, name))
+    game = Game(interface=args.interface, http_port=args.http_port)
     game.run()
 
 
