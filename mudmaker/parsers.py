@@ -143,7 +143,7 @@ def look(player, location, thing=None):
     elif thing:
         res = player.object_match(thing)
         if res is not None:
-            player.message(res.get_name())
+            player.message(res.name)
             player.message(res.get_description())
     else:
         player.look_here()
