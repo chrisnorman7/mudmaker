@@ -1,11 +1,17 @@
 """Provides the Object class."""
 
+from .attributes import Attribute
 from .base import BaseObject, LocationMixin
 from .exc import NoSuchObjectError
 
 
 class Object(BaseObject, LocationMixin):
     """An object in the database."""
+
+    say_msg = Attribute(
+        '%1N say%1s: "{text}"', 'The social message used when this object says '
+        'something'
+    )
 
     @classmethod
     def on_init(cls, instance):
@@ -97,3 +103,25 @@ class Object(BaseObject, LocationMixin):
             return self.no_match(string)
         else:
             return self.multiple_matches(string, results)
+
+    def do_social(self, string, _perspectives=None, **kwargs):
+        """Perform a social as this object. If _perspectives is not None, it
+        will be treated as a list, and this object will be prepended. All extra
+        keyword arguments will be passed to
+        self.game.socials_factory.get_strings."""
+        if _perspectives is None:
+            _perspectives = []
+        perspectives = [self] + _perspectives
+        strings = self.game.socials_factory.get_strings(
+            string, perspectives, **kwargs
+        )
+        for i, obj in enumerate(perspectives):
+            obj.message(strings[i])
+        objects = getattr(self.location, 'contents', [])
+        for obj in objects:
+            if obj not in perspectives:
+                obj.message(strings[-1])
+
+    def do_say(self, string):
+        """Say something as tis object."""
+        self.do_social(self.say_msg, text=string)

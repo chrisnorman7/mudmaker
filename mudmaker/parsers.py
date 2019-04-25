@@ -127,3 +127,9 @@ def look(player, location, thing=False):
             player.message(thing.get_description())
     else:
         player.look_here()
+
+
+@main_parser.command('say', 'say <string>', '"<string>', "'<string>")
+def do_say(player, string):
+    """Say something."""
+    player.do_say(string)
