@@ -12,6 +12,7 @@ class Object(BaseObject, LocationMixin):
         """Add this object to self.game.objects."""
         instance.game.objects[instance.id] = instance
         instance.connection = None
+        instance.parser = None
 
     @property
     def account(self):

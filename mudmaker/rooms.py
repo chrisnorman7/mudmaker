@@ -32,3 +32,4 @@ class Room(BaseObject):
     def on_init(cls, instance):
         """Add this room to self.game.rooms."""
         instance.game.rooms[instance.id] = instance
+        instance.parser = None

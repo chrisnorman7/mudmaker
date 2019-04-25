@@ -3,6 +3,7 @@ from mudmaker import Object
 
 def test_init(game, obj):
     assert isinstance(obj, Object)
+    assert obj.parser is None
     assert game.objects[obj.id] is obj
 
 
