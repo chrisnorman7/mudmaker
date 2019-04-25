@@ -84,14 +84,16 @@ class PretendConnection(WebSocketConnection):
 
 
 @fixture(name='connection')
-def connection(game):
+def get_connection(game):
     """Provides a pretend conection object."""
     game.websocket_factory = WebSocketServerFactory()
     game.websocket_factory.game = game
     con = PretendConnection()
     con.factory = game.websocket_factory
     con.onOpen()
-    return con
+    game.connections.append(con)
+    yield con
+    game.connections.remove(con)
 
 
 @fixture(name='obj')

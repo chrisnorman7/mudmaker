@@ -1,7 +1,7 @@
 """Test utility methods."""
 
 from pytest import raises
-from mudmaker.util import yes_or_no, pluralise, get_login
+from mudmaker.util import yes_or_no, pluralise, get_login, broadcast
 
 
 def test_yes_or_no():
@@ -29,3 +29,12 @@ def test_get_login(connection):
     with raises(StopIteration) as exc:
         res.send(password)
     assert exc.value.args[0] == (username, password)
+
+
+def test_broadcast(player, game, connection):
+    assert player.connection is connection
+    assert connection.object is player
+    assert game.connections == [connection]
+    msg = 'testing.'
+    broadcast(game.connections, msg)
+    assert connection.last_message == msg

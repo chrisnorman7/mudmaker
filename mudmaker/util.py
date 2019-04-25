@@ -33,9 +33,7 @@ def yes_or_no(response):
 
 def broadcast(connections, text):
     """Broadcast a message to everyone connected to the game."""
-    for id, con in connections.items():
-        if id is None:
-            continue
+    for con in connections:
         con.message(text)
 
 
