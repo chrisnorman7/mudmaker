@@ -84,7 +84,9 @@ class WebSocketConnection(WebSocketServerProtocol):
                 except CommandFailedError as e:
                     self.message('No command found.')
                     if e.tried_commands:
-                        possible_commands = ', '.join(e.tried_commands)
+                        possible_commands = ', '.join(
+                            map(lambda thing: thing.name, e.tried_commands)
+                        )
                         self.message(
                             'Commands you may have meant to try: %s.' %
                             possible_commands
