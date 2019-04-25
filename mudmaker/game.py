@@ -175,11 +175,6 @@ class Game:
             self.logger.info('Starting with blank database.')
         self.start_listening()
         self.task(300, now=False)(self.dump_task)
-        if not self.zones:
-            self.make_object('Zone', (Zone,), name='The First Zone')
-        if not self.rooms:
-            z = list(self.zones.values())[0]
-            self.make_object('Room', (Room,), name='The First Room', zone=z)
         reactor.run()
         self.logger.info('Dumping the database to %s.', self.filename)
         self.dump()
@@ -340,6 +335,11 @@ class Game:
             old.message('*** You have logged in from somewhere else.')
             old.object = None
             old.disconnect('Goodbye.')
+        if not self.zones:
+            self.make_object('Zone', (Zone,), name='The First Zone')
+        if not self.rooms:
+            z = list(self.zones.values())[0]
+            self.make_object('Room', (Room,), name='The First Room', zone=z)
         if player.location is None:
             player.location = list(self.rooms.values())[0]
         player.look_here()
