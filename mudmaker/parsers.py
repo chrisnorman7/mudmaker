@@ -5,7 +5,32 @@ from datetime import datetime
 from commandlet import Parser, command
 from .exc import AuthenticationError
 from .objects import Object
+from .socials import Social
 from .util import get_login
+
+
+class MudMakerParser(Parser):
+    """A parser with extra socials."""
+
+    def social(
+        self, name, no_target, self_target, any_target, description=None
+    ):
+        """Add a social to this parser. The name argument will be the name of
+        the command. If None, the description argument will become '<name> at
+        someone.'. All other arguments must be social strings. They will be
+        used as follows:
+
+        no_target: When the command is used with no arguments.
+        self.target: When the object that performed the command is the
+        argument.
+        any_target: Any other object is passed.
+        """
+        if description is None:
+            description = '%s at something.' % name
+        s = Social(no_target, self_target, any_target)
+        s.__doc__ = description
+        self.command(name)(s)
+        self.command(name, '%s <object:target>' % name)(s)
 
 
 login_parser = Parser()
@@ -55,13 +80,22 @@ def do_create(con, accounts, game, username=None, password=None):
     game.finish_login(con, player)
 
 
-main_parser = Parser()
+main_parser = MudMakerParser()
 
 
 @main_parser.filter('object')
 def object_filter(player, text):
     """Attempt to return a match."""
     return player.single_match(text)
+
+
+main_parser.social(
+    'smile', '%1N smile%1s.', '%1N smile%1s broadly.', '%1N smile%1s at %2n.'
+)
+
+main_parser.social(
+    'nod', '%1N nod%1s.', '%1N nod%1s emphatically.', '%1N nod%1s to %2n.'
+)
 
 
 @command([login_parser, main_parser], 'host', '@host', '@hostname')
