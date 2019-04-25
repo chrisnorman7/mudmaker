@@ -35,3 +35,13 @@ def test_look_here(player, accounts, room):
     name = '[%s; %s]' % (room.zone.name, room.name)
     assert con.messages[-2] == name
     assert con.messages[-1] == room.get_description()
+
+
+def test_copy(obj, game, room):
+    obj.location = room
+    copy = obj.copy()
+    assert copy.name == obj.name
+    assert copy.description == obj.description
+    assert copy.location is None
+    assert copy.id != obj.id
+    assert game.objects[copy.id] is copy

@@ -77,6 +77,18 @@ class BaseObject(EventBase):
         """Get the name (including ID) of this object."""
         return '%s (#%s)' % (self.name, self.id)
 
+    def copy(self):
+        """Return a copy of this object. All editable attributes will be
+        identical to those set on this object. All non-editable attributes - id
+        for example - will revert to their defaults."""
+        cls = type(self)
+        kwargs = {
+            name: getattr(self, name) for name in self.attributes if getattr(
+                cls, name
+            ).visible
+        }
+        return self.game.make_object(cls.__name__, cls.__bases__, **kwargs)
+
 
 class LocationMixin:
     """Add location information."""
