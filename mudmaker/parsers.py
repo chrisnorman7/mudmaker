@@ -3,7 +3,6 @@
 from datetime import datetime
 
 from commandlet import Parser, command
-
 from .exc import AuthenticationError
 from .objects import Object
 from .util import get_login
@@ -59,6 +58,12 @@ def do_create(con, accounts, game, username=None, password=None):
 main_parser = Parser()
 
 
+@main_parser.filter('object')
+def object_filter(player, text):
+    """Attempt to return a match."""
+    return player.single_match(text)
+
+
 @command([login_parser, main_parser], 'host', '@host', '@hostname')
 def do_hostname(con, host):
     """Get your host name and port."""
@@ -111,15 +116,14 @@ def do_login(game, con, username, password=None):
         con.message('Invalid username or password.')
 
 
-@main_parser.command('look', 'look <thing>', 'l', 'l <thing>')
-def look(player, location, thing=None):
+@main_parser.command('look', 'look <object:thing>', 'l', 'l <object:thing>')
+def look(player, location, thing=False):
     """Look around, or at something in this room."""
     if location is None:
         player.message('You cannot look here.')
-    elif thing:
-        res = player.single_match(thing)
-        if res is not None:
-            player.message(res.name)
-            player.message(res.get_description())
+    elif thing is not False:
+        if thing is not None:
+            player.message(thing.name)
+            player.message(thing.get_description())
     else:
         player.look_here()
