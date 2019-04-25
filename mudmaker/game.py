@@ -22,6 +22,7 @@ from .ext.builder_parser import builder_parser
 from .objects import Object
 from .parsers import main_parser
 from .rooms import Room
+from .socials import factory
 from .tasks import Task
 from .websockets import WebSocketConnection
 from .zones import Zone
@@ -63,6 +64,7 @@ class Game:
     websocket_port = attrib(default=Factory(NoneType), repr=False)
     site_port = attrib(default=Factory(NoneType), repr=False)
     web_root = attrib(default=Factory(Resource), repr=False)
+    socials_factory = attrib(default=Factory(lambda: factory))
     connections = attrib(default=Factory(list), init=False, repr=False)
     zones = attrib(default=Factory(dict), init=False, repr=False)
     rooms = attrib(default=Factory(dict), init=False, repr=False)

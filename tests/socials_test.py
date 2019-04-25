@@ -1,3 +1,7 @@
+def test_socials_factory(game, socials):
+    assert game.socials_factory is socials
+
+
 def test_name(obj, socials):
     assert socials.suffixes['name'](obj, 'n') == ('you', obj.name)
 
