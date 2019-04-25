@@ -25,3 +25,12 @@ def test_dump(obj):
     assert obj.dump() != d
     attributes['description'] = description
     assert obj.dump() == d
+
+
+def test_look_here(player, accounts, room):
+    con = player.connection
+    player.location = room
+    player.look_here()
+    name = '[%s; %s]' % (room.zone.name, room.name)
+    assert con.messages[-2] == name
+    assert con.messages[-1] == room.get_description()

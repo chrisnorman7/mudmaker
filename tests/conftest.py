@@ -7,11 +7,6 @@ from autobahn.twisted import WebSocketServerFactory
 
 from mudmaker import Exit, Game, Room, Zone, WebSocketConnection, Object
 
-account_store_filename = 'accounts.json'
-
-if os.path.isfile(account_store_filename):
-    os.remove(account_store_filename)
-
 
 @fixture(name='exit')
 def get_exit(game, zone):
@@ -68,13 +63,19 @@ class PretendConnection(WebSocketConnection):
     def __init__(self, *args, **kwargs):
         self.transport = PretendTransport()
         super().__init__(*args, **kwargs)
-        self.last_message = ''
+        self.messages = []
+
+    @property
+    def last_message(self):
+        if self.messages:
+            return self.messages[-1]
+        return ''
 
     def send(self, *args, **kwargs):
         pass
 
     def message(self, string):
-        self.last_message = string
+        self.messages.append(string)
         return super().message(string)
 
 
@@ -106,3 +107,10 @@ def get_filename():
     filename = 'test.yaml'
     yield filename
     os.remove(filename)
+
+
+@fixture(name='player')
+def get_player(connection, game, accounts, obj):
+    accounts.add_account('test', 'test', obj)
+    game.finish_login(connection, obj)
+    return obj
