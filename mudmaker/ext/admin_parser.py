@@ -67,3 +67,9 @@ def shutdown(con, player, game, reason):
         reactor.callLater(1.0, reactor.stop)
     else:
         player.message('Cancelled.')
+
+
+@admin_parser.command('@broadcast <message>')
+def do_message(game, player, message):
+    """Send a message to everyone connected."""
+    broadcast(game.players, '%s broadcasts: %s' % (player.name, message))
