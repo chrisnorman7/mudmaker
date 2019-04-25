@@ -24,6 +24,7 @@ class WebSocketConnection(WebSocketServerProtocol):
         self.last_command = None
         self.command_result = None
         self.game = self.factory.game
+        self.game.connections.append(self)
         self.parser = login_parser
         self.ping_time = None
         self.last_active = 0
@@ -103,6 +104,8 @@ class WebSocketConnection(WebSocketServerProtocol):
     def connectionLost(self, reason):
         super().connectionLost(reason)
         self.logger.info(reason.getErrorMessage())
+        if self in self.game.connections:
+            self.game.connections.remove(self)
 
     def send(self, name, *args):
         """Send JSON to the player's browser."""
