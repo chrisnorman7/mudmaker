@@ -14,7 +14,9 @@ def test_account_for(obj, accounts):
 
 
 def test_attributes(obj):
-    assert obj.attributes == ['description', 'id', 'location', 'name', 'say_msg']
+    assert obj.attributes == [
+        'description', 'id', 'location', 'name', 'say_msg'
+    ]
 
 
 def test_dump(obj):
