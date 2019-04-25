@@ -34,7 +34,7 @@ def test_get_login(connection):
 def test_broadcast(player, game, connection):
     assert player.connection is connection
     assert connection.object is player
-    assert game.connections == [connection]
+    assert connection in game.connections
     msg = 'testing.'
     broadcast(game.connections, msg)
     assert connection.last_message == msg
