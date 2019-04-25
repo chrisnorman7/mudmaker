@@ -52,7 +52,7 @@ class ObjectValue:
     id = attrib()
 
 
-@attrs
+@attrs(repr=False)
 class Game:
     """A game instance."""
 
@@ -89,6 +89,9 @@ class Game:
     account_store = attrib(default=Factory(NoneType), repr=False)
     filename = attrib(default=Factory(lambda: 'game.yaml'))
     tasks = attrib(default=Factory(dict))
+
+    def __repr__(self):
+        return f'{type(self).__name__}({self.interface}:{self.http_port})'
 
     def __attrs_post_init__(self):
         """Mainly used to add directions."""

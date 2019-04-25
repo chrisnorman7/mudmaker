@@ -1,4 +1,4 @@
-"""Mudlet. Make MUD-style games easily."""
+"""Mudmaker. Make MUD-style games easily."""
 
 from .attributes import Attribute, text
 from .directions import Direction
