@@ -9,30 +9,6 @@ from .objects import Object
 from .util import get_login
 
 
-def finish_login(con, player):
-    """Connection an Object instance player to the connection con."""
-    old = player.connection
-    player.connection = con
-    con.object = player
-    con.logger.name = str(player)
-    con.logger.info('Authenticated.')
-    player.message('Welcome back, %s.' % player.name)
-    account = player.account
-    if account.admin:
-        from .ext.admin_parser import admin_parser
-        parser = admin_parser
-    elif account.builder:
-        from .ext.builder_parser import builder_parser
-        parser = builder_parser
-    else:
-        parser = main_parser
-    con.parser = parser
-    if old is not None:
-        old.message('*** You have logged in from somewhere else.')
-        old.object = None
-        old.disconnect('Goodbye.')
-
-
 login_parser = Parser()
 
 
@@ -77,7 +53,7 @@ def do_create(con, accounts, game, username=None, password=None):
         kwargs = {}
     accounts.add_account(username, password, player, **kwargs)
     con.message('You have successfully created a new character.')
-    finish_login(con, player)
+    game.finish_login(con, player)
 
 
 main_parser = Parser()
@@ -129,7 +105,7 @@ def do_login(game, con, username, password=None):
         password = yield
     try:
         player = game.account_store.authenticate(username, password)
-        finish_login(con, player)
+        game.finish_login(con, player)
     except AuthenticationError:
         con.logger.info('Attempted to login as %s.', username)
         con.message('Invalid username or password.')
@@ -141,7 +117,7 @@ def look(player, location, thing=None):
     if location is None:
         player.message('You cannot look here.')
     elif thing:
-        res = player.object_match(thing)
+        res = player.single_match(thing)
         if res is not None:
             player.message(res.name)
             player.message(res.get_description())

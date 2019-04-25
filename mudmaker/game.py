@@ -17,7 +17,10 @@ from yaml import dump, FullLoader, load
 from .account_store import AccountStore
 from .base import BaseObject
 from .directions import Direction
+from .ext.admin_parser import admin_parser
+from .ext.builder_parser import builder_parser
 from .objects import Object
+from .parsers import main_parser
 from .rooms import Room
 from .tasks import Task
 from .websockets import WebSocketConnection
@@ -172,6 +175,11 @@ class Game:
             self.logger.info('Starting with blank database.')
         self.start_listening()
         self.task(300, now=False)(self.dump_task)
+        if not self.zones:
+            self.make_object('Zone', (Zone,), name='The First Zone')
+        if not self.rooms:
+            z = list(self.zones.values())[0]
+            self.make_object('Room', (Room,), name='The First Room', zone=z)
         reactor.run()
         self.logger.info('Dumping the database to %s.', self.filename)
         self.dump()
@@ -311,3 +319,27 @@ class Game:
         self.logger.info('Dumping to %s.', filename)
         self.dump(filename)
         self.logger.info('Objects dumped: %d.', len(self._objects))
+
+    def finish_login(self, con, player):
+        """Connection an Object instance player to the connection con."""
+        old = player.connection
+        player.connection = con
+        con.object = player
+        con.logger.name = str(player)
+        con.logger.info('Authenticated.')
+        player.message('Welcome back, %s.' % player.name)
+        account = player.account
+        if account.admin:
+            parser = admin_parser
+        elif account.builder:
+            parser = builder_parser
+        else:
+            parser = main_parser
+        con.parser = parser
+        if old is not None:
+            old.message('*** You have logged in from somewhere else.')
+            old.object = None
+            old.disconnect('Goodbye.')
+        if player.location is None:
+            player.location = list(self.rooms.values())[0]
+        player.look_here()
