@@ -9,8 +9,8 @@ class Object(BaseObject, LocationMixin):
     """An object in the database."""
 
     say_msg = Attribute(
-        '%1N say%1s: "{text}"', 'The social message used when this object says '
-        'something'
+        '%1N say%1s: "{text}"', 'The social message used when this object '
+        'says something'
     )
 
     @classmethod
