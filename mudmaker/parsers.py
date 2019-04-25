@@ -31,6 +31,7 @@ class MudMakerParser(Parser):
         s.__doc__ = description
         self.command(name)(s)
         self.command(name, '%s <object:target>' % name)(s)
+        return s
 
 
 login_parser = Parser()
