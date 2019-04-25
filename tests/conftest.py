@@ -6,6 +6,7 @@ import os.path
 from autobahn.twisted import WebSocketServerFactory
 
 from mudmaker import Exit, Game, Room, Zone, WebSocketConnection, Object
+from mudmaker.socials import factory
 
 
 @fixture(name='exit')
@@ -121,3 +122,8 @@ def get_player(connection, game, accounts, obj):
     accounts.add_account('test', 'test', obj)
     game.finish_login(connection, obj)
     return obj
+
+
+@fixture(name='socials')
+def get_socials():
+    return factory
