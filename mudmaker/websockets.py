@@ -58,6 +58,25 @@ class WebSocketConnection(WebSocketServerProtocol):
             is_staff=is_staff, account=account, location=location
         )
 
+    def huh(self, string, tried_commands):
+        """Called when no command was found. The tried_commands variable might
+        contain already-tried commands."""
+        here = self.object.location
+        if here.parser is not None:
+            try:
+                here.parser.handle_command(string, **self.get_context())
+                return  # We're done here.
+            except CommandFailedError as e:
+                tried_commands.extend(e.tried_commands)
+        self.message('No command found.')
+        if tried_commands:
+            possible_commands = ', '.join(
+                map(lambda thing: thing.name, tried_commands)
+            )
+            self.message(
+                'Commands you may have meant to try: %s.' % possible_commands
+            )
+
     def handle_string(self, string):
         """Handle a string as a command."""
         try:
@@ -83,15 +102,7 @@ class WebSocketConnection(WebSocketServerProtocol):
                 except DontSaveCommand:
                     save_command = False
                 except CommandFailedError as e:
-                    self.message('No command found.')
-                    if e.tried_commands:
-                        possible_commands = ', '.join(
-                            map(lambda thing: thing.name, e.tried_commands)
-                        )
-                        self.message(
-                            'Commands you may have meant to try: %s.' %
-                            possible_commands
-                        )
+                    self.huh(string, e.tried_commands)
                 finally:
                     if save_command:
                         self.last_command = string
