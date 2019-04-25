@@ -106,7 +106,7 @@ def test_load(obj, accounts, game):
     accounts.add_account('test', 'test123', obj)
     try:
         accounts.dump()
-        a = AccountStore(game)
+        a = AccountStore(game, filename=accounts.filename)
         a.load()
         assert a.accounts == accounts.accounts
         assert a.objects == accounts.objects

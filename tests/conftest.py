@@ -26,7 +26,11 @@ def get_exit(game, zone):
 @fixture(name='game')
 def get_game():
     """Get a Game instance."""
-    return Game()
+    g = Game()
+    g.account_store.filename = 'test-accounts.json'
+    yield g
+    if os.path.isfile(g.account_store.filename):
+        os.remove(g.account_store.filename)
 
 
 @fixture(name='room')
@@ -106,7 +110,8 @@ def get_filename():
     # Will be executed before the first test
     filename = 'test.yaml'
     yield filename
-    os.remove(filename)
+    if os.path.isfile(filename):
+        os.remove(filename)
 
 
 @fixture(name='player')
