@@ -1,0 +1,584 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>Module Documentation &#8212; MudMaker 0.1.4-2-gaaa0166 documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Quickstart" href="quickstart.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="module-documentation">
+<h1>Module Documentation<a class="headerlink" href="#module-documentation" title="Permalink to this headline">¶</a></h1>
+<span class="target" id="module-mudmaker"></span><p>Mudmaker. Make MUD-style games easily.</p>
+<dl class="class">
+<dt id="mudmaker.Attribute">
+<em class="property">class </em><code class="descclassname">mudmaker.</code><code class="descname">Attribute</code><span class="sig-paren">(</span><em>value</em>, <em>description</em>, <em>type=NOTHING</em>, <em>save=NOTHING</em>, <em>visible=NOTHING</em><span class="sig-paren">)</span><a class="headerlink" href="#mudmaker.Attribute" title="Permalink to this definition">¶</a></dt>
+<dd><p>An attribute for an object. Can be marked as not to be dumped with the
+object by setting the same flag to False, and not to be visible to players
+by setting the visible flag to False.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="mudmaker.text">
+<em class="property">class </em><code class="descclassname">mudmaker.</code><code class="descname">text</code><a class="headerlink" href="#mudmaker.text" title="Permalink to this definition">¶</a></dt>
+<dd><p>A string which supports new line characters.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="mudmaker.Direction">
+<em class="property">class </em><code class="descclassname">mudmaker.</code><code class="descname">Direction</code><span class="sig-paren">(</span><em>name</em>, <em>x</em>, <em>y</em>, <em>z</em><span class="sig-paren">)</span><a class="headerlink" href="#mudmaker.Direction" title="Permalink to this definition">¶</a></dt>
+<dd><p>A direction to be used with an exit.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="mudmaker.Exit">
+<em class="property">class </em><code class="descclassname">mudmaker.</code><code class="descname">Exit</code><span class="sig-paren">(</span><em>game</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#mudmaker.Exit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Link two rooms together.</p>
+<dl class="classmethod">
+<dt id="mudmaker.Exit.on_init">
+<em class="property">classmethod </em><code class="descname">on_init</code><span class="sig-paren">(</span><em>instance</em><span class="sig-paren">)</span><a class="headerlink" href="#mudmaker.Exit.on_init" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add this exit to self.game.exits.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="mudmaker.Game">
+<em class="property">class </em><code class="descclassname">mudmaker.</code><code class="descname">Game</code><span class="sig-paren">(</span><em>interface=NOTHING</em>, <em>http_port=NOTHING</em>, <em>logger=NOTHING</em>, <em>websocket_class=NOTHING</em>, <em>websocket_factory=NOTHING</em>, <em>websocket_port=NOTHING</em>, <em>site_port=NOTHING</em>, <em>web_root=NOTHING</em>, <em>socials_factory=NOTHING</em>, <em>welcome_msg=NOTHING</em>, <em>error_msg=NOTHING</em>, <em>started=NOTHING</em>, <em>directions=NOTHING</em>, <em>account_store=NOTHING</em>, <em>filename=NOTHING</em>, <em>tasks=NOTHING</em><span class="sig-paren">)</span><a class="headerlink" href="#mudmaker.Game" title="Permalink to this definition">¶</a></dt>
+<dd><p>A game instance.</p>
+<dl class="method">
+<dt id="mudmaker.Game.add_direction">
+<code class="descname">add_direction</code><span class="sig-paren">(</span><em>name</em>, <em>*aliases</em>, <em>x=0</em>, <em>y=0</em>, <em>z=0</em><span class="sig-paren">)</span><a class="headerlink" href="#mudmaker.Game.add_direction" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add a new direction. You can add as many aliases as you like. These
+will be used as commands to invoke exits. The x, y, and z coordinates
+allow you to set sensible coordinates for rooms should you want to. The
+name of the direction should be a full name like “northeast”.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mudmaker.Game.as_dict">
+<code class="descname">as_dict</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#mudmaker.Game.as_dict" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a dictionary which can be dumped to save the state of this
+game.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mudmaker.Game.dump">
+<code class="descname">dump</code><span class="sig-paren">(</span><em>filename=None</em><span class="sig-paren">)</span><a class="headerlink" href="#mudmaker.Game.dump" title="Permalink to this definition">¶</a></dt>
+<dd><p>Dump game state to disk.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mudmaker.Game.dump_task">
+<code class="descname">dump_task</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#mudmaker.Game.dump_task" title="Permalink to this definition">¶</a></dt>
+<dd><p>Dump this game on a task.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mudmaker.Game.dump_value">
+<code class="descname">dump_value</code><span class="sig-paren">(</span><em>value</em><span class="sig-paren">)</span><a class="headerlink" href="#mudmaker.Game.dump_value" title="Permalink to this definition">¶</a></dt>
+<dd><p>Dump a singl object, paying particular attention to database
+objects.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mudmaker.Game.finish_login">
+<code class="descname">finish_login</code><span class="sig-paren">(</span><em>con</em>, <em>player</em><span class="sig-paren">)</span><a class="headerlink" href="#mudmaker.Game.finish_login" title="Permalink to this definition">¶</a></dt>
+<dd><p>Connection an Object instance player to the connection con.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mudmaker.Game.from_dict">
+<code class="descname">from_dict</code><span class="sig-paren">(</span><em>data</em><span class="sig-paren">)</span><a class="headerlink" href="#mudmaker.Game.from_dict" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load the data loaded with self.load.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mudmaker.Game.load">
+<code class="descname">load</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#mudmaker.Game.load" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load some yaml and run it through self.from_dict.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mudmaker.Game.load_value">
+<code class="descname">load_value</code><span class="sig-paren">(</span><em>data</em><span class="sig-paren">)</span><a class="headerlink" href="#mudmaker.Game.load_value" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load a single value from data, paying particular attention to
+database objects.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mudmaker.Game.make_object">
+<code class="descname">make_object</code><span class="sig-paren">(</span><em>class_name</em>, <em>bases</em>, <em>**attributes</em><span class="sig-paren">)</span><a class="headerlink" href="#mudmaker.Game.make_object" title="Permalink to this definition">¶</a></dt>
+<dd><p>Make an object - which could be anything - and add it to this game.
+class_name is the name used for the newly-created class, and attributes
+will be passed to the new class’s __init__ method.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mudmaker.Game.on_index_page">
+<code class="descname">on_index_page</code><span class="sig-paren">(</span><em>request</em><span class="sig-paren">)</span><a class="headerlink" href="#mudmaker.Game.on_index_page" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the index page. By default redirects to /static/index.html.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mudmaker.Game.on_websocket_page">
+<code class="descname">on_websocket_page</code><span class="sig-paren">(</span><em>request</em><span class="sig-paren">)</span><a class="headerlink" href="#mudmaker.Game.on_websocket_page" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the websocket port number.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="mudmaker.Game.players">
+<code class="descname">players</code><a class="headerlink" href="#mudmaker.Game.players" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a list of players.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mudmaker.Game.register_base">
+<code class="descname">register_base</code><span class="sig-paren">(</span><em>name</em><span class="sig-paren">)</span><a class="headerlink" href="#mudmaker.Game.register_base" title="Permalink to this definition">¶</a></dt>
+<dd><p>Decorate a class to have it registered as a possible base.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mudmaker.Game.run">
+<code class="descname">run</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#mudmaker.Game.run" title="Permalink to this definition">¶</a></dt>
+<dd><p>Start this game listening, and start the reactor.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mudmaker.Game.start_listening">
+<code class="descname">start_listening</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#mudmaker.Game.start_listening" title="Permalink to this definition">¶</a></dt>
+<dd><p>Start listening for network connections. Usually called from
+Game.run.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mudmaker.Game.task">
+<code class="descname">task</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#mudmaker.Game.task" title="Permalink to this definition">¶</a></dt>
+<dd><p>Decorate a function to be made into a task, using
+twisted.internet.task.LoopingCall. All arguments will be passed to the
+LoopingCall instance’s start method.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="mudmaker.Zone">
+<em class="property">class </em><code class="descclassname">mudmaker.</code><code class="descname">Zone</code><span class="sig-paren">(</span><em>game</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#mudmaker.Zone" title="Permalink to this definition">¶</a></dt>
+<dd><p>A zone with a list of rooms.</p>
+<dl class="method">
+<dt id="mudmaker.Zone.add_room">
+<code class="descname">add_room</code><span class="sig-paren">(</span><em>room</em><span class="sig-paren">)</span><a class="headerlink" href="#mudmaker.Zone.add_room" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add a Room object to this zone.</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="mudmaker.Zone.on_init">
+<em class="property">classmethod </em><code class="descname">on_init</code><span class="sig-paren">(</span><em>instance</em><span class="sig-paren">)</span><a class="headerlink" href="#mudmaker.Zone.on_init" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add this zone to self.game.zones.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="mudmaker.Zone.rooms">
+<code class="descname">rooms</code><a class="headerlink" href="#mudmaker.Zone.rooms" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get a list of rooms contained in this zone.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="mudmaker.Room">
+<em class="property">class </em><code class="descclassname">mudmaker.</code><code class="descname">Room</code><span class="sig-paren">(</span><em>game</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#mudmaker.Room" title="Permalink to this definition">¶</a></dt>
+<dd><p>A room which contains objects.</p>
+<dl class="method">
+<dt id="mudmaker.Room.broadcast">
+<code class="descname">broadcast</code><span class="sig-paren">(</span><em>text</em><span class="sig-paren">)</span><a class="headerlink" href="#mudmaker.Room.broadcast" title="Permalink to this definition">¶</a></dt>
+<dd><p>Send a message text to everyone else in this room.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="mudmaker.Room.entrances">
+<code class="descname">entrances</code><a class="headerlink" href="#mudmaker.Room.entrances" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get a list of entrances.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="mudmaker.Room.exits">
+<code class="descname">exits</code><a class="headerlink" href="#mudmaker.Room.exits" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get a list of exits.</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="mudmaker.Room.on_init">
+<em class="property">classmethod </em><code class="descname">on_init</code><span class="sig-paren">(</span><em>instance</em><span class="sig-paren">)</span><a class="headerlink" href="#mudmaker.Room.on_init" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add this room to self.game.rooms.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="mudmaker.WebSocketConnection">
+<em class="property">class </em><code class="descclassname">mudmaker.</code><code class="descname">WebSocketConnection</code><a class="headerlink" href="#mudmaker.WebSocketConnection" title="Permalink to this definition">¶</a></dt>
+<dd><p>A protocol to use with a web client.</p>
+<dl class="method">
+<dt id="mudmaker.WebSocketConnection.connectionLost">
+<code class="descname">connectionLost</code><span class="sig-paren">(</span><em>reason</em><span class="sig-paren">)</span><a class="headerlink" href="#mudmaker.WebSocketConnection.connectionLost" title="Permalink to this definition">¶</a></dt>
+<dd><p>Called when the connection is shut down.</p>
+<p>Clear any circular references here, and any external references
+to this Protocol.  The connection has been closed.</p>
+<p>&#64;type reason: L{twisted.python.failure.Failure}</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mudmaker.WebSocketConnection.disconnect">
+<code class="descname">disconnect</code><span class="sig-paren">(</span><em>text=None</em><span class="sig-paren">)</span><a class="headerlink" href="#mudmaker.WebSocketConnection.disconnect" title="Permalink to this definition">¶</a></dt>
+<dd><p>Close this websocket, sending text as reason.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mudmaker.WebSocketConnection.get_context">
+<code class="descname">get_context</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#mudmaker.WebSocketConnection.get_context" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get a context to be sent to self.parser.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mudmaker.WebSocketConnection.handle_string">
+<code class="descname">handle_string</code><span class="sig-paren">(</span><em>string</em><span class="sig-paren">)</span><a class="headerlink" href="#mudmaker.WebSocketConnection.handle_string" title="Permalink to this definition">¶</a></dt>
+<dd><p>Handle a string as a command.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mudmaker.WebSocketConnection.huh">
+<code class="descname">huh</code><span class="sig-paren">(</span><em>string</em>, <em>tried_commands</em><span class="sig-paren">)</span><a class="headerlink" href="#mudmaker.WebSocketConnection.huh" title="Permalink to this definition">¶</a></dt>
+<dd><p>Called when no command was found. The tried_commands variable might
+contain already-tried commands.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mudmaker.WebSocketConnection.message">
+<code class="descname">message</code><span class="sig-paren">(</span><em>text</em><span class="sig-paren">)</span><a class="headerlink" href="#mudmaker.WebSocketConnection.message" title="Permalink to this definition">¶</a></dt>
+<dd><p>Send some text to this connection.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mudmaker.WebSocketConnection.onMessage">
+<code class="descname">onMessage</code><span class="sig-paren">(</span><em>payload</em>, <em>is_binary</em><span class="sig-paren">)</span><a class="headerlink" href="#mudmaker.WebSocketConnection.onMessage" title="Permalink to this definition">¶</a></dt>
+<dd><p>Implements <code class="xref py py-func docutils literal notranslate"><span class="pre">autobahn.websocket.interfaces.IWebSocketChannel.onMessage()</span></code></p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mudmaker.WebSocketConnection.onOpen">
+<code class="descname">onOpen</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#mudmaker.WebSocketConnection.onOpen" title="Permalink to this definition">¶</a></dt>
+<dd><p>Web socket is now open.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mudmaker.WebSocketConnection.send">
+<code class="descname">send</code><span class="sig-paren">(</span><em>name</em>, <em>*args</em><span class="sig-paren">)</span><a class="headerlink" href="#mudmaker.WebSocketConnection.send" title="Permalink to this definition">¶</a></dt>
+<dd><p>Send JSON to the player’s browser.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="mudmaker.Object">
+<em class="property">class </em><code class="descclassname">mudmaker.</code><code class="descname">Object</code><span class="sig-paren">(</span><em>game</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#mudmaker.Object" title="Permalink to this definition">¶</a></dt>
+<dd><p>An object in the database.</p>
+<dl class="attribute">
+<dt id="mudmaker.Object.account">
+<code class="descname">account</code><a class="headerlink" href="#mudmaker.Object.account" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get any account object associated with this object.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mudmaker.Object.do_say">
+<code class="descname">do_say</code><span class="sig-paren">(</span><em>string</em><span class="sig-paren">)</span><a class="headerlink" href="#mudmaker.Object.do_say" title="Permalink to this definition">¶</a></dt>
+<dd><p>Say something as tis object.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mudmaker.Object.do_social">
+<code class="descname">do_social</code><span class="sig-paren">(</span><em>string</em>, <em>_perspectives=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#mudmaker.Object.do_social" title="Permalink to this definition">¶</a></dt>
+<dd><p>Perform a social as this object. If _perspectives is not None, it
+will be treated as a list, and this object will be prepended. All extra
+keyword arguments will be passed to
+self.game.socials_factory.get_strings.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mudmaker.Object.look_here">
+<code class="descname">look_here</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#mudmaker.Object.look_here" title="Permalink to this definition">¶</a></dt>
+<dd><p>Have this object look at its surroundings.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mudmaker.Object.match_object">
+<code class="descname">match_object</code><span class="sig-paren">(</span><em>obj</em>, <em>string</em><span class="sig-paren">)</span><a class="headerlink" href="#mudmaker.Object.match_object" title="Permalink to this definition">¶</a></dt>
+<dd><p>See if obj matches string.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mudmaker.Object.message">
+<code class="descname">message</code><span class="sig-paren">(</span><em>text</em><span class="sig-paren">)</span><a class="headerlink" href="#mudmaker.Object.message" title="Permalink to this definition">¶</a></dt>
+<dd><p>Send some text to this object’s connection.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mudmaker.Object.multiple_matches">
+<code class="descname">multiple_matches</code><span class="sig-paren">(</span><em>string</em>, <em>objects</em><span class="sig-paren">)</span><a class="headerlink" href="#mudmaker.Object.multiple_matches" title="Permalink to this definition">¶</a></dt>
+<dd><p>Multiple matches were found. By default, send a message explaining
+that to this object.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mudmaker.Object.no_location_match">
+<code class="descname">no_location_match</code><span class="sig-paren">(</span><em>string</em><span class="sig-paren">)</span><a class="headerlink" href="#mudmaker.Object.no_location_match" title="Permalink to this definition">¶</a></dt>
+<dd><p>No matches may be performed at this location. By default, sends a
+message to this object explaining that.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mudmaker.Object.no_match">
+<code class="descname">no_match</code><span class="sig-paren">(</span><em>string</em><span class="sig-paren">)</span><a class="headerlink" href="#mudmaker.Object.no_match" title="Permalink to this definition">¶</a></dt>
+<dd><p>No match was found. By default, a message explaining that is sent to
+this object.</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="mudmaker.Object.on_init">
+<em class="property">classmethod </em><code class="descname">on_init</code><span class="sig-paren">(</span><em>instance</em><span class="sig-paren">)</span><a class="headerlink" href="#mudmaker.Object.on_init" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add this object to self.game.objects.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mudmaker.Object.single_match">
+<code class="descname">single_match</code><span class="sig-paren">(</span><em>string</em>, <em>objects=None</em><span class="sig-paren">)</span><a class="headerlink" href="#mudmaker.Object.single_match" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a single match from the given list of objects. If objects is
+None, self.location.contents will be used.</p>
+<p>If objects is None, and this object has no location, the result of
+calling self.no_location_match with string will be returned.</p>
+<p>If the match string is “me”, then this object will be considered in the
+match if it is in the list of objects.</p>
+<p>If no matches are found, then the result of calling self.no_match with
+string will be returned.</p>
+<p>If multiple matches are found, then the result of calling
+self.multiple_matches with string and the list of objects that were
+matched will be returned.</p>
+<p>If this object is a member of staff, and the string starts with a hash
+symbol (#), the remaining string will be considered an object ID, and
+the object with that ID will be returned.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="mudmaker.Account">
+<em class="property">class </em><code class="descclassname">mudmaker.</code><code class="descname">Account</code><span class="sig-paren">(</span><em>username</em>, <em>password</em>, <em>object_id</em>, <em>game</em>, <em>admin=NOTHING</em>, <em>builder=NOTHING</em><span class="sig-paren">)</span><a class="headerlink" href="#mudmaker.Account" title="Permalink to this definition">¶</a></dt>
+<dd><p>An account in the default accounts system. You do not have to use this
+class, but it is recommended you use it as a parent for your own class if
+you decide to extend the default AccountStore class.</p>
+<dl class="method">
+<dt id="mudmaker.Account.verify">
+<code class="descname">verify</code><span class="sig-paren">(</span><em>password</em><span class="sig-paren">)</span><a class="headerlink" href="#mudmaker.Account.verify" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a boolean representing whether the supplied password matches
+the account’s password.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="mudmaker.AccountStore">
+<em class="property">class </em><code class="descclassname">mudmaker.</code><code class="descname">AccountStore</code><span class="sig-paren">(</span><em>game</em>, <em>account_class=NOTHING</em>, <em>accounts=NOTHING</em>, <em>objects=NOTHING</em>, <em>filename=NOTHING</em>, <em>last_dump=NOTHING</em><span class="sig-paren">)</span><a class="headerlink" href="#mudmaker.AccountStore" title="Permalink to this definition">¶</a></dt>
+<dd><p>A generic account store. If you’re going to use another storage system,
+you should implement the add_account, remove_account, account_exists,
+number_of_accounts, and authenticate methods.</p>
+<dl class="method">
+<dt id="mudmaker.AccountStore.account_exists">
+<code class="descname">account_exists</code><span class="sig-paren">(</span><em>username</em><span class="sig-paren">)</span><a class="headerlink" href="#mudmaker.AccountStore.account_exists" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a boolean representing whether or not an account exists with
+the given username.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mudmaker.AccountStore.account_for">
+<code class="descname">account_for</code><span class="sig-paren">(</span><em>obj</em><span class="sig-paren">)</span><a class="headerlink" href="#mudmaker.AccountStore.account_for" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the account object associated with an Object instance obj.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mudmaker.AccountStore.add_account">
+<code class="descname">add_account</code><span class="sig-paren">(</span><em>username</em>, <em>password</em>, <em>obj</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#mudmaker.AccountStore.add_account" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add a user to the accounts database.</p>
+<p>Once the account is created, the user will be able to log in with the
+supplied username and password, and be connected to the supplied Object
+instance obj.</p>
+<p>This method uses self.encrypt_password to encrypt the password.</p>
+<p>If an account already exists with the given username,
+DuplicateUsernameError should be raised with the username as the only
+argument.</p>
+<p>If there is already an account bound to obj, then DuplicateObjectError
+should be raised with obj as the only argument.</p>
+<p>All extra arguments will passed to the constructor of
+self.account_class.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mudmaker.AccountStore.as_list">
+<code class="descname">as_list</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#mudmaker.AccountStore.as_list" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a list of dictionaries representing all the registered
+accounts. Used by self.dump.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mudmaker.AccountStore.authenticate">
+<code class="descname">authenticate</code><span class="sig-paren">(</span><em>username</em>, <em>password</em><span class="sig-paren">)</span><a class="headerlink" href="#mudmaker.AccountStore.authenticate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Given a username and password combination, return an Object instance
+with a matching account. If the username is invalid,
+InvalidUsernameError is raised. If the password is invalid,
+InvalidPasswordError will be raised.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mudmaker.AccountStore.dump">
+<code class="descname">dump</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#mudmaker.AccountStore.dump" title="Permalink to this definition">¶</a></dt>
+<dd><p>Write all the registered accounts to self.filename.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mudmaker.AccountStore.encrypt_password">
+<code class="descname">encrypt_password</code><span class="sig-paren">(</span><em>password</em><span class="sig-paren">)</span><a class="headerlink" href="#mudmaker.AccountStore.encrypt_password" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns an encrypted version of the password for use by
+self.add_account. The default implementation uses
+passlib.hash.sha256_crypt with 10000 rounds.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mudmaker.AccountStore.load">
+<code class="descname">load</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#mudmaker.AccountStore.load" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load registered accounts from self.filename. If there are already
+accounts loaded, RuntimeError will be raised.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mudmaker.AccountStore.maybe_load">
+<code class="descname">maybe_load</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#mudmaker.AccountStore.maybe_load" title="Permalink to this definition">¶</a></dt>
+<dd><p>If self.loaded is not True, load from self.filename.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mudmaker.AccountStore.remove_account">
+<code class="descname">remove_account</code><span class="sig-paren">(</span><em>obj</em><span class="sig-paren">)</span><a class="headerlink" href="#mudmaker.AccountStore.remove_account" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove an account for an Object instance obj.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="mudmaker.Task">
+<em class="property">class </em><code class="descclassname">mudmaker.</code><code class="descname">Task</code><span class="sig-paren">(</span><em>game</em>, <em>func</em><span class="sig-paren">)</span><a class="headerlink" href="#mudmaker.Task" title="Permalink to this definition">¶</a></dt>
+<dd><p>A task. Uses twisted.internet.task.LoopingCall.</p>
+<dl class="method">
+<dt id="mudmaker.Task.start">
+<code class="descname">start</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#mudmaker.Task.start" title="Permalink to this definition">¶</a></dt>
+<dd><p>Call self.loop.start with all arguments, and store the resulting
+Deferred in self.deferred.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">MudMaker</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quickstart</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Module Documentation</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="quickstart.html" title="previous chapter">Quickstart</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2019, Chris Norman.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.0.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/mudmaker.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
