@@ -10,6 +10,7 @@ from commandlet.exc import CommandFailedError
 from .exc import DontSaveCommand
 from .util import format_error
 from .parsers import login_parser
+from .socials import factory
 
 
 class WebSocketConnection(WebSocketServerProtocol):
@@ -55,7 +56,8 @@ class WebSocketConnection(WebSocketServerProtocol):
             con=self, player=player, hostname=self.host, port=self.port,
             host=self.logger.name, game=self.game, parser=self.parser,
             logger=self.logger, accounts=self.game.account_store,
-            is_staff=is_staff, account=account, location=location
+            is_staff=is_staff, account=account, location=location,
+            socials=factory
         )
 
     def huh(self, string, tried_commands):

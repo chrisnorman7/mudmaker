@@ -22,7 +22,7 @@ from .ext.builder_parser import builder_parser
 from .objects import Object
 from .parsers import main_parser
 from .rooms import Room
-from .socials import factory
+from .socials import factory, Social
 from .tasks import Task
 from .websockets import WebSocketConnection
 from .zones import Zone
@@ -70,6 +70,7 @@ class Game:
     rooms = attrib(default=Factory(dict), init=False, repr=False)
     objects = attrib(default=Factory(dict), init=False, repr=False)
     exits = attrib(default=Factory(dict), init=False, repr=False)
+    socials = attrib(default=Factory(dict), init=False, repr=False)
     max_id = attrib(default=Factory(int), init=False)
     bases = attrib(default=Factory(dict), init=False, repr=False)
     _bases = attrib(default=Factory(dict), repr=False, init=False)
@@ -99,13 +100,10 @@ class Game:
             from logging import basicConfig, getLogger
             basicConfig(level='INFO')
             self.logger = getLogger(__name__)
-        for name, cls in (
-            ('Base Object', Object),
-            ('Base Room', Room),
-            ('Base Zone', Zone)
-        ):
+        for cls in (Object, Room, Zone, Social):
+            name = cls.__name__
             self.logger.info('Registering base %s.', name)
-            self.register_base(name)(cls)
+            self.register_base(f'Base {name}')(cls)
         for name, aliases, coordinates in (
             ('north', ['n'], dict(y=1)),
             ('northeast', ['ne'], dict(x=1, y=1)),
@@ -199,16 +197,24 @@ class Game:
 
         return inner
 
+    def make_class(self, class_name, bases):
+        """Make a class from a class name and a tuple of bases."""
+        return type(class_name, bases, dict(__init__=BaseObject.__init__))
+
     def make_object(self, class_name, bases, **attributes):
         """Make an object - which could be anything - and add it to this game.
         class_name is the name used for the newly-created class, and attributes
         will be passed to the new class's __init__ method."""
-        cls = type(class_name, bases, dict(__init__=BaseObject.__init__))
+        cls = self.make_class(class_name, bases)
         obj = cls(self, **attributes)
-        for base in bases:
-            base.on_init(obj)
+        self.call_on_init(bases, obj)
         self._objects[obj.id] = obj
         return obj
+
+    def call_on_init(self, bases, obj):
+        """Call base.on_init(obj) for base in bases."""
+        for base in bases:
+            base.on_init(obj)
 
     def add_direction(self, name, *aliases, x=0, y=0, z=0):
         """Add a new direction. You can add as many aliases as you like. These
@@ -279,6 +285,7 @@ class Game:
             raise RuntimeError(
                 'Attempting to load objects into a non-empty game.'
             )
+        b = {}
         attributes = {}
         for row in data.get('objects', []):
             class_name = row['class_name']
@@ -286,13 +293,18 @@ class Game:
             bases = tuple(self._bases[name] for name in bases)
             a = row.get('attributes', {})
             id = a.pop('id', None)
-            self.make_object(class_name, bases, id=id)
-            self.max_id = max(self.max_id, id)
-            attributes[id] = a
+            cls = self.make_class(class_name, bases)
+            obj = cls(self, id=id)
+            b[obj.id] = bases
+            self._objects[obj.id] = obj
+            self.max_id = max(self.max_id, obj.id)
+            attributes[obj.id] = a
         for id, a in attributes.items():
             obj = self._objects[id]
             for name, value in a.items():
                 setattr(obj, name, self.load_value(value))
+            bases = b[id]
+            self.call_on_init(bases, obj)
 
     def load(self):
         """Load some yaml and run it through self.from_dict."""

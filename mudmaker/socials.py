@@ -1,7 +1,10 @@
 """Provides a PopulatedSocialsFactory instance called factory."""
 
-from attr import attrs, attrib
 from emote_utils import PopulatedSocialsFactory
+
+from .attributes import Attribute
+from .base import BaseObject
+from .parsers import main_parser
 
 factory = PopulatedSocialsFactory()
 
@@ -18,22 +21,35 @@ def your(obj, suffix):
     return 'your', f"{obj.name}'s"
 
 
-@attrs
-class Social:
+class Social(BaseObject):
     """A social."""
 
-    no_target = attrib()
-    self_target = attrib()
-    any_target = attrib()
+    no_target = Attribute(
+        None, 'The string to be used when no target is specified'
+    )
+    self_target = Attribute(
+        None, 'The string to be used when an object supplies themself as the '
+        'target'
+    )
+    any_target = Attribute(
+        None, 'The string to be used for any target not covered by the other '
+        'two strings'
+    )
 
-    def __call__(self, player, target=False):
+    @classmethod
+    def on_init(cls, instance):
+        instance.game.socials[instance.name] = instance
+        if instance.description is None:
+            instance.description = f'{instance.name} at someone or something.'
+        main_parser.social(instance)
+
+    def use_nothing(self, player):
+        player.do_social(self.no_target)
+
+    def use_target(self, player, target):
         """Perform a social as player."""
-        if target is None:
-            return  # Match failed.
-        p = []
-        if target is False:
-            string = self.no_target
-        elif target is player:
+        if target is player:
+            p = []
             string = self.self_target
         else:
             p = [target]

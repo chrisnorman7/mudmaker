@@ -1,37 +1,27 @@
 """Provides the two main command parsers: login_parser, and main_parser."""
 
 from datetime import datetime
+from functools import partial
 
 from commandlet import Parser, command
 from .exc import AuthenticationError
 from .objects import Object
-from .socials import Social
-from .util import get_login
+from .util import get_login, english_list
 
 
 class MudMakerParser(Parser):
     """A parser with extra socials."""
 
-    def social(
-        self, name, no_target, self_target, any_target, description=None
-    ):
-        """Add a social to this parser. The name argument will be the name of
-        the command. If None, the description argument will become '<name> at
-        someone.'. All other arguments must be social strings. They will be
-        used as follows:
-
-        no_target: When the command is used with no arguments.
-        self.target: When the object that performed the command is the
-        argument.
-        any_target: Any other object is passed.
-        """
-        if description is None:
-            description = '%s at something.' % name
-        s = Social(no_target, self_target, any_target)
-        s.__doc__ = description
-        self.command(name)(s)
-        self.command(name, '%s <object:target>' % name)(s)
-        return s
+    def social(self, social):
+        """Add a social to this parser."""
+        name = social.name
+        print(repr(social))
+        p = partial(social.use_nothing)
+        p.__doc__ = name + '.'
+        self.command(name)(p)
+        p = partial(social.use_target)
+        p.__doc__ = social.description
+        self.command(f'{name} <object:target>')(p)
 
 
 login_parser = Parser()
@@ -88,15 +78,6 @@ main_parser = MudMakerParser()
 def object_filter(player, text):
     """Attempt to return a match."""
     return player.single_match(text)
-
-
-main_parser.social(
-    'smile', '%1N smile%1s.', '%1N smile%1s broadly.', '%1N smile%1s at %2n.'
-)
-
-main_parser.social(
-    'nod', '%1N nod%1s.', '%1N nod%1s emphatically.', '%1N nod%1s to %2n.'
-)
 
 
 @command([login_parser, main_parser], 'host', '@host', '@hostname')
@@ -168,3 +149,23 @@ def look(player, location, thing=False):
 def do_say(player, string):
     """Say something."""
     player.do_say(string)
+
+
+@main_parser.command('socials', '@socials', '@socials <social>')
+def do_socials(player, game, socials, social=None):
+    """Show a list of socials, or show what a certain social will do."""
+    if social is None:
+        player.message('Socials: %s.' % english_list(sorted(game.socials)))
+    elif social in game.socials:
+        social = game.socials[social]
+        player.message(social.name)
+        player.message(social.get_description())
+        player.message('Social strings:')
+        player.message('When used with no target:')
+        player.message(social.no_target)
+        player.message('When used on yourself:')
+        player.message(social.self_target)
+        player.message('When used with any other target:')
+        player.message(social.any_target)
+    else:
+        player.message('There is no social by that name.')
