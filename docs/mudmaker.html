@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>Module Documentation &#8212; MudMaker 0.1.6 documentation</title>
+    <title>Module Documentation &#8212; MudMaker 0.1.7 documentation</title>
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
@@ -31,9 +31,9 @@
 
           <div class="body" role="main">
             
-  <div class="section" id="module-documentation">
-<h1>Module Documentation<a class="headerlink" href="#module-documentation" title="Permalink to this headline">¶</a></h1>
-<span class="target" id="module-mudmaker"></span><p>Mudmaker. Make MUD-style games easily.</p>
+  <div class="section" id="module-mudmaker">
+<span id="module-documentation"></span><h1>Module Documentation<a class="headerlink" href="#module-mudmaker" title="Permalink to this headline">¶</a></h1>
+<p>Mudmaker. Make MUD-style games easily.</p>
 <dl class="class">
 <dt id="mudmaker.Attribute">
 <em class="property">class </em><code class="descclassname">mudmaker.</code><code class="descname">Attribute</code><span class="sig-paren">(</span><em>value</em>, <em>description</em>, <em>type=NOTHING</em>, <em>save=NOTHING</em>, <em>visible=NOTHING</em><span class="sig-paren">)</span><a class="headerlink" href="#mudmaker.Attribute" title="Permalink to this definition">¶</a></dt>
@@ -58,6 +58,12 @@ by setting the visible flag to False.</p>
 <dt id="mudmaker.Exit">
 <em class="property">class </em><code class="descclassname">mudmaker.</code><code class="descname">Exit</code><span class="sig-paren">(</span><em>game</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#mudmaker.Exit" title="Permalink to this definition">¶</a></dt>
 <dd><p>Link two rooms together.</p>
+<dl class="classmethod">
+<dt id="mudmaker.Exit.on_delete">
+<em class="property">classmethod </em><code class="descname">on_delete</code><span class="sig-paren">(</span><em>instance</em><span class="sig-paren">)</span><a class="headerlink" href="#mudmaker.Exit.on_delete" title="Permalink to this definition">¶</a></dt>
+<dd><p>Called when this object is deleted.</p>
+</dd></dl>
+
 <dl class="classmethod">
 <dt id="mudmaker.Exit.on_init">
 <em class="property">classmethod </em><code class="descname">on_init</code><span class="sig-paren">(</span><em>instance</em><span class="sig-paren">)</span><a class="headerlink" href="#mudmaker.Exit.on_init" title="Permalink to this definition">¶</a></dt>
@@ -84,6 +90,12 @@ name of the direction should be a full name like “northeast”.</p>
 <code class="descname">as_dict</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#mudmaker.Game.as_dict" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return a dictionary which can be dumped to save the state of this
 game.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mudmaker.Game.call_on_init">
+<code class="descname">call_on_init</code><span class="sig-paren">(</span><em>bases</em>, <em>obj</em><span class="sig-paren">)</span><a class="headerlink" href="#mudmaker.Game.call_on_init" title="Permalink to this definition">¶</a></dt>
+<dd><p>Call base.on_init(obj) for base in bases.</p>
 </dd></dl>
 
 <dl class="method">
@@ -128,6 +140,12 @@ objects.</p>
 <code class="descname">load_value</code><span class="sig-paren">(</span><em>data</em><span class="sig-paren">)</span><a class="headerlink" href="#mudmaker.Game.load_value" title="Permalink to this definition">¶</a></dt>
 <dd><p>Load a single value from data, paying particular attention to
 database objects.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mudmaker.Game.make_class">
+<code class="descname">make_class</code><span class="sig-paren">(</span><em>class_name</em>, <em>bases</em><span class="sig-paren">)</span><a class="headerlink" href="#mudmaker.Game.make_class" title="Permalink to this definition">¶</a></dt>
+<dd><p>Make a class from a class name and a tuple of bases.</p>
 </dd></dl>
 
 <dl class="method">
@@ -196,6 +214,12 @@ LoopingCall instance’s start method.</p>
 </dd></dl>
 
 <dl class="classmethod">
+<dt id="mudmaker.Zone.on_delete">
+<em class="property">classmethod </em><code class="descname">on_delete</code><span class="sig-paren">(</span><em>instance</em><span class="sig-paren">)</span><a class="headerlink" href="#mudmaker.Zone.on_delete" title="Permalink to this definition">¶</a></dt>
+<dd><p>Called when this object is deleted.</p>
+</dd></dl>
+
+<dl class="classmethod">
 <dt id="mudmaker.Zone.on_init">
 <em class="property">classmethod </em><code class="descname">on_init</code><span class="sig-paren">(</span><em>instance</em><span class="sig-paren">)</span><a class="headerlink" href="#mudmaker.Zone.on_init" title="Permalink to this definition">¶</a></dt>
 <dd><p>Add this zone to self.game.zones.</p>
@@ -229,6 +253,12 @@ LoopingCall instance’s start method.</p>
 <dt id="mudmaker.Room.exits">
 <code class="descname">exits</code><a class="headerlink" href="#mudmaker.Room.exits" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get a list of exits.</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="mudmaker.Room.on_delete">
+<em class="property">classmethod </em><code class="descname">on_delete</code><span class="sig-paren">(</span><em>instance</em><span class="sig-paren">)</span><a class="headerlink" href="#mudmaker.Room.on_delete" title="Permalink to this definition">¶</a></dt>
+<dd><p>Called when this object is deleted.</p>
 </dd></dl>
 
 <dl class="classmethod">
@@ -316,7 +346,7 @@ contain already-tried commands.</p>
 <dl class="method">
 <dt id="mudmaker.Object.do_say">
 <code class="descname">do_say</code><span class="sig-paren">(</span><em>string</em><span class="sig-paren">)</span><a class="headerlink" href="#mudmaker.Object.do_say" title="Permalink to this definition">¶</a></dt>
-<dd><p>Say something as tis object.</p>
+<dd><p>Say something as this object.</p>
 </dd></dl>
 
 <dl class="method">
@@ -365,6 +395,12 @@ message to this object explaining that.</p>
 <code class="descname">no_match</code><span class="sig-paren">(</span><em>string</em><span class="sig-paren">)</span><a class="headerlink" href="#mudmaker.Object.no_match" title="Permalink to this definition">¶</a></dt>
 <dd><p>No match was found. By default, a message explaining that is sent to
 this object.</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="mudmaker.Object.on_delete">
+<em class="property">classmethod </em><code class="descname">on_delete</code><span class="sig-paren">(</span><em>instance</em><span class="sig-paren">)</span><a class="headerlink" href="#mudmaker.Object.on_delete" title="Permalink to this definition">¶</a></dt>
+<dd><p>Called when this object is deleted.</p>
 </dd></dl>
 
 <dl class="classmethod">
@@ -505,6 +541,100 @@ accounts loaded, RuntimeError will be raised.</p>
 <code class="descname">start</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#mudmaker.Task.start" title="Permalink to this definition">¶</a></dt>
 <dd><p>Call self.loop.start with all arguments, and store the resulting
 Deferred in self.deferred.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="mudmaker.Social">
+<em class="property">class </em><code class="descclassname">mudmaker.</code><code class="descname">Social</code><span class="sig-paren">(</span><em>game</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#mudmaker.Social" title="Permalink to this definition">¶</a></dt>
+<dd><p>A social.</p>
+<dl class="classmethod">
+<dt id="mudmaker.Social.on_delete">
+<em class="property">classmethod </em><code class="descname">on_delete</code><span class="sig-paren">(</span><em>instance</em><span class="sig-paren">)</span><a class="headerlink" href="#mudmaker.Social.on_delete" title="Permalink to this definition">¶</a></dt>
+<dd><p>Called when this object is deleted.</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="mudmaker.Social.on_init">
+<em class="property">classmethod </em><code class="descname">on_init</code><span class="sig-paren">(</span><em>instance</em><span class="sig-paren">)</span><a class="headerlink" href="#mudmaker.Social.on_init" title="Permalink to this definition">¶</a></dt>
+<dd><p>Called when the object is initialised.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mudmaker.Social.use_target">
+<code class="descname">use_target</code><span class="sig-paren">(</span><em>player</em>, <em>target</em><span class="sig-paren">)</span><a class="headerlink" href="#mudmaker.Social.use_target" title="Permalink to this definition">¶</a></dt>
+<dd><p>Perform a social as player.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="mudmaker.Menu">
+<em class="property">class </em><code class="descclassname">mudmaker.</code><code class="descname">Menu</code><span class="sig-paren">(</span><em>title</em>, <em>items=NOTHING</em>, <em>header=NOTHING</em>, <em>invalid_selection_msg=NOTHING</em>, <em>prompt_msg=NOTHING</em>, <em>help_msg=NOTHING</em>, <em>abort_msg=NOTHING</em><span class="sig-paren">)</span><a class="headerlink" href="#mudmaker.Menu" title="Permalink to this definition">¶</a></dt>
+<dd><p>A menu wich presents the player with various options.</p>
+<dl class="method">
+<dt id="mudmaker.Menu.add_item">
+<code class="descname">add_item</code><span class="sig-paren">(</span><em>title</em>, <em>func</em><span class="sig-paren">)</span><a class="headerlink" href="#mudmaker.Menu.add_item" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add an item to this menu.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mudmaker.Menu.add_label">
+<code class="descname">add_label</code><span class="sig-paren">(</span><em>title</em><span class="sig-paren">)</span><a class="headerlink" href="#mudmaker.Menu.add_label" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add a label to this menu.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mudmaker.Menu.as_string">
+<code class="descname">as_string</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#mudmaker.Menu.as_string" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return this men as a string.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mudmaker.Menu.item">
+<code class="descname">item</code><span class="sig-paren">(</span><em>title</em><span class="sig-paren">)</span><a class="headerlink" href="#mudmaker.Menu.item" title="Permalink to this definition">¶</a></dt>
+<dd><p>A decorator to add an item.</p>
+<p>Usage:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">m</span> <span class="o">=</span> <span class="n">Menu</span><span class="p">(</span><span class="s1">&#39;Test Menu&#39;</span><span class="p">)</span>
+
+<span class="nd">@m</span><span class="o">.</span><span class="n">item</span><span class="p">(</span><span class="s1">&#39;quit&#39;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">do_quit</span><span class="p">(</span><span class="n">obj</span><span class="p">):</span>
+    <span class="n">obj</span><span class="o">.</span><span class="n">message</span><span class="p">(</span><span class="s1">&#39;Goodbye.&#39;</span><span class="p">)</span>
+    <span class="n">obj</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">disconnect</span><span class="p">(</span><span class="s1">&#39;Player quit.&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="mudmaker.Menu.match">
+<code class="descname">match</code><span class="sig-paren">(</span><em>obj</em>, <em>string</em><span class="sig-paren">)</span><a class="headerlink" href="#mudmaker.Menu.match" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the first menu item that matches. If there are no matches,
+tell the player that and return None.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mudmaker.Menu.send">
+<code class="descname">send</code><span class="sig-paren">(</span><em>obj</em><span class="sig-paren">)</span><a class="headerlink" href="#mudmaker.Menu.send" title="Permalink to this definition">¶</a></dt>
+<dd><p>Send this menu to a player.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mudmaker.Menu.send_and_handle">
+<code class="descname">send_and_handle</code><span class="sig-paren">(</span><em>obj</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#mudmaker.Menu.send_and_handle" title="Permalink to this definition">¶</a></dt>
+<dd><p>Send this menu and handle the input using self._send_and_handle.
+This method catches the MenuDone except which is raised as a result of
+typing a full stop on a blank line. All extra arguments are sent along
+to self._send_and_handle as well.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mudmaker.Menu.send_forever">
+<code class="descname">send_forever</code><span class="sig-paren">(</span><em>obj</em>, <em>*args</em>, <em>before_send=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#mudmaker.Menu.send_forever" title="Permalink to this definition">¶</a></dt>
+<dd><p>Keep sending this menu to obj until MenuDone is raised or a full
+stop is received as input. If before_send is not None, it will be
+called with this menu and obj as positional arguments before the menu
+is sent. All extra arguments are sent to self._send_and_handle.</p>
 </dd></dl>
 
 </dd></dl>

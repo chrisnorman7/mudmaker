@@ -5,7 +5,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>Index &#8212; MudMaker 0.1.6 documentation</title>
+    <title>Index &#8212; MudMaker 0.1.7 documentation</title>
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
@@ -43,6 +43,7 @@
  | <a href="#F"><strong>F</strong></a>
  | <a href="#G"><strong>G</strong></a>
  | <a href="#H"><strong>H</strong></a>
+ | <a href="#I"><strong>I</strong></a>
  | <a href="#L"><strong>L</strong></a>
  | <a href="#M"><strong>M</strong></a>
  | <a href="#N"><strong>N</strong></a>
@@ -51,6 +52,7 @@
  | <a href="#R"><strong>R</strong></a>
  | <a href="#S"><strong>S</strong></a>
  | <a href="#T"><strong>T</strong></a>
+ | <a href="#U"><strong>U</strong></a>
  | <a href="#V"><strong>V</strong></a>
  | <a href="#W"><strong>W</strong></a>
  | <a href="#Z"><strong>Z</strong></a>
@@ -71,15 +73,21 @@
 </li>
       <li><a href="mudmaker.html#mudmaker.AccountStore.add_account">add_account() (mudmaker.AccountStore method)</a>
 </li>
+      <li><a href="mudmaker.html#mudmaker.Game.add_direction">add_direction() (mudmaker.Game method)</a>
+</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="mudmaker.html#mudmaker.Game.add_direction">add_direction() (mudmaker.Game method)</a>
+      <li><a href="mudmaker.html#mudmaker.Menu.add_item">add_item() (mudmaker.Menu method)</a>
+</li>
+      <li><a href="mudmaker.html#mudmaker.Menu.add_label">add_label() (mudmaker.Menu method)</a>
 </li>
       <li><a href="mudmaker.html#mudmaker.Zone.add_room">add_room() (mudmaker.Zone method)</a>
 </li>
       <li><a href="mudmaker.html#mudmaker.Game.as_dict">as_dict() (mudmaker.Game method)</a>
 </li>
       <li><a href="mudmaker.html#mudmaker.AccountStore.as_list">as_list() (mudmaker.AccountStore method)</a>
+</li>
+      <li><a href="mudmaker.html#mudmaker.Menu.as_string">as_string() (mudmaker.Menu method)</a>
 </li>
       <li><a href="mudmaker.html#mudmaker.Attribute">Attribute (class in mudmaker)</a>
 </li>
@@ -98,6 +106,10 @@
 
 <h2 id="C">C</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="mudmaker.html#mudmaker.Game.call_on_init">call_on_init() (mudmaker.Game method)</a>
+</li>
+  </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="mudmaker.html#mudmaker.WebSocketConnection.connectionLost">connectionLost() (mudmaker.WebSocketConnection method)</a>
 </li>
@@ -182,6 +194,14 @@
   </ul></td>
 </tr></table>
 
+<h2 id="I">I</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="mudmaker.html#mudmaker.Menu.item">item() (mudmaker.Menu method)</a>
+</li>
+  </ul></td>
+</tr></table>
+
 <h2 id="L">L</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
@@ -203,7 +223,11 @@
 <h2 id="M">M</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="mudmaker.html#mudmaker.Game.make_class">make_class() (mudmaker.Game method)</a>
+</li>
       <li><a href="mudmaker.html#mudmaker.Game.make_object">make_object() (mudmaker.Game method)</a>
+</li>
+      <li><a href="mudmaker.html#mudmaker.Menu.match">match() (mudmaker.Menu method)</a>
 </li>
       <li><a href="mudmaker.html#mudmaker.Object.match_object">match_object() (mudmaker.Object method)</a>
 </li>
@@ -211,6 +235,8 @@
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="mudmaker.html#mudmaker.Menu">Menu (class in mudmaker)</a>
+</li>
       <li><a href="mudmaker.html#mudmaker.Object.message">message() (mudmaker.Object method)</a>
 
       <ul>
@@ -241,8 +267,22 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="mudmaker.html#mudmaker.Object">Object (class in mudmaker)</a>
 </li>
+      <li><a href="mudmaker.html#mudmaker.Exit.on_delete">on_delete() (mudmaker.Exit class method)</a>
+
+      <ul>
+        <li><a href="mudmaker.html#mudmaker.Object.on_delete">(mudmaker.Object class method)</a>
+</li>
+        <li><a href="mudmaker.html#mudmaker.Room.on_delete">(mudmaker.Room class method)</a>
+</li>
+        <li><a href="mudmaker.html#mudmaker.Social.on_delete">(mudmaker.Social class method)</a>
+</li>
+        <li><a href="mudmaker.html#mudmaker.Zone.on_delete">(mudmaker.Zone class method)</a>
+</li>
+      </ul></li>
       <li><a href="mudmaker.html#mudmaker.Game.on_index_page">on_index_page() (mudmaker.Game method)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="mudmaker.html#mudmaker.Exit.on_init">on_init() (mudmaker.Exit class method)</a>
 
       <ul>
@@ -250,11 +290,11 @@
 </li>
         <li><a href="mudmaker.html#mudmaker.Room.on_init">(mudmaker.Room class method)</a>
 </li>
+        <li><a href="mudmaker.html#mudmaker.Social.on_init">(mudmaker.Social class method)</a>
+</li>
         <li><a href="mudmaker.html#mudmaker.Zone.on_init">(mudmaker.Zone class method)</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="mudmaker.html#mudmaker.Game.on_websocket_page">on_websocket_page() (mudmaker.Game method)</a>
 </li>
       <li><a href="mudmaker.html#mudmaker.WebSocketConnection.onMessage">onMessage() (mudmaker.WebSocketConnection method)</a>
@@ -293,12 +333,22 @@
 <h2 id="S">S</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="mudmaker.html#mudmaker.WebSocketConnection.send">send() (mudmaker.WebSocketConnection method)</a>
+      <li><a href="mudmaker.html#mudmaker.Menu.send">send() (mudmaker.Menu method)</a>
+
+      <ul>
+        <li><a href="mudmaker.html#mudmaker.WebSocketConnection.send">(mudmaker.WebSocketConnection method)</a>
 </li>
-      <li><a href="mudmaker.html#mudmaker.Object.single_match">single_match() (mudmaker.Object method)</a>
+      </ul></li>
+      <li><a href="mudmaker.html#mudmaker.Menu.send_and_handle">send_and_handle() (mudmaker.Menu method)</a>
+</li>
+      <li><a href="mudmaker.html#mudmaker.Menu.send_forever">send_forever() (mudmaker.Menu method)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="mudmaker.html#mudmaker.Object.single_match">single_match() (mudmaker.Object method)</a>
+</li>
+      <li><a href="mudmaker.html#mudmaker.Social">Social (class in mudmaker)</a>
+</li>
       <li><a href="mudmaker.html#mudmaker.Task.start">start() (mudmaker.Task method)</a>
 </li>
       <li><a href="mudmaker.html#mudmaker.Game.start_listening">start_listening() (mudmaker.Game method)</a>
@@ -316,6 +366,14 @@
       <li><a href="mudmaker.html#mudmaker.Game.task">task() (mudmaker.Game method)</a>
 </li>
       <li><a href="mudmaker.html#mudmaker.text">text (class in mudmaker)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="U">U</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="mudmaker.html#mudmaker.Social.use_target">use_target() (mudmaker.Social method)</a>
 </li>
   </ul></td>
 </tr></table>
