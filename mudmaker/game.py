@@ -305,6 +305,7 @@ class Game:
                 setattr(obj, name, self.load_value(value))
             bases = b[id]
             self.call_on_init(bases, obj)
+            self.logger.info('Loaded %s.', obj)
 
     def load(self):
         """Load some yaml and run it through self.from_dict."""
