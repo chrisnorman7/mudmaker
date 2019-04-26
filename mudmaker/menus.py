@@ -61,13 +61,14 @@ class Menu:
     def item(self, title):
         """A decorator to add an item.
 
-        Usage:
-        m = Menu('Test Menu')
+        Usage::
 
-        @m.item('quit')
-        def do_quit(obj):
-            obj.message('Goodbye.')
-            obj.connection.disconnect('Player quit.')
+            m = Menu('Test Menu')
+
+            @m.item('quit')
+            def do_quit(obj):
+                obj.message('Goodbye.')
+                obj.connection.disconnect('Player quit.')
         """
 
         def inner(func):

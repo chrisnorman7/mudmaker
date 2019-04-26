@@ -1,5 +1,5 @@
 Module Documentation
-================
+==============================
 
 
 .. automodule:: mudmaker
