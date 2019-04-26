@@ -28,6 +28,14 @@ class Object(BaseObject, LocationMixin):
         except NoSuchObjectError:
             pass  # return None.
 
+    def __repr__(self):
+        string = f'{type(self).__name__}('
+        attributes = (
+            (name, repr(getattr(self, name))) for name in self.attributes
+        )
+        string += ', '.join('='.join(thing) for thing in attributes)
+        return string + ')'
+
     def message(self, text):
         """Send some text to this object's connection."""
         if self.connection is not None:
