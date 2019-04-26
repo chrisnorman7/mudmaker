@@ -15,7 +15,6 @@ class MudMakerParser(Parser):
     def social(self, social):
         """Add a social to this parser."""
         name = social.name
-        print(repr(social))
         p = partial(social.use_nothing)
         p.__doc__ = name + '.'
         self.command(name)(p)
