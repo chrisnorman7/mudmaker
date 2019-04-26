@@ -33,3 +33,7 @@ class Room(BaseObject):
         """Add this room to self.game.rooms."""
         instance.game.rooms[instance.id] = instance
         instance.parser = None
+
+    @classmethod
+    def on_delete(cls, instance):
+        del instance.game.rooms[instance.id]

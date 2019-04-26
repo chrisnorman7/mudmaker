@@ -20,6 +20,12 @@ class Object(BaseObject, LocationMixin):
         instance.connection = None
         instance.parser = None
 
+    @classmethod
+    def on_delete(cls, instance):
+        del instance.game.objects[instance.id]
+        if instance.id in instance.game.account_store.objects:
+            instance.game.account_store.remove_account(instance)
+
     @property
     def account(self):
         """Get any account object associated with this object."""
@@ -123,5 +129,5 @@ class Object(BaseObject, LocationMixin):
                 obj.message(strings[-1])
 
     def do_say(self, string):
-        """Say something as tis object."""
+        """Say something as this object."""
         self.do_social(self.say_msg, text=string)

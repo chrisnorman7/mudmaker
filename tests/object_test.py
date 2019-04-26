@@ -1,4 +1,11 @@
 from mudmaker import Object
+from mudmaker.base import EventBase
+
+
+class PretendBase(EventBase):
+    @classmethod
+    def on_delete(cls, instance):
+        instance.game.deleted = True
 
 
 def test_init(game, obj):
@@ -47,3 +54,18 @@ def test_copy(obj, game, room):
     assert copy.location is None
     assert copy.id != obj.id
     assert game.objects[copy.id] is copy
+
+
+def test_delete(game):
+    o = game.make_object('Object', (Object, PretendBase))
+    assert game._objects[o.id] is o
+    o.delete()
+    assert game.deleted is True
+    assert o.id not in game._objects
+
+
+def test_delete_account(obj, game, accounts):
+    a = accounts.add_account('test', 'test123', obj)
+    obj.delete()
+    assert a.username not in accounts.accounts
+    assert obj.id not in accounts.objects

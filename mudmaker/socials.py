@@ -55,3 +55,14 @@ class Social(BaseObject):
             p = [target]
             string = self.any_target
         player.do_social(string, _perspectives=p)
+
+    @classmethod
+    def on_delete(cls, instance):
+        commands = []
+        for cmd in main_parser.commands:
+            if getattr(cmd.func.func, 'func', None) not in (
+                instance.use_nothing, instance.use_target
+            ):
+                commands.append(cmd)
+        main_parser.commands = commands
+        del instance.game.socials[instance.name]

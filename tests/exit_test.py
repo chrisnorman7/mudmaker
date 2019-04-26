@@ -23,3 +23,8 @@ def test_exits(exit):
     d = exit.destination
     assert exit in r.exits
     assert exit in d.entrances
+
+
+def test_delete(game, exit):
+    exit.delete()
+    assert exit.id not in game.exits

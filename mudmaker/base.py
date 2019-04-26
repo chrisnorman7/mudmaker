@@ -19,6 +19,11 @@ class EventBase:
         the dictionary of dumped data."""
         pass
 
+    @classmethod
+    def on_delete(cls, instance):
+        """Called when this object is deleted."""
+        pass
+
 
 class BaseObject(EventBase):
     """The base class from which all game objects must derive."""
@@ -50,6 +55,12 @@ class BaseObject(EventBase):
         )
         string += ', '.join('='.join(thing) for thing in attributes)
         return string + ')'
+
+    def delete(self):
+        """Delete this object."""
+        del self.game._objects[self.id]
+        for base in type(self).__bases__:
+            base.on_delete(self)
 
     def get_description(self):
         return self.description or 'You see nothing special.'

@@ -19,3 +19,7 @@ class Zone(BaseObject):
     def on_init(cls, instance):
         """Add this zone to self.game.zones."""
         instance.game.zones[instance.id] = instance
+
+    @classmethod
+    def on_delete(cls, instance):
+        del instance.game.zones[instance.id]

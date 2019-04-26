@@ -45,3 +45,14 @@ def test_social(game, socials):
     assert s.no_target == first
     assert s.self_target == second
     assert s.any_target == third
+
+
+def test_delete(game):
+    s = game.make_object(
+        'Social', (Social,), name='delete', no_target='%1N delete%1s.',
+        self_target='%1N delete%1s furiously.', any_target='%1N delete%1s %2n.'
+    )
+    length = len(main_parser.commands)
+    s.delete()
+    assert s.name not in game.socials
+    assert len(main_parser.commands) == (length - 2)

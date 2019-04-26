@@ -21,3 +21,7 @@ class Exit(BaseObject, LocationMixin):
     def on_init(cls, instance):
         """Add this exit to self.game.exits."""
         instance.game.exits[instance.id] = instance
+
+    @classmethod
+    def on_delete(cls, instance):
+        del instance.game.exits[instance.id]
