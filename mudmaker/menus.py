@@ -121,16 +121,12 @@ class Menu:
         """Keep sending this menu to obj until MenuDone is raised or a full
         stop is received as input. If before_send is not None, it will be
         called with this menu and obj as positional arguments before the menu
-        is sent. This method should never cause session conflicts, as obj is
-        dropped before the loop starts. All extra arguments are sent to
-        self._send_and_handle."""
-        con = obj.connection
-        del obj
+        is sent. All extra arguments are sent to self._send_and_handle."""
         while True:
             if before_send is not None:
-                before_send(self, con.object)
+                before_send(self, obj)
             try:
-                yield from self._send_and_handle(con.object, *args, **kwargs)
+                yield from self._send_and_handle(obj, *args, **kwargs)
             except MenuDone:
                 break
 
@@ -138,19 +134,18 @@ class Menu:
         """Send this menu to obj, and handle the input. Any found function will
         be called with obj as its first argument, followed by all other args
         and kwargs."""
-        con = obj.connection
         self.send(obj)
         res = yield
         if res == '.':
-            con.object.message(self.abort_msg)
+            obj.message(self.abort_msg)
             raise MenuDone()
         elif res == '?':
-            con.object.message(self.help_msg)
-            yield from self._send_and_handle(con.object, *args, **kwargs)
+            obj.message(self.help_msg)
+            yield from self._send_and_handle(obj, *args, **kwargs)
         else:
-            i = self.match(con.object, res)
+            i = self.match(obj, res)
             if i is not None:
-                r = i.func(con.object)
+                r = i.func(obj, *args, **kwargs)
                 if isgenerator(r):
                     yield from r
 
