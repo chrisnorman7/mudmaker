@@ -169,16 +169,3 @@ def do_socials(player, game, socials, social=None):
         player.message(social.any_target)
     else:
         player.message('There is no social by that name.')
-
-
-@main_parser.command('move', 'move <direction>', '<direction>')
-def do_move(direction, game, player, location):
-    """Move in the given direction."""
-    if direction not in game.directions:
-        raise CommandFailedError()
-    d = game.directions[direction]
-    x = location.match_exit(d)
-    if x is None:
-        player.message('You cannot go that way.')
-    else:
-        x.use(player)
