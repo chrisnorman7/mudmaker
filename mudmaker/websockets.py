@@ -57,7 +57,7 @@ class WebSocketConnection(WebSocketServerProtocol):
             host=self.logger.name, game=self.game, parser=self.parser,
             logger=self.logger, accounts=self.game.account_store,
             is_staff=is_staff, account=account, location=location,
-            socials=factory
+            socials=factory, zone=location.zone
         )
 
     def huh(self, string, tried_commands):
