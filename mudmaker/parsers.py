@@ -30,7 +30,9 @@ login_parser = Parser()
 def do_create(con, accounts, game, username=None, password=None):
     """Create a new character."""
     if not username:
+        prompt = con.prompt_text
         username, password = yield from get_login(con)
+        con.set_prompt_text(prompt)
     while True:
         con.message('Enter a name for your new character (or quit to exit):')
         name = yield
@@ -120,6 +122,7 @@ def do_quit(con):
 @login_parser.command('login', 'connect <username> <password>', '<username>')
 def do_login(game, con, username, password=None):
     """Log in a character."""
+    prompt = con.prompt_text
     if not password:
         con.get_password('Password:')
         password = yield
@@ -129,6 +132,7 @@ def do_login(game, con, username, password=None):
     except AuthenticationError:
         con.logger.info('Attempted to login as %s.', username)
         con.message('Invalid username or password.')
+        con.set_prompt_text(prompt)
 
 
 @main_parser.command('look', 'look <object:thing>', 'l', 'l <object:thing>')

@@ -78,6 +78,6 @@ def format_timedelta(td):
 def get_login(con):
     con.message('Username:')
     username = yield
-    con.message('Password:')
+    con.get_password('Password:')
     password = yield
     return username, password

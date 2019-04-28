@@ -10,9 +10,9 @@ from autobahn.twisted.websocket import WebSocketServerProtocol
 from commandlet.exc import CommandFailedError
 
 from .exc import DontSaveCommand
-from .util import format_error
 from .parsers import login_parser
 from .socials import factory
+from .util import format_error
 
 
 @attrs
