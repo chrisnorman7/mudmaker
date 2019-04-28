@@ -221,7 +221,7 @@ class Game:
         will be used as commands to invoke exits. The x, y, and z coordinates
         allow you to set sensible coordinates for rooms should you want to. The
         name of the direction should be a full name like "northeast"."""
-        d = Direction(name, x, y, z)
+        d = Direction(self, name, x, y, z)
         self.directions[name] = d
         for alias in aliases:
             self.directions[alias] = d
