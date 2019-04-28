@@ -2,6 +2,7 @@
 
 from .attributes import Attribute, object
 from .base import BaseObject
+from .exits import Exit
 
 
 class Room(BaseObject):
@@ -51,3 +52,11 @@ class Room(BaseObject):
         exits = [x for x in self.exits if x.direction is direction]
         if exits:
             return exits[0]
+
+    def link(self, other, direction, name=None):
+        """Link this room to other via the given direction. Also add an
+        optional name."""
+        return self.game.make_object(
+            'Exit', (Exit,), direction_name=direction.name, location=self,
+            destination=other, name=name
+        )

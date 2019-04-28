@@ -20,3 +20,13 @@ def test_match_exit(room, game):
     assert room.match_exit(d) is None
     x = game.make_object('Exit', (Exit,), direction_name=d.name, location=room)
     assert room.match_exit(d) is x
+
+
+def test_link(room, game):
+    direction = game.directions['n']
+    destination = game.make_object('Room', (Room,), name='Other side')
+    x = room.link(destination, direction)
+    assert x.direction is direction
+    assert x.name is None
+    assert x.location is room
+    assert x.destination is destination
