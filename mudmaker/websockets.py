@@ -114,10 +114,10 @@ class WebSocketConnection(WebSocketServerProtocol):
                 zone = location.zone
         return dict(
             con=self, player=player, hostname=self.host, port=self.port,
-            host=self.logger.name, game=self.game, parser=self.parser,
-            logger=self.logger, accounts=self.game.account_store,
-            is_staff=is_staff, account=account, location=location,
-            socials=factory, zone=zone
+            host='%s:%d' % (self.host, self.port), game=self.game,
+            parser=self.parser, logger=self.logger,
+            accounts=self.game.account_store, is_staff=is_staff,
+            account=account, location=location, socials=factory, zone=zone
         )
 
     def use_exit(self, direction):
