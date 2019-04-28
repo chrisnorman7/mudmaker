@@ -1,5 +1,6 @@
 """Provides the Game class."""
 
+import os
 import os.path
 
 from datetime import datetime
@@ -25,6 +26,7 @@ from .objects import Object
 from .parsers import main_parser
 from .rooms import Room
 from .socials import factory, Social
+from .sources import html, js
 from .tasks import Task
 from .websockets import WebSocketConnection
 from .zones import Zone
@@ -147,8 +149,22 @@ class Game:
         )
         self.logger.info('Adding index page.')
         self.web_root.putChild(b'', FunctionResource(self.on_index_page))
+        static_path = static.path
+        if not os.path.isdir(static_path):
+            self.logger.info('Making static directory %s.', static_path)
+            os.makedirs(static_path)
         self.logger.info('Adding static page.')
         self.web_root.putChild(b'static', static)
+        index_path = os.path.join(static_path, 'index.html')
+        if not os.path.isfile(index_path):
+            self.logger.info('Creating index page at %s.', index_path)
+            with open(index_path, 'w') as f:
+                f.write(html)
+        js_path = os.path.join(static_path, 'main.js')
+        if not os.path.isfile(js_path):
+            self.logger.info('Creating javascript at %s.', js_path)
+            with open(js_path, 'w') as f:
+                f.write(js)
         if self.websocket_factory is None:
             self.websocket_factory = WebSocketServerFactory(
                 f'ws://{self.interface}:{self.http_port + 1}'
