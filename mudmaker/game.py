@@ -4,7 +4,6 @@ import os
 import os.path
 
 from datetime import datetime
-from functools import partial
 from json import dumps
 
 from attr import attrs, attrib, Factory
@@ -243,21 +242,7 @@ class Game:
         self.directions[name] = d
         for alias in aliases:
             self.directions[alias] = d
-        names = [name]
-        names.extend(aliases)
-        func = partial(self.use_exit, name)
-        func.__doc__ = 'Move %s.' % name
-        main_parser.command(name, *names)(func)
         return d
-
-    def use_exit(self, direction, player, location):
-        """Have a player use an exit."""
-        d = self.directions[direction]
-        x = location.match_exit(d)
-        if x is None:
-            player.message('You cannot go that way.')
-        else:
-            x.use(player)
 
     @property
     def players(self):

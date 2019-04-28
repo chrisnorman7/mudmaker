@@ -65,16 +65,30 @@ class WebSocketConnection(WebSocketServerProtocol):
             socials=factory, zone=zone
         )
 
+    def use_exit(self, direction):
+        """Use the exit in the given direction."""
+        player = self.object
+        location = player.location
+        x = location.match_exit(direction)
+        if x is None:
+            player.message('You cannot go that way.')
+        else:
+            x.use(player)
+
     def huh(self, string, tried_commands):
         """Called when no command was found. The tried_commands variable might
         contain already-tried commands."""
         here = self.object.location
-        if here.parser is not None:
-            try:
-                here.parser.handle_command(string, **self.get_context())
-                return  # We're done here.
-            except CommandFailedError as e:
-                tried_commands.extend(e.tried_commands)
+        if here is not None:
+            if string in self.game.directions:
+                self.use_exit(self.game.directions[string])
+                return
+            if here.parser is not None:
+                try:
+                    here.parser.handle_command(string, **self.get_context())
+                    return  # We're done here.
+                except CommandFailedError as e:
+                    tried_commands.extend(e.tried_commands)
         self.message('No command found.')
         if tried_commands:
             possible_commands = ', '.join(
