@@ -48,16 +48,21 @@ class WebSocketConnection(WebSocketServerProtocol):
             is_staff = False
             account = None
             location = None
+            zone = None
         else:
             account = player.account
             is_staff = account.is_staff
             location = player.location
+            if location is None:
+                zone = None
+            else:
+                zone = location.zone
         return dict(
             con=self, player=player, hostname=self.host, port=self.port,
             host=self.logger.name, game=self.game, parser=self.parser,
             logger=self.logger, accounts=self.game.account_store,
             is_staff=is_staff, account=account, location=location,
-            socials=factory, zone=location.zone
+            socials=factory, zone=zone
         )
 
     def huh(self, string, tried_commands):
