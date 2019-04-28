@@ -35,12 +35,14 @@ admin_parser = builder_parser.copy()
 
 
 @admin_parser.command('shell', '@shell', '@python')
-def shell(player):
+def shell(player, con):
     """Evaluate some code."""
     s = Shell(player)
     player.message('*** Python Shell ***')
     player.message('Type a full stop on a blank line to exit.')
     player.message('>>>')
+    prompt = con.prompt_text
+    con.set_prompt_text('Code')
     while True:
         line = yield
         if line == '.':
@@ -54,6 +56,7 @@ def shell(player):
         except SystemExit:
             player.message('SystemExit.')
             break
+    con.set_prompt_text(prompt)
     player.message('Exiting.')
 
 
