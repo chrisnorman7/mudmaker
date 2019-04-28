@@ -2,7 +2,7 @@
 
 from mudmaker import Game
 
-game = Game()
+game = Game('Empty')
 
 if __name__ == '__main__':
     game.run()

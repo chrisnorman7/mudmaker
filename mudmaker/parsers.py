@@ -121,7 +121,7 @@ def do_quit(con):
 def do_login(game, con, username, password=None):
     """Log in a character."""
     if not password:
-        con.message('Password:')
+        con.get_password('Password:')
         password = yield
     try:
         player = game.account_store.authenticate(username, password)

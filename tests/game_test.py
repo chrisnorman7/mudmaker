@@ -66,7 +66,7 @@ def test_from_dict(game, obj, room):
     obj.location = room
     with raises(RuntimeError):
         game.from_dict(game.as_dict())
-    g = Game()
+    g = Game('Second Test Game')
     g.from_dict(game.as_dict())
     assert g.as_dict() == game.as_dict()
 
@@ -74,7 +74,7 @@ def test_from_dict(game, obj, room):
 def test_load(game, obj, room, yaml_filename):
     obj.location = room
     game.filename = yaml_filename
-    g = Game(filename=game.filename)
+    g = Game('Second Test Game', filename=game.filename)
     d = game.as_dict()
     game.dump()
     g.load()

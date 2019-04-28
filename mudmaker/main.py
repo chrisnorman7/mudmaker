@@ -22,7 +22,9 @@ parser.add_argument(
 
 def main():
     args = parser.parse_args()
-    game = Game(interface=args.interface, http_port=args.http_port)
+    game = Game(
+        'MudMaker Script', interface=args.interface, http_port=args.http_port
+    )
     game.run()
 
 

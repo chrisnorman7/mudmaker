@@ -27,7 +27,7 @@ def get_exit(game, zone):
 @fixture(name='game')
 def get_game():
     """Get a Game instance."""
-    g = Game()
+    g = Game('Test Game')
     g.account_store.filename = 'test-accounts.json'
     yield g
     if os.path.isfile(g.account_store.filename):

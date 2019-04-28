@@ -59,6 +59,7 @@ class ObjectValue:
 class Game:
     """A game instance."""
 
+    name = attrib()
     interface = attrib(default=Factory(lambda: '127.0.0.1'))
     http_port = attrib(default=Factory(lambda: 4000))
     logger = attrib(default=Factory(NoneType), repr=False)
@@ -105,7 +106,6 @@ class Game:
             self.logger = getLogger(__name__)
         for cls in (Exit, Object, Room, Social, Zone):
             name = cls.__name__
-            self.logger.info('Registering base %s.', name)
             self.register_base(f'Base {name}')(cls)
         for name, aliases, coordinates in (
             ('north', ['n'], dict(y=1)),
@@ -119,11 +119,7 @@ class Game:
             ('up', ['u'], dict(z=1)),
             ('down', ['d'], dict(z=-1))
         ):
-            d = self.add_direction(name, *aliases, **coordinates)
-            self.logger.info(
-                'Added direction %s with coordinates (%d, %d, %d).', name, d.x,
-                d.y, d.z
-            )
+            self.add_direction(name, *aliases, **coordinates)
         if self.account_store is None:
             self.account_store = AccountStore(self)
 
@@ -188,6 +184,7 @@ class Game:
 
     def run(self):
         """Start this game listening, and start the reactor."""
+        self.logger.info('Starting game %s.', self.name)
         if os.path.isfile(self.filename):
             self.logger.info('Loading database from %s.', self.filename)
             self.load()
@@ -352,6 +349,7 @@ class Game:
 
     def finish_login(self, con, player):
         """Connection an Object instance player to the connection con."""
+        con.set_prompt_text('Command')
         old = player.connection
         player.connection = con
         con.object = player
