@@ -12,6 +12,8 @@ def test_init(game, obj):
     assert isinstance(obj, Object)
     assert obj.parser is None
     assert game.objects[obj.id] is obj
+    assert obj.following is None
+    assert obj.followers == []
 
 
 def test_account_for(obj, accounts):
@@ -21,9 +23,7 @@ def test_account_for(obj, accounts):
 
 
 def test_attributes(obj):
-    assert obj.attributes == [
-        'description', 'id', 'location', 'name', 'say_msg'
-    ]
+    assert len(obj.attributes)
 
 
 def test_dump(obj):
@@ -69,3 +69,51 @@ def test_delete_account(obj, game, accounts):
     obj.delete()
     assert a.username not in accounts.accounts
     assert obj.id not in accounts.objects
+
+
+def test_followers(game, obj, room):
+    other = game.make_object(
+        'Object', (Object,), name='The other object', location=room
+    )
+    obj.location = room
+    obj.following = other
+    assert obj.followers == []
+    assert other.followers == [obj]
+
+
+def test_follow(player, connection, room, game):
+    player.location = room
+    other = game.make_object(
+        'Object', (Object,), name='Other Object', location=room
+    )
+    other.follow(player)
+    assert other.following is player
+    assert player.followers == [other]
+    expected = f'{other.get_name()} starts following you.'
+    assert connection.last_message == expected
+
+
+def test_clear_following(player, game, connection, room):
+    player.location = room
+    other = game.make_object(
+        'Object', (Object,), name='Other Object', location=room
+    )
+    other.follow(player)
+    other.clear_following()
+    assert other.following is None
+    assert player.followers == []
+    expected = f'{other.get_name()} stops following you.'
+    assert connection.last_message == expected
+
+
+def test_get_name(obj):
+    assert obj.get_name() == obj.name
+
+
+def test___str__(obj):
+    assert str(obj) == obj.get_full_name()
+
+
+def test_full_name(obj):
+    expected = f'{obj.get_name()} (#{obj.id})'
+    assert obj.get_full_name() == expected

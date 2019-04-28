@@ -12,7 +12,7 @@ factory = PopulatedSocialsFactory()
 @factory.suffix('name', 'n')
 def name(obj, suffix):
     """"you" or name."""
-    return 'you', obj.name
+    return 'you', obj.get_name()
 
 
 @factory.suffix('ss', 'your')

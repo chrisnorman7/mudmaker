@@ -67,7 +67,7 @@ class BaseObject(EventBase):
 
     def __str__(self):
         """Return a pretty string representing this object."""
-        return '%s (#%s)' % (self.name, self.id)
+        return self.get_full_name()
 
     @property
     def attributes(self):
@@ -92,6 +92,10 @@ class BaseObject(EventBase):
         cls.on_dump(self, d)
         return d
 
+    def get_name(self):
+        """Override to configure how this object's name appears."""
+        return self.name
+
     def get_full_name(self):
         """Get the name (including ID) of this object."""
         return '%s (#%s)' % (self.name, self.id)
@@ -107,6 +111,10 @@ class BaseObject(EventBase):
             ).visible
         }
         return self.game.make_object(cls.__name__, cls.__bases__, **kwargs)
+
+    def message(self, text):
+        """Override to make this object respond to messages sent to it."""
+        return False
 
 
 class LocationMixin:

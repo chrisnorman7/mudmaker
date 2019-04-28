@@ -12,6 +12,18 @@ class Object(BaseObject, LocationMixin):
         '%1N say%1s: "{text}"', 'The social message used when this object '
         'says something'
     )
+    following = Attribute(
+        None, 'The object this object is following', type=object, visible=False
+    )
+    walk_style = Attribute('walk%1s', 'This object\'s walk style')
+    start_follow_msg = Attribute(
+        '%1N start%1s following %2n.', 'The string which is used when this '
+        'object starts following another'
+    )
+    stop_follow_msg = Attribute(
+        '%1N stop%1s following %2n.', 'The string which is used when this '
+        'object stops following the object it was following'
+    )
 
     @classmethod
     def on_init(cls, instance):
@@ -25,6 +37,11 @@ class Object(BaseObject, LocationMixin):
         del instance.game.objects[instance.id]
         if instance.id in instance.game.account_store.objects:
             instance.game.account_store.remove_account(instance)
+
+    @property
+    def followers(self):
+        """Returns a list of objects who are following this one."""
+        return [x for x in self.game.objects.values() if x.following is self]
 
     @property
     def account(self):
@@ -131,3 +148,20 @@ class Object(BaseObject, LocationMixin):
     def do_say(self, string):
         """Say something as this object."""
         self.do_social(self.say_msg, text=string)
+
+    def follow(self, obj):
+        """Start this object following obj."""
+        if obj is self.following:
+            self.message(f'You are alread following {obj.get_name()}.')
+        else:
+            self.clear_following()
+            self.following = obj
+            self.do_social(self.start_follow_msg, _perspectives=[obj])
+
+    def clear_following(self):
+        """Stop this object following anyone."""
+        if self.following is not None:
+            self.do_social(
+                self.stop_follow_msg, _perspectives=[self.following]
+            )
+            self.following = None

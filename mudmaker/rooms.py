@@ -9,10 +9,17 @@ class Room(BaseObject):
 
     zone = Attribute(None, 'The zone this room is part of', type=object)
 
-    def broadcast(self, text):
+    def message_all(self, text):
         """Send a message text to everyone else in this room."""
         for obj in self.contents:
             obj.message(text)
+
+    def message_all_but(self, objects, text):
+        """Message everyone in this room with text, apart from those in the
+        objects list."""
+        for obj in self.contents:
+            if obj not in objects:
+                obj.message(text)
 
     @property
     def contents(self):
