@@ -20,7 +20,7 @@ def get_exit(game, zone):
     )
     return game.make_object(
         'Exit', (Exit,), location=location, destination=destination,
-        name='Test Exit'
+        name='Test Exit', direction_name='n'
     )
 
 
