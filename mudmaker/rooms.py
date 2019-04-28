@@ -37,3 +37,10 @@ class Room(BaseObject):
     @classmethod
     def on_delete(cls, instance):
         del instance.game.rooms[instance.id]
+
+    def match_exit(self, direction):
+        """Return an exit in the given direction, or None if there is no
+        match."""
+        exits = [x for x in self.exits if x.direction is direction]
+        if exits:
+            return exits[0]
