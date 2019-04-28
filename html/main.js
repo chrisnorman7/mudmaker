@@ -24,7 +24,9 @@ document.getElementById("inputForm").onsubmit = (e) => {
         input.value = ""
         text.focus()
     } else {
-        writeMessage("You are not connected. Please refresh the page and try again.")
+        writeMessage(
+            "You are not connected. Please refresh the page and try again."
+        )
     }
 }
 
@@ -35,7 +37,9 @@ window.onload = () => {
     req.open("GET", `http://${window.location.host}/wsport`)
     req.onload = () => {
         let websocketPort = JSON.parse(req.response)
-        soc = new WebSocket(`ws://${window.location.hostname}:${websocketPort}`)
+        soc = new WebSocket(
+            `ws://${window.location.hostname}:${websocketPort}`
+        )
         soc.onerror = () => {
             soc = null
             writeMessage("Unable to connect. Please refresh and try again.")

@@ -1,28 +1,38 @@
 """Provides html and js sources."""
 
-
 html = """<!doctype html>
 <html lang="en">
     <head>
         <title>MudMaker</title>
     </head>
     <body>
-        <div id="output" aria-live="polite" aria-atomic="false" aria-relevant=\
-"additions text"></div>
+        <div id="output" aria-live="polite" aria-atomic="false" \
+aria-relevant="additions text"></div>
         <hr>
         <form id="inputForm">
-            <p><label>Command: <input type="text" autocomplete="off" id=\
-"command"></label></p>
+            <p>
+                <label>
+                    <span id="prompt"></span>: <input type="text" \
+                    autocomplete="off" id="text">
+                    <textarea id="textarea" cols="80" rows="80"></textarea>
+                </label>
+            </p>
             <p><input type="submit" value="Send"></p>
         </form>
-        <script src="/static/main.js"></script>
+        <div id="status"></div>
+        <script src="main.js"></script>
     </body>
 </html>"""
 
 js = """const output = document.getElementById("output")
 let soc = null
 
-const input = document.getElementById("command")
+const prompt = document.getElementById("prompt")
+const text = document.getElementById("text")
+const textarea = document.getElementById("textarea")
+const status = document.getElementById("status")
+
+let input = text
 
 function writeMessage(text) {
     for (let line of text.split("\\n")) {
@@ -38,27 +48,32 @@ document.getElementById("inputForm").onsubmit = (e) => {
     if (soc !== null) {
         soc.send(input.value)
         input.value = ""
-        input.focus()
+        text.focus()
     } else {
-        writeMessage("You are not connected. Please refresh the page and try \
-again.")
+        writeMessage(
+            "You are not connected. Please refresh the page and try again."
+        )
     }
 }
 
 window.onload = () => {
+    status.hidden = true
+    textarea.hidden = true
     let req = new XMLHttpRequest()
     req.open("GET", `http://${window.location.host}/wsport`)
     req.onload = () => {
         let websocketPort = JSON.parse(req.response)
-        soc = new WebSocket(`ws://${window.location.hostname}:${websocketPort}\
-`)
+        soc = new WebSocket(
+            `ws://${window.location.hostname}:${websocketPort}`
+        )
         soc.onerror = () => {
             soc = null
             writeMessage("Unable to connect. Please refresh and try again.")
         }
         soc.onopen = () => {
+            status.hidden = false
             writeMessage("*** Connected ***")
-            input.focus()
+            text.focus()
         }
         soc.onmessage = (e) => {
             let data = JSON.parse(e.data)
@@ -71,6 +86,7 @@ window.onload = () => {
             }
         }
         soc.onclose = () => {
+            status.hidden = true
             soc = null
             writeMessage("*** Connection closed ***")
         }
@@ -79,6 +95,47 @@ window.onload = () => {
 }
 
 const functions = {
-    "message": args => writeMessage(args[0])
+    "message": args => writeMessage(args[0]),
+    "inputType": args => {
+        let type = args[0]
+        if (type != input.type) {
+            if (type == "textarea") {
+                input = textarea
+                input.hidden = false
+                input.focus()
+                text.hidden = true
+            } else {
+                textarea.hidden = true
+                text.hidden = false
+                input = text
+                input.focus()
+                input.type = type
+            }
+        }
+    },
+    "promptText": (args) => {
+        let text = args[0]
+        if (text != prompt.innerText) {
+            prompt.innerText = text
+        }
+    },
+    "title": args => {
+        let title = args[0]
+        if (title != document.title) {
+            document.title = title
+        }
+    },
+    "inputText": args => {
+        let value = args[0]
+        if (input.value != value) {
+            input.value = value
+        }
+    },
+    "status": args => {
+        let html = args[0]
+        if (status.innerHTML != html) {
+            status.innerHTML = html
+        }
+    },
 }
 """
