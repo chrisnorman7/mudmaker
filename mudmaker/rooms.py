@@ -9,6 +9,9 @@ class Room(BaseObject):
     """A room which contains objects."""
 
     zone = Attribute(None, 'The zone this room is part of', type=object)
+    x = Attribute(0, 'X coordinate', type=int)
+    y = Attribute(0, 'Y coordinate', type=int)
+    z = Attribute(0, 'Z coordinate', type=int)
 
     def message_all(self, text):
         """Send a message text to everyone else in this room."""
@@ -35,6 +38,14 @@ class Room(BaseObject):
     def entrances(self):
         """Get a list of entrances."""
         return [x for x in self.game.exits.values() if x.destination is self]
+
+    @property
+    def coordinates(self):
+        return (self.x, self.y, self.z)
+
+    @coordinates.setter
+    def coordinates(self, x, y, z):
+        (self.x, self.y, self.z) = (x, y, z)
 
     @classmethod
     def on_init(cls, instance):
