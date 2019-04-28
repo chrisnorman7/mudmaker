@@ -30,3 +30,12 @@ def test_link(room, game):
     assert x.name is None
     assert x.location is room
     assert x.destination is destination
+
+
+def test_coordinates(room):
+    assert room.coordinates == (0, 0, 0)
+    room.coordinates = (5, 6, 7)
+    assert room.coordinates == (5, 6, 7)
+    assert room.x == 5
+    assert room.y == 6
+    assert room.z == 7

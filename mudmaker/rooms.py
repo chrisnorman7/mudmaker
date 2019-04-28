@@ -44,8 +44,8 @@ class Room(BaseObject):
         return (self.x, self.y, self.z)
 
     @coordinates.setter
-    def coordinates(self, x, y, z):
-        (self.x, self.y, self.z) = (x, y, z)
+    def coordinates(self, coords):
+        (self.x, self.y, self.z) = coords
 
     @classmethod
     def on_init(cls, instance):
