@@ -4,7 +4,6 @@ from datetime import datetime
 from functools import partial
 
 from commandlet import Parser, command
-from commandlet.exc import CommandFailedError
 from .exc import AuthenticationError
 from .objects import Object
 from .util import get_login, english_list
