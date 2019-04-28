@@ -83,6 +83,7 @@ def do_message(game, player, message):
 
 def edit_string(social, name, obj):
     obj.message('Enter the new value:')
+    obj.connection.set_input_text(getattr(social, name))
     value = yield
     if value:
         setattr(social, name, value)
@@ -105,6 +106,9 @@ def edit_social(social, obj):
     def before_send(self, obj):
         self.header = social.description
         self.items.clear()
+        self.add_item(
+            f'Rename {social.name}', partial(edit_string, social, 'name')
+        )
         self.add_item(
             f'With no target: {social.no_target}', partial(
                 edit_string, social, 'no_target'
