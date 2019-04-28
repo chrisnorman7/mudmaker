@@ -98,7 +98,7 @@ class BaseObject(EventBase):
 
     def get_full_name(self):
         """Get the name (including ID) of this object."""
-        return '%s (#%s)' % (self.name, self.id)
+        return '%s (#%s)' % (self.get_name(), self.id)
 
     def copy(self):
         """Return a copy of this object. All editable attributes will be

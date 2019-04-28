@@ -134,7 +134,8 @@ class Object(BaseObject, LocationMixin):
         self.game.socials_factory.get_strings."""
         if _perspectives is None:
             _perspectives = []
-        perspectives = [self] + _perspectives
+        perspectives = [self]
+        perspectives.extend(_perspectives)
         strings = self.game.socials_factory.get_strings(
             string, perspectives, **kwargs
         )

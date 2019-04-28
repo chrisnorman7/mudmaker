@@ -20,6 +20,7 @@ from .base import BaseObject
 from .directions import Direction
 from .ext.admin_parser import admin_parser
 from .ext.builder_parser import builder_parser
+from .exits import Exit
 from .objects import Object
 from .parsers import main_parser
 from .rooms import Room
@@ -101,7 +102,7 @@ class Game:
             from logging import basicConfig, getLogger
             basicConfig(level='INFO')
             self.logger = getLogger(__name__)
-        for cls in (Object, Room, Zone, Social):
+        for cls in (Exit, Object, Room, Social, Zone):
             name = cls.__name__
             self.logger.info('Registering base %s.', name)
             self.register_base(f'Base {name}')(cls)

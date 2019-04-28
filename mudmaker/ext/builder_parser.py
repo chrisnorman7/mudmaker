@@ -55,6 +55,6 @@ def do_dig(player, location, game, zone, direction):
                 room = game.make_object('Room', (Room,), name=name, zone=zone)
                 room.coordinates = coords
             x = location.link(room, d)
-            player.message('Created exit %s.' % d)
+            player.message('Created exit %s.' % x)
             x = room.link(location, d.opposite)
             player.message('Created entrance %s.' % x)

@@ -100,7 +100,7 @@ class Exit(BaseObject, LocationMixin):
         if self.state in (self.OPEN, self.NOT_DOOR):
             obj.clear_following()
             msg = self.leave_msg.format(obj.walk_style)
-            obj.do_social(msg, _others=[self])
+            obj.do_social(msg, _perspectives=[self])
             other = self.other_side
             if other is None:
                 msg = '%1N arrive%1s.'
@@ -145,19 +145,19 @@ class Exit(BaseObject, LocationMixin):
     def lock(self, obj):
         """Have Object obj lock this exit."""
         self.state = self.LOCKED
-        obj.do_social(self.lock_msg, [self])
+        obj.do_social(self.lock_msg, _perspectives=[self])
 
     def unlock(self, obj):
         """Have Object obj unlock this exit and leave it closed."""
         self.state = self.CLOSED
-        obj.do_social(self.unlock_msg, [self])
+        obj.do_social(self.unlock_msg, _perspectives=[self])
 
     def open(self, obj):
         """Have Object obj open this exit and leave it closable."""
         self.state = self.OPEN
-        obj.do_social(self.open_msg, [self])
+        obj.do_social(self.open_msg, _perspectives=[self])
 
     def close(self, obj):
         """Have Object obj close this exit and leave it closed."""
         self.state = self.CLOSED
-        obj.do_social(self.close_msg, [self])
+        obj.do_social(self.close_msg, _perspectives=[self])
