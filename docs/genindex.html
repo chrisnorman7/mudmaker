@@ -5,7 +5,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>Index &#8212; MudMaker 0.1.7 documentation</title>
+    <title>Index &#8212; MudMaker 0.4.9 documentation</title>
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
@@ -36,7 +36,6 @@
 
 <div class="genindex-jumpbox">
  <a href="#A"><strong>A</strong></a>
- | <a href="#B"><strong>B</strong></a>
  | <a href="#C"><strong>C</strong></a>
  | <a href="#D"><strong>D</strong></a>
  | <a href="#E"><strong>E</strong></a>
@@ -96,22 +95,20 @@
   </ul></td>
 </tr></table>
 
-<h2 id="B">B</h2>
-<table style="width: 100%" class="indextable genindextable"><tr>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="mudmaker.html#mudmaker.Room.broadcast">broadcast() (mudmaker.Room method)</a>
-</li>
-  </ul></td>
-</tr></table>
-
 <h2 id="C">C</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="mudmaker.html#mudmaker.Game.call_on_init">call_on_init() (mudmaker.Game method)</a>
 </li>
+      <li><a href="mudmaker.html#mudmaker.Object.clear_following">clear_following() (mudmaker.Object method)</a>
+</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="mudmaker.html#mudmaker.Exit.close">close() (mudmaker.Exit method)</a>
+</li>
       <li><a href="mudmaker.html#mudmaker.WebSocketConnection.connectionLost">connectionLost() (mudmaker.WebSocketConnection method)</a>
+</li>
+      <li><a href="mudmaker.html#mudmaker.Direction.coordinates_from">coordinates_from() (mudmaker.Direction method)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -163,8 +160,12 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="mudmaker.html#mudmaker.Game.finish_login">finish_login() (mudmaker.Game method)</a>
 </li>
+      <li><a href="mudmaker.html#mudmaker.Object.follow">follow() (mudmaker.Object method)</a>
+</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="mudmaker.html#mudmaker.Object.followers">followers (mudmaker.Object attribute)</a>
+</li>
       <li><a href="mudmaker.html#mudmaker.Game.from_dict">from_dict() (mudmaker.Game method)</a>
 </li>
   </ul></td>
@@ -178,6 +179,8 @@
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="mudmaker.html#mudmaker.WebSocketConnection.get_context">get_context() (mudmaker.WebSocketConnection method)</a>
+</li>
+      <li><a href="mudmaker.html#mudmaker.Exit.get_name">get_name() (mudmaker.Exit method)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -205,6 +208,8 @@
 <h2 id="L">L</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="mudmaker.html#mudmaker.Room.link">link() (mudmaker.Room method)</a>
+</li>
       <li><a href="mudmaker.html#mudmaker.AccountStore.load">load() (mudmaker.AccountStore method)</a>
 
       <ul>
@@ -214,6 +219,8 @@
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="mudmaker.html#mudmaker.Game.load_value">load_value() (mudmaker.Game method)</a>
+</li>
+      <li><a href="mudmaker.html#mudmaker.Exit.lock">lock() (mudmaker.Exit method)</a>
 </li>
       <li><a href="mudmaker.html#mudmaker.Object.look_here">look_here() (mudmaker.Object method)</a>
 </li>
@@ -229,6 +236,8 @@
 </li>
       <li><a href="mudmaker.html#mudmaker.Menu.match">match() (mudmaker.Menu method)</a>
 </li>
+      <li><a href="mudmaker.html#mudmaker.Room.match_exit">match_exit() (mudmaker.Room method)</a>
+</li>
       <li><a href="mudmaker.html#mudmaker.Object.match_object">match_object() (mudmaker.Object method)</a>
 </li>
       <li><a href="mudmaker.html#mudmaker.AccountStore.maybe_load">maybe_load() (mudmaker.AccountStore method)</a>
@@ -243,6 +252,10 @@
         <li><a href="mudmaker.html#mudmaker.WebSocketConnection.message">(mudmaker.WebSocketConnection method)</a>
 </li>
       </ul></li>
+      <li><a href="mudmaker.html#mudmaker.Room.message_all">message_all() (mudmaker.Room method)</a>
+</li>
+      <li><a href="mudmaker.html#mudmaker.Room.message_all_but">message_all_but() (mudmaker.Room method)</a>
+</li>
       <li><a href="mudmaker.html#module-mudmaker">mudmaker (module)</a>
 </li>
       <li><a href="mudmaker.html#mudmaker.Object.multiple_matches">multiple_matches() (mudmaker.Object method)</a>
@@ -281,8 +294,6 @@
       </ul></li>
       <li><a href="mudmaker.html#mudmaker.Game.on_index_page">on_index_page() (mudmaker.Game method)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="mudmaker.html#mudmaker.Exit.on_init">on_init() (mudmaker.Exit class method)</a>
 
       <ul>
@@ -295,11 +306,17 @@
         <li><a href="mudmaker.html#mudmaker.Zone.on_init">(mudmaker.Zone class method)</a>
 </li>
       </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="mudmaker.html#mudmaker.Game.on_websocket_page">on_websocket_page() (mudmaker.Game method)</a>
 </li>
       <li><a href="mudmaker.html#mudmaker.WebSocketConnection.onMessage">onMessage() (mudmaker.WebSocketConnection method)</a>
 </li>
       <li><a href="mudmaker.html#mudmaker.WebSocketConnection.onOpen">onOpen() (mudmaker.WebSocketConnection method)</a>
+</li>
+      <li><a href="mudmaker.html#mudmaker.Exit.open">open() (mudmaker.Exit method)</a>
+</li>
+      <li><a href="mudmaker.html#mudmaker.Direction.opposite">opposite (mudmaker.Direction attribute)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -373,6 +390,14 @@
 <h2 id="U">U</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="mudmaker.html#mudmaker.Exit.unlock">unlock() (mudmaker.Exit method)</a>
+</li>
+      <li><a href="mudmaker.html#mudmaker.Exit.use">use() (mudmaker.Exit method)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="mudmaker.html#mudmaker.Game.use_exit">use_exit() (mudmaker.Game method)</a>
+</li>
       <li><a href="mudmaker.html#mudmaker.Social.use_target">use_target() (mudmaker.Social method)</a>
 </li>
   </ul></td>

@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>Module Documentation &#8212; MudMaker 0.1.7 documentation</title>
+    <title>Module Documentation &#8212; MudMaker 0.4.9 documentation</title>
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
@@ -50,14 +50,45 @@ by setting the visible flag to False.</p>
 
 <dl class="class">
 <dt id="mudmaker.Direction">
-<em class="property">class </em><code class="descclassname">mudmaker.</code><code class="descname">Direction</code><span class="sig-paren">(</span><em>name</em>, <em>x</em>, <em>y</em>, <em>z</em><span class="sig-paren">)</span><a class="headerlink" href="#mudmaker.Direction" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">mudmaker.</code><code class="descname">Direction</code><span class="sig-paren">(</span><em>game</em>, <em>name</em>, <em>x</em>, <em>y</em>, <em>z</em><span class="sig-paren">)</span><a class="headerlink" href="#mudmaker.Direction" title="Permalink to this definition">¶</a></dt>
 <dd><p>A direction to be used with an exit.</p>
+<dl class="method">
+<dt id="mudmaker.Direction.coordinates_from">
+<code class="descname">coordinates_from</code><span class="sig-paren">(</span><em>start</em><span class="sig-paren">)</span><a class="headerlink" href="#mudmaker.Direction.coordinates_from" title="Permalink to this definition">¶</a></dt>
+<dd><p>Apply this direction to coordinates start and return the
+destination coordinates.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="mudmaker.Direction.opposite">
+<code class="descname">opposite</code><a class="headerlink" href="#mudmaker.Direction.opposite" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the opposite direction.</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
 <dt id="mudmaker.Exit">
 <em class="property">class </em><code class="descclassname">mudmaker.</code><code class="descname">Exit</code><span class="sig-paren">(</span><em>game</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#mudmaker.Exit" title="Permalink to this definition">¶</a></dt>
 <dd><p>Link two rooms together.</p>
+<dl class="method">
+<dt id="mudmaker.Exit.close">
+<code class="descname">close</code><span class="sig-paren">(</span><em>obj</em><span class="sig-paren">)</span><a class="headerlink" href="#mudmaker.Exit.close" title="Permalink to this definition">¶</a></dt>
+<dd><p>Have Object obj close this exit and leave it closed.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mudmaker.Exit.get_name">
+<code class="descname">get_name</code><span class="sig-paren">(</span><em>verbose=False</em><span class="sig-paren">)</span><a class="headerlink" href="#mudmaker.Exit.get_name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a proper name for this object.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mudmaker.Exit.lock">
+<code class="descname">lock</code><span class="sig-paren">(</span><em>obj</em><span class="sig-paren">)</span><a class="headerlink" href="#mudmaker.Exit.lock" title="Permalink to this definition">¶</a></dt>
+<dd><p>Have Object obj lock this exit.</p>
+</dd></dl>
+
 <dl class="classmethod">
 <dt id="mudmaker.Exit.on_delete">
 <em class="property">classmethod </em><code class="descname">on_delete</code><span class="sig-paren">(</span><em>instance</em><span class="sig-paren">)</span><a class="headerlink" href="#mudmaker.Exit.on_delete" title="Permalink to this definition">¶</a></dt>
@@ -68,6 +99,24 @@ by setting the visible flag to False.</p>
 <dt id="mudmaker.Exit.on_init">
 <em class="property">classmethod </em><code class="descname">on_init</code><span class="sig-paren">(</span><em>instance</em><span class="sig-paren">)</span><a class="headerlink" href="#mudmaker.Exit.on_init" title="Permalink to this definition">¶</a></dt>
 <dd><p>Add this exit to self.game.exits.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mudmaker.Exit.open">
+<code class="descname">open</code><span class="sig-paren">(</span><em>obj</em><span class="sig-paren">)</span><a class="headerlink" href="#mudmaker.Exit.open" title="Permalink to this definition">¶</a></dt>
+<dd><p>Have Object obj open this exit and leave it closable.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mudmaker.Exit.unlock">
+<code class="descname">unlock</code><span class="sig-paren">(</span><em>obj</em><span class="sig-paren">)</span><a class="headerlink" href="#mudmaker.Exit.unlock" title="Permalink to this definition">¶</a></dt>
+<dd><p>Have Object obj unlock this exit and leave it closed.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mudmaker.Exit.use">
+<code class="descname">use</code><span class="sig-paren">(</span><em>obj</em><span class="sig-paren">)</span><a class="headerlink" href="#mudmaker.Exit.use" title="Permalink to this definition">¶</a></dt>
+<dd><p>Use this exit as the Object obj.</p>
 </dd></dl>
 
 </dd></dl>
@@ -201,6 +250,12 @@ twisted.internet.task.LoopingCall. All arguments will be passed to the
 LoopingCall instance’s start method.</p>
 </dd></dl>
 
+<dl class="method">
+<dt id="mudmaker.Game.use_exit">
+<code class="descname">use_exit</code><span class="sig-paren">(</span><em>direction</em>, <em>player</em>, <em>location</em><span class="sig-paren">)</span><a class="headerlink" href="#mudmaker.Game.use_exit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Have a player use an exit.</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -237,12 +292,6 @@ LoopingCall instance’s start method.</p>
 <dt id="mudmaker.Room">
 <em class="property">class </em><code class="descclassname">mudmaker.</code><code class="descname">Room</code><span class="sig-paren">(</span><em>game</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#mudmaker.Room" title="Permalink to this definition">¶</a></dt>
 <dd><p>A room which contains objects.</p>
-<dl class="method">
-<dt id="mudmaker.Room.broadcast">
-<code class="descname">broadcast</code><span class="sig-paren">(</span><em>text</em><span class="sig-paren">)</span><a class="headerlink" href="#mudmaker.Room.broadcast" title="Permalink to this definition">¶</a></dt>
-<dd><p>Send a message text to everyone else in this room.</p>
-</dd></dl>
-
 <dl class="attribute">
 <dt id="mudmaker.Room.entrances">
 <code class="descname">entrances</code><a class="headerlink" href="#mudmaker.Room.entrances" title="Permalink to this definition">¶</a></dt>
@@ -253,6 +302,33 @@ LoopingCall instance’s start method.</p>
 <dt id="mudmaker.Room.exits">
 <code class="descname">exits</code><a class="headerlink" href="#mudmaker.Room.exits" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get a list of exits.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mudmaker.Room.link">
+<code class="descname">link</code><span class="sig-paren">(</span><em>other</em>, <em>direction</em>, <em>name=None</em><span class="sig-paren">)</span><a class="headerlink" href="#mudmaker.Room.link" title="Permalink to this definition">¶</a></dt>
+<dd><p>Link this room to other via the given direction. Also add an
+optional name.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mudmaker.Room.match_exit">
+<code class="descname">match_exit</code><span class="sig-paren">(</span><em>direction</em><span class="sig-paren">)</span><a class="headerlink" href="#mudmaker.Room.match_exit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return an exit in the given direction, or None if there is no
+match.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mudmaker.Room.message_all">
+<code class="descname">message_all</code><span class="sig-paren">(</span><em>text</em><span class="sig-paren">)</span><a class="headerlink" href="#mudmaker.Room.message_all" title="Permalink to this definition">¶</a></dt>
+<dd><p>Send a message text to everyone else in this room.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mudmaker.Room.message_all_but">
+<code class="descname">message_all_but</code><span class="sig-paren">(</span><em>objects</em>, <em>text</em><span class="sig-paren">)</span><a class="headerlink" href="#mudmaker.Room.message_all_but" title="Permalink to this definition">¶</a></dt>
+<dd><p>Message everyone in this room with text, apart from those in the
+objects list.</p>
 </dd></dl>
 
 <dl class="classmethod">
@@ -344,6 +420,12 @@ contain already-tried commands.</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="mudmaker.Object.clear_following">
+<code class="descname">clear_following</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#mudmaker.Object.clear_following" title="Permalink to this definition">¶</a></dt>
+<dd><p>Stop this object following anyone.</p>
+</dd></dl>
+
+<dl class="method">
 <dt id="mudmaker.Object.do_say">
 <code class="descname">do_say</code><span class="sig-paren">(</span><em>string</em><span class="sig-paren">)</span><a class="headerlink" href="#mudmaker.Object.do_say" title="Permalink to this definition">¶</a></dt>
 <dd><p>Say something as this object.</p>
@@ -356,6 +438,18 @@ contain already-tried commands.</p>
 will be treated as a list, and this object will be prepended. All extra
 keyword arguments will be passed to
 self.game.socials_factory.get_strings.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mudmaker.Object.follow">
+<code class="descname">follow</code><span class="sig-paren">(</span><em>obj</em><span class="sig-paren">)</span><a class="headerlink" href="#mudmaker.Object.follow" title="Permalink to this definition">¶</a></dt>
+<dd><p>Start this object following obj.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="mudmaker.Object.followers">
+<code class="descname">followers</code><a class="headerlink" href="#mudmaker.Object.followers" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a list of objects who are following this one.</p>
 </dd></dl>
 
 <dl class="method">
