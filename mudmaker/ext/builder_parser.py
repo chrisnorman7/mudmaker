@@ -127,3 +127,22 @@ def do_redit(player, location):
     yield from Menu(
         'Room Editor'
     ).send_forever(player, before_send=before_send)
+
+
+@builder_parser.command('zedit', '@zedit', '@zone-edit')
+def do_zedit(player, zone):
+    """Edit the current zone."""
+
+    if zone is None:
+        player.message('There is no zone to edit.')
+        return
+
+    def before_send(m, obj):
+        m.items.clear()
+        m.header = '%s\n%s' % (zone, zone.get_description())
+        m.add_item('Rename', partial(rename_room, zone))
+        m.add_item('Change Description', partial(describe_room, zone))
+
+    yield from Menu(
+        'Zone Editor'
+    ).send_forever(player, before_send=before_send)
