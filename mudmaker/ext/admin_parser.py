@@ -6,6 +6,7 @@ from functools import partial
 
 from twisted.internet import reactor
 
+from ..attributes import text
 from .builder_parser import builder_parser
 from ..menus import Menu
 from ..socials import Social
@@ -170,3 +171,52 @@ def do_edit_socials(player, game):
         self.add_item('Add Social', add_social)
 
     yield from m.send_forever(player, before_send=before_send)
+
+
+def edit_value(thing, name, type, value, obj):
+    obj.message('Enter the new value:')
+    if type is text:
+        obj.connection.set_input_type('textarea')
+    obj.connection.set_input_text(value)
+    new = yield
+    try:
+        new = type(new)
+    except Exception:
+        obj.connection.logger.exception(
+            'Error while setting %s.%s to %r:', thing, name, new
+        )
+        obj.message('Invalid value: %r.' % new)
+        return
+    if new == value:
+        obj.message('Value unchanged.')
+    else:
+        setattr(thing, name, new)
+        obj.message('Done.')
+
+
+@admin_parser.command(
+    'oedit', '@oedit <object:thing>', '@object-edit <object:thing>'
+)
+def do_oedit(player, thing):
+    """Edit an object."""
+    if thing is None:
+        return
+    cls = type(thing)
+
+    def before_send(m, obj):
+        m.items.clear()
+        for name in thing.attributes:
+            attribute = getattr(cls, name)
+            if not attribute.visible or not issubclass(
+                attribute.type, (str, int, float)
+            ):
+                continue
+            value = getattr(thing, name)
+            m.add_item(
+                '%s: %r' % (attribute.description, value),
+                partial(edit_value, thing, name, attribute.type, value)
+            )
+
+    yield from Menu(
+        'Object Editor'
+    ).send_forever(player, before_send=before_send)
