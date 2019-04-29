@@ -26,13 +26,22 @@ class MudMakerParser(Parser):
 login_parser = Parser()
 
 
-@login_parser.command('create', 'new', 'create <username> <password>')
+@login_parser.command(
+    'create', 'new', 'create <word:username>',
+    'create <word:username> <word:password>'
+)
 def do_create(con, accounts, game, username=None, password=None):
     """Create a new character."""
+    prompt = con.prompt_text
     if not username:
-        prompt = con.prompt_text
         username, password = yield from get_login(con)
-        con.set_prompt_text(prompt)
+    elif not password:
+        con.get_password('Password:')
+        password = yield
+    con.set_prompt_text(prompt)
+    if not password:
+        con.message('Passwords cannot be blank.')
+        return
     while True:
         con.message('Enter a name for your new character (or quit to exit):')
         name = yield
@@ -119,7 +128,9 @@ def do_quit(con):
     con.disconnect('Goodbye.')
 
 
-@login_parser.command('login', 'connect <username> <password>', '<username>')
+@login_parser.command(
+    'login', 'connect <word:username> <word:password>', '<word:username>'
+)
 def do_login(game, con, username, password=None):
     """Log in a character."""
     prompt = con.prompt_text
@@ -154,7 +165,7 @@ def do_say(player, string):
     player.do_say(string)
 
 
-@main_parser.command('socials', '@socials', '@socials <social>')
+@main_parser.command('socials', '@socials', '@socials <word:social>')
 def do_socials(player, game, socials, social=None):
     """Show a list of socials, or show what a certain social will do."""
     if social is None:

@@ -133,17 +133,20 @@ class WebSocketConnection(WebSocketServerProtocol):
     def huh(self, string, tried_commands):
         """Called when no command was found. The tried_commands variable might
         contain already-tried commands."""
-        here = self.object.location
-        if here is not None:
-            if string in self.game.directions:
-                self.use_exit(self.game.directions[string])
-                return
-            if here.parser is not None:
-                try:
-                    here.parser.handle_command(string, **self.get_context())
-                    return  # We're done here.
-                except CommandFailedError as e:
-                    tried_commands.extend(e.tried_commands)
+        if self.object is not None:
+            here = self.object.location
+            if here is not None:
+                if string in self.game.directions:
+                    self.use_exit(self.game.directions[string])
+                    return
+                if here.parser is not None:
+                    try:
+                        here.parser.handle_command(
+                            string, **self.get_context()
+                        )
+                        return  # We're done here.
+                    except CommandFailedError as e:
+                        tried_commands.extend(e.tried_commands)
         self.message('No command found.')
         if tried_commands:
             possible_commands = ', '.join(
