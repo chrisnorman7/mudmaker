@@ -51,7 +51,7 @@ class BaseObject(EventBase):
     def __repr__(self):
         string = f'{type(self).__name__}('
         attributes = (
-            (name, repr(getattr(self, name))) for name in self.attributes
+            (name, str(getattr(self, name))) for name in self.attributes
         )
         string += ', '.join('='.join(thing) for thing in attributes)
         return string + ')'
