@@ -1,7 +1,11 @@
 """Provides builder_parser."""
 
-from ..rooms import Room
+from functools import partial
+
+from ..menus import Menu
 from ..parsers import main_parser
+from ..rooms import Room
+from ..util import yes_or_no
 
 builder_parser = main_parser.copy()
 
@@ -58,3 +62,68 @@ def do_dig(player, location, game, zone, direction):
             player.message('Created exit %s.' % x)
             x = room.link(location, d.opposite)
             player.message('Created entrance %s.' % x)
+
+
+def rename_room(location, obj):
+    obj.message('Enter the new room name:')
+    if location.name is not None:
+        obj.connection.set_input_text(location.name)
+    name = yield
+    if name:
+        location.name = name
+        obj.message('Done.')
+    else:
+        obj.message('Names cannot be blank.')
+
+
+def describe_room(location, obj):
+    obj.message('Enter the new description:')
+    obj.connection.set_input_type('textarea')
+    if location.description is not None:
+        obj.connection.set_input_text(location.description)
+    description = yield
+    if not description:
+        description = None
+    location.description = description
+    obj.message('Done.')
+
+
+def delete_room(location, obj):
+    obj.message('Are you sure you want to delete this room?')
+    res = yield
+    if yes_or_no(res):
+        if len(location.contents) != 1:
+            obj.message('You cannot delete this room because it s not empty.')
+        elif not location.exits:
+            obj.message(
+                'There is no exit to move you through. Dig an exit then try '
+                'again.'
+            )
+        else:
+            location.exits[0].use(obj)
+            for exit in location.exits + location.entrances:
+                obj.message('Deleting exit %s.' % exit)
+                exit.delete()
+            location.delete()
+            obj.message('Done.')
+    else:
+        obj.message('Cancelled.')
+
+
+@builder_parser.command('redit', '@redit', '@room-edit')
+def do_redit(player, location):
+    """Edit the current room."""
+    if location is None:
+        player.message('You are nowhere fit for editing.')
+        return
+
+    def before_send(m, obj):
+        m.items.clear()
+        m.header = str(location) + '\n' + location.get_description()
+        m.add_item('Rename', partial(rename_room, location))
+        m.add_item('Change Description', partial(describe_room, location))
+        m.add_item('Delete Room', partial(delete_room, location))
+
+    yield from Menu(
+        'Room Editor'
+    ).send_forever(player, before_send=before_send)
