@@ -196,10 +196,7 @@ class WebSocketConnection(WebSocketServerProtocol):
                 # Only reset back to text if no changes to the input type have
                 # been made this run, the input type is not "text", and there
                 # is no command still running.
-                print('Reset input type.')
                 self.set_input_type()
-            else:
-                print('Don\'t reset input type.')
 
     def connectionLost(self, reason):
         super().connectionLost(reason)
