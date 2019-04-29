@@ -173,7 +173,9 @@ class WebSocketConnection(WebSocketServerProtocol):
                 save_command = True
                 ctx = self.get_context()
                 try:
-                    res = self.parser.handle_command(string, **ctx)
+                    res = self.parser.handle_command(
+                        string, command=string, **ctx
+                    )
                     if isgenerator(res):
                         try:
                             next(res)
