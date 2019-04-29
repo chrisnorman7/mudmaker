@@ -2,6 +2,7 @@
 
 from datetime import datetime
 from functools import partial
+from time import time
 
 from commandlet import Parser, command
 from .exc import AuthenticationError, DontSaveCommand
@@ -126,6 +127,19 @@ def do_uptime(game, con):
 def do_quit(con):
     """Quit the game."""
     con.disconnect('Goodbye.')
+
+
+@command([main_parser, login_parser], 'ping', '@ping', '@pong')
+def do_ping(con, command):
+    """Check your connection's lag time."""
+    if command == '@ping':
+        con.ping_time = time()
+        con.send('ping')
+    elif con.ping_time is None:
+        con.message('Please type @ping to measure lag.')
+    else:
+        con.message('Lag amount: %.3f seconds.' % (time() - con.ping_time))
+        con.ping_time = None
 
 
 @login_parser.command(

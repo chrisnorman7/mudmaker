@@ -95,6 +95,7 @@ window.onload = () => {
 }
 
 const functions = {
+    "ping": () => soc.send("@pong"),
     "message": args => writeMessage(args[0]),
     "inputType": args => {
         let type = args[0]
