@@ -4,7 +4,7 @@ from datetime import datetime
 from functools import partial
 
 from commandlet import Parser, command
-from .exc import AuthenticationError
+from .exc import AuthenticationError, DontSaveCommand
 from .objects import Object
 from .util import get_login, english_list
 
@@ -183,3 +183,12 @@ def do_socials(player, game, socials, social=None):
         player.message(social.any_target)
     else:
         player.message('There is no social by that name.')
+
+
+@main_parser.command('recall', '@recall', '@recall <string>', '!', '!<string>')
+def do_recall(con, string=''):
+    """Recall the last command you entered, optionally adding extra text to the
+    end of it."""
+    text = con.last_command + string
+    con.set_input_text(text)
+    raise DontSaveCommand()
