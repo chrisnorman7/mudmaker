@@ -30,6 +30,7 @@ def test_exits(exit):
 def test_delete(game, exit):
     exit.delete()
     assert exit.id not in game.exits
+    assert exit.id not in game._objects
 
 
 def test_direction(exit, game):
