@@ -219,6 +219,8 @@ class Game:
         """Make an object - which could be anything - and add it to this game.
         class_name is the name used for the newly-created class, and attributes
         will be passed to the new class's __init__ method."""
+        if 'id' not in attributes:
+            attributes['id'] = self.new_id()
         cls = self.make_class(class_name, bases)
         obj = cls(self, **attributes)
         self.call_on_init(bases, obj)
