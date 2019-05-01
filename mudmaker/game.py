@@ -138,6 +138,7 @@ class Game:
     def start_listening(self):
         """Start listening for network connections. Usually called from
         Game.run."""
+        self.logger.info('Starting game %s.', self.name)
         self.logger.info('Adding web socket page.')
         self.web_root.putChild(
             b'wsport', FunctionResource(self.on_websocket_page)
@@ -181,25 +182,36 @@ class Game:
             'Listening for HTTP connections on %s:%d.',
             self.site_port.interface, self.site_port.port
         )
+        self.task(300, now=False)(self.dump_task)
 
-    def run(self):
-        """Start this game listening, and start the reactor."""
-        self.logger.info('Starting game %s.', self.name)
+    def maybe_load(self):
+        """Load this game, if the game file exists."""
         if os.path.isfile(self.filename):
             self.logger.info('Loading database from %s.', self.filename)
             self.load()
+            self.logger.info('Objects loaded: %d.', len(self._objects))
         else:
             self.logger.info('Starting with blank database.')
+
+    def run(self):
+        """Start this game listening, and start the reactor."""
         self.start_listening()
-        self.task(300, now=False)(self.dump_task)
+        self.maybe_load()
         reactor.run()
+        self.on_shutdown()
+
+    def on_shutdown(self):
+        """Called when the game has run, and is shutting down."""
         self.logger.info('Dumping the database to %s.', self.filename)
         self.dump()
-        if self.account_store.number_of_accounts():
+        self.logger.info('Objects dumped: %d.', len(self._objects))
+        n = self.account_store.number_of_accounts()
+        if n:
             self.logger.info(
                 'Dumping accounts to %s.', self.account_store.filename
             )
             self.account_store.dump()
+            self.logger.info('Accounts dumped: %d.', n)
 
     def register_base(self, name):
         """Decorate a class to have it registered as a possible base."""
